@@ -1,12 +1,3 @@
-set ts=2
-set sts=2
-set sw=2
-set nocompatible      " We're running Vim, not Vi!
-syntax on             " Enable syntax highlighting
-filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
-filetype plugin on    " Enable filetype-specific plugins
-
 " Common typos
 command! Q  quit
 command! W  write
@@ -18,4 +9,71 @@ set title
 autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 
 map <leader>t :FuzzyFinderTextMate<CR>
+
+" Taken from http://dotfiles.org/~defunkt/.vimrc
+
+" os x backspace fix
+set backspace=indent,eol,start
+"set t_kb
+fixdel
+
+" tabs -> spaces
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+
+" turn mouse on
+" set mouse=a
+
+" space = pagedown, - = pageup
+noremap <Space> <PageDown>
+noremap - <PageUp>
+
+" remap'd keys
+map <Tab><Tab> <C-W>w
+nnoremap <F5><F5> :set invhls hls?<CR>    " use f5f5 to toggle search hilight
+nnoremap <F4><F4> :set invwrap wrap?<CR>  " use f4f4 to toggle wordwrap
+nnoremap <F2><F2> :vsplit<CR>
+nnoremap <F3><F3> <C-W>w
+
+function RubyEndToken ()
+  let current_line = getline( '.' )
+  let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+  let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
+  let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+
+  if match(current_line, braces_at_end) >= 0
+    return "\<CR>}\<C-O>O" 
+  elseif match(current_line, stuff_without_do) >= 0
+    return "\<CR>end\<C-O>O" 
+  elseif match(current_line, with_do) >= 0
+    return "\<CR>end\<C-O>O" 
+  else
+    return "\<CR>" 
+  endif
+endfunction
+
+imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
+
+" backup to ~/.tmp
+set backup
+set backupdir=$HOME/.tmp
+set writebackup
+"
+" misc
+"set ai
+set nohls
+set incsearch
+set showcmd
+set nowrap
+set nu
+
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+" :alias
+com VR :vertical resize 80
 
