@@ -1,0 +1,12 @@
+[user]
+	name = Rohith Ravi
+	email = rohith@seriousbusiness.com
+[alias]
+	co = checkout
+	ci = commit
+[apply]
+	whitespace = nowarn
+[color]
+	diff = auto
+	branch = auto
+	status = auto

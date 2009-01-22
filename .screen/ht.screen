@@ -1,0 +1,23 @@
+autodetach on
+
+screen -h 10000 -t local 0 bash
+
+screen -h 10000 -t htw1 1
+stuff "htw1 -L3303:localhost:80\015"
+
+screen -h 10000 -t htw2 2
+stuff "htw2 -L 3304:10.16.101.100:80\015"
+
+screen -h 10000 -t htw3 3
+stuff "htw3 -L 3307:10.16.101.251:443\015"
+
+screen -h 10000 -t htw4 4
+stuff "htw4\015"
+
+screen -h 10000 -t htdb1 5
+stuff "htdb1\015"
+
+select 0
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+

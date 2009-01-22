@@ -1,0 +1,28 @@
+autodetach on
+
+screen -h 10000 -t memcached 0 bash
+stuff "memcached -vvv"
+
+screen -h 10000 -t root 1
+stuff "sudo -s\015"
+
+screen -h 10000 -t console 2 bash
+stuff "./script/console\015"
+
+screen -h 10000 -t log 3
+stuff "tail -f log/development.log\015"
+
+screen -h 10000 -t shell 4 bash
+screen -h 10000 -t mysql 5 bash
+stuff "mysqlroot\015"
+
+screen -h 10000 -t mongrel 6 bash
+stuff "./script/server -p 3000"
+
+screen -h 10000 -t tunnel 7 bash
+stuff "rake facebook:tunnel:start\015"
+
+select 0
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+

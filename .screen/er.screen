@@ -1,0 +1,22 @@
+autodetach on
+defscrollback 10000
+
+screen -t project 0 bash
+
+screen -t core 1 bash
+
+screen -t console 2
+stuff  "script/console\015"
+
+screen -t log 3 tail -F log/development.log
+
+screen -t shell 4 bash -l
+
+screen -t mysql 5 bash
+
+screen -t mongrel 6 
+stuff "mongrel_rails start\015"
+
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+select 0
