@@ -9,9 +9,6 @@ alias mysql_start='mysqld_safe &'
 alias billr="ssh serenity -L3303:localhost:80 -l rravi"
 alias pgrep="ps ax | grep"
 
-# Use newer version of Vim
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-
 #Git Stuff
 alias gst='git status'
 alias gl='git pull'
