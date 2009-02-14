@@ -60,6 +60,8 @@ imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 set backup
 set backupdir=$HOME/.tmp
 set writebackup
+" Create .swp files here to avoid git status pollution
+set dir=$HOME/.tmp
 "
 " misc
 "set ai
