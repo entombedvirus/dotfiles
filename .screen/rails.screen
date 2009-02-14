@@ -1,4 +1,5 @@
 autodetach on
+vbell off
 
 screen -h 10000 -t memcached 0 bash
 stuff "memcached -vvv"
