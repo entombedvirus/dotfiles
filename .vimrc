@@ -77,5 +77,12 @@ filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 
 " :alias
-com VR :vertical resize 80
+com VR :vertical resize 50
+
+" Some tab helpers (<leader> is \)
+map <leader>]t :tabnew<cr>
+map <leader>]c :tabclose<cr>
+map <leader>]m :tabmove
+map <leader>]n :tabnext<cr>
+map <leader>]p :tabprevious<cr>
 
