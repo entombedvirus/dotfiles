@@ -34,7 +34,13 @@ alias sync_music="rsync -av --rsh=ssh --delete ~/Music/iTunes serenity:~/"
 
 # really awesome function, use: cdgem <gem name>, cd's into your gems directory and opens gem that best matches the gem name provided
 function cdgem {
-  cd /Library/Ruby/Gems/1.8/gems/; cd `ls --color=never|grep $1|sort|tail -1`
+  gem_path=$(gem which $1 2>/dev/null | grep '^/') 
+  if [ -e $gem_path ]
+  then
+    cd $(basename $gem_path)
+  else
+    print 'not found'
+  fi
 }
 
 # http://blog.macromates.com/2008/working-with-history-in-bash/#more-189
