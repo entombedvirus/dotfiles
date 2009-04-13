@@ -13,8 +13,7 @@ vbell off
 screen -h 10000 -t memcached 0 bash
 stuff "memcached -vvv"
 
-screen -h 10000 -t root 1
-stuff "sudo -s\015"
+screen -h 10000 -t vim 1 bash
 
 screen -h 10000 -t console 2 bash
 stuff "./script/console\015"
@@ -26,13 +25,13 @@ screen -h 10000 -t shell 4 bash
 screen -h 10000 -t mysql 5 bash
 stuff "mysqlroot\015"
 
-screen -h 10000 -t mongrel 6 bash
-stuff "./script/server -p 3000"
-
-screen -h 10000 -t tunnel 7 bash
+screen -h 10000 -t tunnel 6 bash
 stuff "rake facebook:tunnel:start\015"
 
 select 0
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
+# The following makes the screen hardstatus and window title
+termcapinfo xterm*|rxvt*|kterm*|Eterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+
+hardstatus off
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'

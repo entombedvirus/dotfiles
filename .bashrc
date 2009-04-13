@@ -1,3 +1,6 @@
+TERMINFO=$HOME/lib/terminfo
+export TERMINFO
+
 source ~/.git-completion.bash
 
 alias ls="gls --color=tty -F"
