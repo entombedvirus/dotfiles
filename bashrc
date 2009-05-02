@@ -1,16 +1,43 @@
-TERMINFO=$HOME/lib/terminfo
-export TERMINFO
+# Setup some colors to use later in interactive shell or scripts
+export COLOR_NC='\e[0m' # No Color
+export COLOR_WHITE='\e[1;37m'
+export COLOR_BLACK='\e[0;30m'
+export COLOR_BLUE='\e[0;34m'
+export COLOR_LIGHT_BLUE='\e[1;34m'
+export COLOR_GREEN='\e[0;32m'
+export COLOR_LIGHT_GREEN='\e[1;32m'
+export COLOR_CYAN='\e[0;36m'
+export COLOR_LIGHT_CYAN='\e[1;36m'
+export COLOR_RED='\e[0;31m'
+export COLOR_LIGHT_RED='\e[1;31m'
+export COLOR_PURPLE='\e[0;35m'
+export COLOR_LIGHT_PURPLE='\e[1;35m'
+export COLOR_BROWN='\e[0;33m'
+export COLOR_YELLOW='\e[1;33m'
+export COLOR_GRAY='\e[1;30m'
+export COLOR_LIGHT_GRAY='\e[0;37m'
+alias colorslist="set | egrep 'COLOR_\w*'"  # lists all the colors
 
-source ~/.git-completion.bash
+if [ -f /opt/local/etc/bash_completion ]; then
+  . /opt/local/etc/bash_completion
+fi
+source ~/cl/git-completion.bash
 
-alias ls="gls --color=tty -F"
-alias ll="gls --color=tty -Fl"
+# Aliases
+if [ "$OS" = "darwin" ]; then
+  alias ls="gls --color=tty -F"
+  alias ll="gls --color=tty -Fl"
+  alias pgrep="ps ax | grep"
+
+else
+  alias ls='ls --color --classify'
+  alias ll='ls -l --color --classify'
+  alias lla='ls -l --all --color --classify'
+fi
+
 alias rscreen="screen -c ~/.screen/rails.screen"
-alias erscreen="screen -c ~/.screen/er.screen"
 alias mysqlroot="mysql -u root"
 alias mysql_start='mysqld_safe &'
-alias billr="ssh serenity -L3303:localhost:80 -l rravi"
-alias pgrep="ps ax | grep"
 
 #Git Stuff
 alias gst='git status'
@@ -24,44 +51,37 @@ alias gba='git branch -a --color'
 alias push?='git cherry -v origin'
 alias gitk='gitk --all &'
 
-
-# Spectre
-alias specdom0='ssh -C specdom0'
-alias shazbot='ssh -C shazbot -l shazbot'
-alias rea='ssh -C rea'
-
-alias sync_music="rsync -av --rsh=ssh --delete ~/Music/iTunes serenity:~/"
-
-# Causes the window title to be set to last active process
-#trap 'printf "\033]0;  `history 1 | cut -b8-`  \007"' DEBUG
-
-# really awesome function, use: cdgem <gem name>, cd's into your gems directory and opens gem that best matches the gem name provided
-function cdgem {
-  gem_path=$(gem which $1 2>/dev/null | grep '^/') 
-  if [ -e $gem_path ]
-  then
-    cd $(basename $gem_path)
-  else
-    print 'not found'
-  fi
-}
-
 # http://blog.macromates.com/2008/working-with-history-in-bash/#more-189
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
 shopt -s histappend
 
-export EDITOR="vim"
-export EVENT_NOKQUEUE=1
-export PATH="/Users/rohith/.bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
-#test -r /sw/bin/init.sh && . /sw/bin/init.sh
-if [ `whoami` = 'root' ]; then
-	export PS1='\[\033[01;31m\]\u@\h\[\033[01;34m\] \w \[\033[01;32m\]$(__git_ps1 "(%s) ")\[\033[01;34m\]\$\[\033[00m\]\n→ '
-else
-	export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \[\033[01;32m\]$(__git_ps1 "(%s) ")\[\033[01;34m\]\$\[\033[00m\]\n→ '
-fi
-#bind '"\t":menu-complete'
+export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
+export CLICOLOR=1 
 
-if [ -f /opt/local/etc/bash_completion ]; then
-  . /opt/local/etc/bash_completion
+if [ "$OS" = "darwin" ]; then
+  export EDITOR="mate"
+  export GIT_EDITOR="mate -w"
+
+else
+  export EDITOR="vim"
+  export GIT_EDITOR="vim"
 fi
+
+# This was for memcached, I think. Renable if shit breaks.
+# export EVENT_NOKQUEUE=1
+
+if [ `whoami` = 'root' ]; then
+  export PS1="\[${COLOR_LIGHT_RED}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]$(__git_ps1 "(%s)") \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
+
+else
+  export PS1="\[${COLOR_GRAY}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]$(__git_ps1 "(%s)") \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
+fi
+
+shopt -s checkwinsize # After each command, checks the windows size and changes lines and columns
+
+# bash completion settings (actually, these are readline settings)
+bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+bind "set bell-style none" # no bell
+bind "set show-all-if-ambiguous On" # show list automatically, without double tab
+
