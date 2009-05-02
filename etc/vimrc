@@ -1,5 +1,5 @@
 " set t_Co=256
-colorscheme railscasts
+colorscheme ir_black
 
 " Common typos
 command! Q  quit
@@ -57,7 +57,7 @@ nnoremap <F3><F3> <C-W>w
 "   endif
 " endfunction
 
-imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
+" imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
 " backup to ~/.tmp
 set backup

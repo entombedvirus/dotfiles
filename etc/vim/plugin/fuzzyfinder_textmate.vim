@@ -29,7 +29,7 @@ ruby << RUBY
 
   begin
     require 'rubygems'
-    gem 'fuzzy_file_finder'
+    gem 'jamis-fuzzy_file_finder'
   rescue LoadError
   end
 
