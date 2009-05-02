@@ -21,7 +21,7 @@ alias colorslist="set | egrep 'COLOR_\w*'"  # lists all the colors
 if [ -f /opt/local/etc/bash_completion ]; then
   . /opt/local/etc/bash_completion
 fi
-source ~/cl/git-completion.bash
+source ~/cl/etc/git-completion.bash
 
 # Aliases
 if [ "$OS" = "darwin" ]; then

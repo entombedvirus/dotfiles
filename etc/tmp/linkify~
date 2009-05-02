@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+def save_in_tmp(p)
+  return unless File.exists?(p)
+
+  cmd = "mkdir -p /tmp/dotfiles.bak && mv %s /tmp/dotfiles.bak/" % p
+  system(cmd)
+end
+
+Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
+  target_path = File.expand_path(target)
+  dest_path = File.expand_path("~/.#{File.basename(target)}")
+
+  # Move the file just in case we wanted something from it
+  save_in_tmp(dest_path)
+  
+  cmd = "ln -nsf --backup %s %s" % [target_path, dest_path]
+  system(cmd)
+end
+
