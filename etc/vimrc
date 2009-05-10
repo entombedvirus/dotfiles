@@ -26,6 +26,9 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 
+" highlight the current line
+set cursorline
+
 " turn mouse on
 " set mouse=a
 

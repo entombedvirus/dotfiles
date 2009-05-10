@@ -1,10 +1,19 @@
 #!/usr/bin/env ruby
 
+require 'fileutils'
+
+backup_dir = "/tmp/dotfiles.#{Time.now.to_i}.bak"
+
 Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
   target_path = File.expand_path(target)
   dest_path = File.expand_path("~/.#{File.basename(target)}")
 
-  cmd = "ln -nsf --backup %s %s" % [target_path, dest_path]
+  if File.exists?(dest_path)
+    FileUtils.mkdir_p(backup_dir)
+    FileUtils.mv dest_path, backup_dir
+  end
+
+  cmd = "ln -nsf %s %s" % [target_path, dest_path]
   system(cmd)
 end
 

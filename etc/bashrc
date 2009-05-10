@@ -27,6 +27,7 @@ source ~/cl/etc/git-completion.bash
 if [ "$OS" = "darwin" ]; then
   alias ls="gls --color=tty -F"
   alias ll="gls --color=tty -Fl"
+  alias lla='ll -a'
   alias pgrep="ps ax | grep"
 
 else
@@ -72,10 +73,10 @@ fi
 # export EVENT_NOKQUEUE=1
 
 if [ `whoami` = 'root' ]; then
-  export PS1="\[${COLOR_LIGHT_RED}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]$(__git_ps1 "(%s)") \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
+  export PS1="\[${COLOR_LIGHT_RED}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]\$(__git_ps1 '(%s)') \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
 
 else
-  export PS1="\[${COLOR_GRAY}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]$(__git_ps1 "(%s)") \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
+  export PS1="\[${COLOR_GRAY}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]\$(__git_ps1 '(%s)') \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
 fi
 
 shopt -s checkwinsize # After each command, checks the windows size and changes lines and columns

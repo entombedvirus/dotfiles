@@ -1,37 +1,24 @@
-#terminfo and termcap for nice 256 color terminal
-# allow bold colors - necessary for some reason
-attrcolor b ".I"
-# tell screen how to set colors. AB = background, AF=foreground
-termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
-termcapinfo xterm-256color "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
-# erase background with current bg color
-defbce "on"
+source $HOME/.screenrc
 
-autodetach on
-vbell off
-
-screen -h 10000 -t memcached 0 bash
+screen -t memcached 0 bash
 stuff "memcached -vvv"
 
-screen -h 10000 -t vim 1 bash
+screen -t vim 1 bash
 
-screen -h 10000 -t console 2 bash
+screen -t console 2 bash
 stuff "./script/console\015"
 
-screen -h 10000 -t log 3
-stuff "tail -f log/development.log\015"
+screen -t log 3
+stuff "if [ -f log/${RAILS_ENV}.log ]; then tail -f log/${RAILS_ENV}.log; else tail -f log/development.log; fi\015"
 
-screen -h 10000 -t shell 4 bash
-screen -h 10000 -t mysql 5 bash
-stuff "mysqlroot\015"
+screen -t shell 4 bash
+screen -t mysql 5 bash
+stuff "./script/dbconsole\015"
 
-screen -h 10000 -t tunnel 6 bash
+screen -t server 6 bash
+stuff "./script/server -p 3000"
+
+screen -t tunnel 7 bash
 stuff "rake facebook:tunnel:start\015"
 
 select 0
-
-# The following makes the screen hardstatus and window title
-termcapinfo xterm*|rxvt*|kterm*|Eterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
-
-hardstatus off
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'

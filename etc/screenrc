@@ -5,18 +5,25 @@ attrcolor b ".I"
 # erase background with current bg color
 defbce "on"
 
-# tell screen how to set colors. AB = background, AF=foreground
-termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
-termcapinfo xterm-256color "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
-#
-# The following makes the screen hardstatus and window title
-termcapinfo xterm*|rxvt*|kterm*|Eterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+autodetach on
+defscrollback 10000
 
-hardstatus off
+startup_message       off
+vbell                 on
+
+activity "%c activity -> %n%f %t"
+bell "%c bell -> %n%f %t^G"
+vbell_msg " *beep* "
+
+hardstatus alwayslastline
 hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
+# Make Terminal.app use the screen scrollback buffer
+termcapinfo xterm* ti@:te@
 
-autodetach on
-defscrollback 5000
-# hardstatus alwayslastline
-
+# tell screen how to set colors. AB = background, AF=foreground
+# termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+# termcapinfo xterm-256color "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+#
+# The following makes the screen hardstatus and window title
+# termcapinfo xterm*|rxvt*|kterm*|Eterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
