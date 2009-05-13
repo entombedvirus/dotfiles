@@ -1,6 +1,9 @@
 # Serious Business, Inc
-Host *.ffs *.sea *.seriousops.com *.br.fb *.stg ox01 ox02
+Host *.ffs *.fb *.sea *.seriousops.com *.stg 
 	User deploy
+  IdentityFile ~/.ssh/serious_key
+
+Host *.seriousbusiness.com
   IdentityFile ~/.ssh/serious_key
 
 Host "rdev1"
