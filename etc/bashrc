@@ -62,7 +62,7 @@ export CLICOLOR=1
 
 if [ "$OS" = "darwin" ]; then
   export EDITOR="mate"
-  export GIT_EDITOR="mate -w"
+  export GIT_EDITOR="vim"
 
 else
   export EDITOR="vim"
