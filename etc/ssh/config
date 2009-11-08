@@ -1,7 +1,15 @@
 # Serious Business, Inc
-Host *.ffs *.fb *.sea *.seriousops.com *.stg 
+Host noc s06 s07
+	User rohith
+  IdentityFile ~/.ssh/serious_key
+  ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
+
+Host *.ffs *.fb *.sea *.seriousops.com pay01 anchorman l?? m?? s?? 
+# Host *.ffs *.fb *.sea *.stg l?? m?? s??
 	User deploy
   IdentityFile ~/.ssh/serious_key
+  ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
+
 
 Host *.seriousbusiness.com
   IdentityFile ~/.ssh/serious_key
