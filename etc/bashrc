@@ -87,3 +87,14 @@ bind "set completion-ignore-case on" # note: bind used instead of sticking these
 bind "set bell-style none" # no bell
 bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
+
+# function to copy ssh keys to new machines
+function copy_keys {
+  if [[ -z "$1" ]]; then
+    echo "Usage: $0 <host> <key>";
+  else
+    echo "Copying Key";
+    ssh ${1} "mkdir -p ~/.ssh && cat - >> ~/.ssh/authorized_keys" < $2;
+    echo "Done!"
+  fi
+}
