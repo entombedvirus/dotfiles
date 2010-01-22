@@ -11,7 +11,7 @@ export PLATFORM="$MACHINE-$OS-$OSVERSION"
 
 # Path ------------------------------------------------------------
 if [ "$OS" = "darwin" ] ; then
-  export PATH=/opt/ruby-enterprise/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH  # OS-X Specific, with MacPorts and MySQL installed
+  export PATH=/opt/ruby-enterprise/bin::/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
   #export PATH=/opt/local/bin:/opt/local/sbin:$PATH  # OS-X Specific, with MacPorts installed
 fi
 
@@ -24,6 +24,36 @@ if [ -d ~/cl/bin ]; then
 fi
 
 
+
+if [ -d ~/.gem/ruby/1.8/bin ]; then
+	export PATH=:~/.gem/ruby/1.8/bin:$PATH  # add your bin folder to the path, if you have it
+fi
+
+# Start ssh-agent
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+  echo "Initializing new SSH agent..."
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  echo succeeded
+  chmod 600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+  /usr/bin/ssh-add;
+  ssh-add ~/.ssh/new_serious_key
+}
+
+# Source SSH settings, if applicable
+if [ "$OS" = "linux" ]; then
+  if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+    start_agent;
+  }
+  else
+    start_agent;
+  fi 
+fi
 
 # Load in .bashrc -------------------------------------------------
 source ~/.bashrc
@@ -52,3 +82,12 @@ echo -ne "${COLOR_GRAY}Server time is: "; date
 # in this order:
 #     bashrc
 #     .bashrc
+
+##
+# Your previous /Users/rohith/.profile file was backed up as /Users/rohith/.profile.macports-saved_2009-11-13_at_11:48:26
+##
+
+# MacPorts Installer addition on 2009-11-13_at_11:48:26: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
