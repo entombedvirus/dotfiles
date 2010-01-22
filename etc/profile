@@ -43,7 +43,7 @@ function start_agent {
 }
 
 # Source SSH settings, if applicable
-if [ "$OS" = "linux" ]; then
+if [ "$OS" = "linux" -a "$HOSTNAME" = "s04.seriousops.com" ]; then
   if [ -f "${SSH_ENV}" ]; then
     . "${SSH_ENV}" > /dev/null
     #ps ${SSH_AGENT_PID} doesn't work under cywgin
