@@ -1,5 +1,5 @@
 # Serious Business, Inc
-Host noc s06 s07 mdb??  sphinx??-* l?? m?? s??
+Host noc ap??-payments dbr??-payments dbw-payments mdb?? sphinx??-* l?? m?? s??
 	User rohith
   IdentityFile ~/.ssh/serious_key
   ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
