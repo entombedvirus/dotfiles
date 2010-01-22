@@ -80,6 +80,8 @@ else
   export PS1="\[${COLOR_GRAY}\]\u@\h \[${COLOR_BLUE}\]\w \[${COLOR_GREEN}\]\$(__git_ps1 '(%s)') \[${COLOR_BLUE}\]\$ \[${COLOR_NC}\]\n→ "
 fi
 
+export SUDO_PS1="\[${COLOR_LIGHT_RED}\]\u@\h \[${COLOR_BLUE}\]\w\$ \[${COLOR_NC}\]\n→ "
+
 shopt -s checkwinsize # After each command, checks the windows size and changes lines and columns
 
 # bash completion settings (actually, these are readline settings)
