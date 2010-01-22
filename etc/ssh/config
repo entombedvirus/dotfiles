@@ -2,11 +2,13 @@
 Host noc ap??-payments dbr??-payments dbw-payments mdb?? sphinx??-* l?? m?? s??
 	User rohith
   IdentityFile ~/.ssh/serious_key
+  ForwardAgent yes
   ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
 
 Host *.ffs *.fb *.sea *.seriousops.com pay01 anchorman
 	User deploy
   IdentityFile ~/.ssh/serious_key
+  ForwardAgent yes
   ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
 
 
