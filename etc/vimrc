@@ -1,5 +1,7 @@
-" set t_Co=256
-colorscheme ir_black
+set t_Co=256
+set background=dark
+colorscheme ir_black_custom
+set transparency=15
 
 " Common typos
 command! Q  quit
@@ -13,6 +15,11 @@ autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 
 map <leader>t :FuzzyFinderTextMate<CR>
 
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+" 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
 
 " os x backspace fix
@@ -21,7 +28,10 @@ set backspace=indent,eol,start
 fixdel
 
 " tabs -> spaces
-set expandtab
+" set expandtab
+
+" leave hardtabs
+set noexpandtab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -30,7 +40,7 @@ set shiftwidth=2
 set cursorline
 
 " turn mouse on
-" set mouse=a
+set mouse=a
 
 " space = pagedown, - = pageup
 noremap <Space> <PageDown>
@@ -42,6 +52,39 @@ nnoremap <F5><F5> :set invhls hls?<CR>    " use f5f5 to toggle search hilight
 nnoremap <F4><F4> :set invwrap wrap?<CR>  " use f4f4 to toggle wordwrap
 nnoremap <F2><F2> :vsplit<CR>
 nnoremap <F3><F3> <C-W>w
+
+" Shortcut to rapidly toggle `set list` a.k.a show invisibles
+nmap <leader>l :set list!<CR>
+ 
+" For mac users (using the 'apple' key)
+map <D-1> 1gt
+map <D-2> 2gt
+map <D-3> 3gt
+map <D-4> 4gt
+map <D-5> 5gt
+map <D-6> 6gt
+map <D-7> 7gt
+map <D-8> 8gt
+map <D-9> 9gt
+map <D-0> :tablast<CR>
+
+" shortcuts to edit files in the same dir as the current open file
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Use the same symbols as TextMate for tabstops and EOLs
+set listchars=tab:▸\ ,eol:¬
+
+" Show syntax highlighting groups for word under cursor
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
 " function RubyEndToken ()
 "   let current_line = getline( '.' )
@@ -81,9 +124,6 @@ syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
-
-" :alias
-com VR :vertical resize 50
 
 " Some tab helpers (<leader> is \)
 map <leader>]t :tabnew<cr>

@@ -1,0 +1,11 @@
+" Hide the toolbar
+set go-=T
+
+" Set the font
+set guifont=Espresso\ Mono:h14
+
+" set the Cmd + T shortcut for PeepOpen
+" if has("gui_macvim")
+"   macmenu &File.New\ Tab key=<nop>
+"   map <D-t> <Plug>PeepOpen
+" end
