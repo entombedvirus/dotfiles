@@ -1,5 +1,9 @@
+set t_Co=256
+
 " Hide the toolbar
 set go-=T
+
+set transparency=15
 
 " Set the font
 set guifont=Espresso\ Mono:h14

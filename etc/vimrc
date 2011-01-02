@@ -1,19 +1,26 @@
-set t_Co=256
+" Initialize Pathogen, so that we can have selfcontained vim plugins
+call pathogen#runtime_append_all_bundles() 
+call pathogen#helptags()
+
+" set t_Co=256
 set background=dark
 colorscheme ir_black_custom
-set transparency=15
 
 " Common typos
 command! Q  quit
 command! W  write
 command! Wq wq 
 
+" Some emacs keybindings thats used all over OS X
+" duplicate line / block
+imap <C-S-d> <Esc>yypgi
+nmap <C-S-d> yyp
+vmap <C-S-d> y']pgv
+
 set title
 
 " Auto-detect git commit messages
 autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
-
-map <leader>t :FuzzyFinderTextMate<CR>
 
 " Source the vimrc file after saving it
 if has("autocmd")
