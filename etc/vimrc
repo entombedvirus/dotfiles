@@ -12,10 +12,16 @@ command! W  write
 command! Wq wq 
 
 " Some emacs keybindings thats used all over OS X
+
 " duplicate line / block
-imap <C-S-d> <Esc>yypgi
-nmap <C-S-d> yyp
-vmap <C-S-d> y']pgv
+nmap <C-D> yyp
+vmap <C-D> y']pgv
+
+" delete one char in front
+imap <C-d> <Delete>
+
+" Center the current line vertically
+nmap <C-l> zz
 
 set title
 
