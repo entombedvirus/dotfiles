@@ -1,0 +1,16 @@
+source $HOME/.screenrc
+
+screen -t local 0 bash
+
+screen -t syncer 1 bash
+stuff "syncer\015"
+
+screen -t console 2 bash
+stuff "ssh -t ten -- /usr/bin/env PYTHONPATH=/home/rravi/lib/python2.4/site-packages /home/rravi/bin/phpsh\015"
+
+screen -t log 3
+stuff "ssh -t ten -- tail -F logs/*\015"
+
+screen -t shell 4 bash
+select 0
+

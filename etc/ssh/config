@@ -1,3 +1,34 @@
+# Zynga
+Host ev2
+  User rravi
+  Hostname dev2-example-01.ec2.zynga.com
+  IdentityFile ~/.ssh/rravi_zynga
+
+Host tdeploy treasure-deploy.zynga.com
+  User rravi
+  Hostname treasure-deploy.zynga.com
+  IdentityFile ~/.ssh/rravi_zynga
+
+Host ten
+  User rravi
+  Hostname 174.129.249.149
+  IdentityFile ~/.ssh/rravi_zynga
+
+Host dev1
+  User rravi
+  IdentityFile ~/.ssh/rravi_zynga
+  Hostname treasure-dev-01.ec2.zynga.com
+
+Host dev2
+  User rravi
+  IdentityFile ~/.ssh/rravi_zynga
+  Hostname treasure-dev-02.ec2.zynga.com
+
+Host dev3
+  User rravi
+  IdentityFile ~/.ssh/rravi_zynga
+  Hostname treasure-dev-03.ec2.zynga.com
+
 # Serious Business, Inc
 Host noc ap??-payments dbr??-payments dbw-payments mdb?? sphinx??-* l?? m?? s??
 	User rohith
@@ -12,9 +43,17 @@ Host *.ffs *.fb *.sea *.seriousops.com pay01 anchorman
   ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
 
 
+Host "mini"
+  Hostname 10.9.8.3
+  User rravi
+
 Host *.seriousbusiness.com
   IdentityFile ~/.ssh/serious_key
 
+Host "sc"
+  Hostname 173.255.210.178
+  User deploy
+  
 Host "rdev1"
 	User rohith
 

@@ -28,7 +28,6 @@ if [ "$OS" = "darwin" ]; then
   alias ls="gls --color=tty -F"
   alias ll="gls --color=tty -Fl"
   alias lla='ll -a'
-  alias pgrep="ps ax | grep"
 
 else
   alias ls='ls --color --classify'
@@ -57,7 +56,11 @@ alias gitk='gitk --all &'
   #alias ops='ssh -t ops.sea -l rohith screen -U'
 #fi
 function ops { 
-  ssh -t rohith@ops.sea -- screen -U -S $1
+  if [ -z "$1" ]; then
+    ssh rohith@ops.sea
+  else
+    ssh -t rohith@ops.sea -- "screen -dr $1 2>/dev/null || screen -U -S $1"
+  fi
 }
 
 # http://blog.macromates.com/2008/working-with-history-in-bash/#more-189
@@ -106,4 +109,25 @@ function copy_keys {
     ssh ${1} "mkdir -p ~/.ssh && cat - >> ~/.ssh/authorized_keys" < $2;
     echo "Done!"
   fi
+}
+
+function syncer {
+  echo "Copying php files";
+  rsync --delete --exclude=Game.swf --exclude=Preloader.swf --exclude=flashLocaleXml.xml --exclude='templates_c/*' --exclude='public/assets' --exclude='screenshots' -a ~/treasure/Server/ ten:~/Server/;
+
+  echo "Generating local files";
+  ssh ten -- /home/rravi/bin/generate_locale &
+}
+
+
+function sync_swf {
+  [ -f ~/treasure/Client/Game/bin-debug/Game.swf ] && rsync ~/treasure/Client/Game/bin-debug/Game.swf ten:www/;
+  echo "Copied swf";
+}
+
+function sync_assets {
+  echo "Copying assets";
+  rsync --delete -a ~/treasure/Client/Game/src/assets ten:~/www/public/ &&
+  rsync -a ~/treasure/assets/ ten:~/www/public/assets/ 
+
 }
