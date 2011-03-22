@@ -1,8 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/rravi/work/zynga/ZCMS/public/js'
-let g:netrw_dirhist_2='/Users/rravi/work/zynga/ZCMS/public/js/renderers'
-let g:netrw_dirhist_3='/Users/rravi/work/zynga/ZCMS/public/js'
-let g:netrw_dirhist_4='/private/tmp/rails/actionpack'
-let g:netrw_dirhist_5='/Users/rravi/Downloads/php-activerecord'
-let g:netrw_dirhist_6='/Users/rravi/Downloads/php-activerecord/lib'
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/Users/rravi/Downloads/hudson_patch/trunk/config/hosts'
+let g:netrw_dirhist_2='/Users/rravi/Downloads/hudson_patch/trunk/config'
+let g:netrw_dirhist_3='/Users/rravi/Downloads/hudson_patch/trunk'
+let g:netrw_dirhist_4='/Users/rravi/Downloads/hudson_patch'
+let g:netrw_dirhist_5='/Users/rravi/work/zynga/ExampleVille'
+let g:netrw_dirhist_6='/Users/rravi/work/zynga/ZBuild'
+let g:netrw_dirhist_7='/Users/rravi/work/zynga/ZBuild/bin'
+let g:netrw_dirhist_8='/Users/rravi/work/zynga/ZBuild/bin/phpdoctor'

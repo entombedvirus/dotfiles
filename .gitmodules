@@ -4,3 +4,9 @@
 [submodule "etc/vim/bundle/nerdcommenter"]
 	path = etc/vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "etc/vim/bundle/command-t"]
+	path = etc/vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "etc/vim/bundle/taglist.vim"]
+	path = etc/vim/bundle/taglist.vim
+	url = https://github.com/vim-scripts/taglist.vim.git
