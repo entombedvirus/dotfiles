@@ -1,3 +1,9 @@
 [submodule "etc/vim/bundle/ack.vim"]
 	path = etc/vim/bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
+[submodule "etc/vim/bundle/vim-coffee-script"]
+	path = etc/vim/bundle/vim-coffee-script
+	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "etc/vim/bundle/jade"]
+	path = etc/vim/bundle/jade
+	url = https://github.com/vim-scripts/jade.vim
