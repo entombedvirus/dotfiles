@@ -1,3 +1,9 @@
+[submodule "etc/vim/bundle/taglist.vim"]
+	path = etc/vim/bundle/taglist.vim
+	url = https://github.com/vim-scripts/taglist.vim.git
+[submodule "etc/vim/bundle/command-t"]
+	path = etc/vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
 [submodule "etc/vim/bundle/ack.vim"]
 	path = etc/vim/bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
@@ -10,3 +16,6 @@
 [submodule "etc/vim/bundle/Processing"]
 	path = etc/vim/bundle/Processing
 	url = https://github.com/vim-scripts/Processing.git
+[submodule "etc/vim/bundle/nerdcommenter"]
+	path = etc/vim/bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git

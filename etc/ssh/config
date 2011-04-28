@@ -1,4 +1,9 @@
 # Zynga
+Host ev3
+  User rravi
+  Hostname ec2-50-16-65-113.compute-1.amazonaws.com
+  IdentityFile ~/.ssh/rravi_zynga
+
 Host ev2
   User rravi
   Hostname dev2-example-01.ec2.zynga.com

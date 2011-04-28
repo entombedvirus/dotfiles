@@ -1,3 +1,4 @@
 etc/tmp/
 etc/ssh/
 !etc/ssh/config
+.netrwhist

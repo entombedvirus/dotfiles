@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/rravi/work/zynga/ZCMS/public/js'
-let g:netrw_dirhist_2='/Users/rravi/work/zynga/ZCMS/public/js/renderers'
-let g:netrw_dirhist_3='/Users/rravi/work/zynga/ZCMS/public/js'
-let g:netrw_dirhist_4='/private/tmp/rails/actionpack'
-let g:netrw_dirhist_5='/Users/rravi/Downloads/php-activerecord'
-let g:netrw_dirhist_6='/Users/rravi/Downloads/php-activerecord/lib'

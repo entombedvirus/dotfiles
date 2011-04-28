@@ -2,6 +2,10 @@
 call pathogen#runtime_append_all_bundles() 
 call pathogen#helptags()
 
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
 " set t_Co=256
 set background=dark
 colorscheme ir_black_custom
@@ -23,7 +27,30 @@ imap <C-d> <Delete>
 " Center the current line vertically
 nmap <C-l> zz
 
+" Show cursor position
+set ruler
+
+" Command-T configuration
+let g:CommandTMaxHeight=20
+
+" Use the same symbols as TextMate for tabstops and EOLs
+set listchars=tab:▸\ ,eol:¬
+
+" Show invisible chars
+set list!
+
 set title
+
+" Show cursor position
+set ruler
+
+" Always show the status line (even if no split windows)
+set laststatus=2
+set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+
+" Number of lines to keep between cursor and window boundary before scrolling
+" kicks in.
+set scrolloff=7
 
 " Auto-detect git commit messages
 autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
@@ -32,7 +59,7 @@ autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
-" 
+
 " Taken from http://dotfiles.org/~defunkt/.vimrc
 
 " os x backspace fix
@@ -50,7 +77,7 @@ set softtabstop=2
 set shiftwidth=2
 
 " highlight the current line
-set cursorline
+" set cursorline
 
 " turn mouse on
 set mouse=a
@@ -69,26 +96,11 @@ nnoremap <F3><F3> <C-W>w
 " Shortcut to rapidly toggle `set list` a.k.a show invisibles
 nmap <leader>l :set list!<CR>
  
-" For mac users (using the 'apple' key)
-map <D-1> 1gt
-map <D-2> 2gt
-map <D-3> 3gt
-map <D-4> 4gt
-map <D-5> 5gt
-map <D-6> 6gt
-map <D-7> 7gt
-map <D-8> 8gt
-map <D-9> 9gt
-map <D-0> :tablast<CR>
-
 " shortcuts to edit files in the same dir as the current open file
 map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-" Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
