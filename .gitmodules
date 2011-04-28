@@ -7,3 +7,6 @@
 [submodule "etc/vim/bundle/jade"]
 	path = etc/vim/bundle/jade
 	url = https://github.com/vim-scripts/jade.vim
+[submodule "etc/vim/bundle/Processing"]
+	path = etc/vim/bundle/Processing
+	url = https://github.com/vim-scripts/Processing.git
