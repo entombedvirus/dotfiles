@@ -10,3 +10,9 @@
 [submodule "etc/vim/bundle/nerdcommenter"]
 	path = etc/vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "etc/vim/bundle/JSON.vim"]
+	path = etc/vim/bundle/JSON.vim
+	url = https://github.com/vim-scripts/JSON.vim.git
+[submodule "etc/vim/bundle/vim-coffee-script"]
+	path = etc/vim/bundle/vim-coffee-script
+	url = https://github.com/kchmck/vim-coffee-script.git

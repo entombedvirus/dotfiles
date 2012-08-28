@@ -157,3 +157,6 @@ map <leader>]m :tabmove
 map <leader>]n :tabnext<cr>
 map <leader>]p :tabprevious<cr>
 
+" reformat JSON
+map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
+

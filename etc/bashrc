@@ -44,7 +44,8 @@ alias gst='git status'
 alias gl='git pull'
 alias glr='git pull --rebase'
 alias gp='git push'
-alias gd='git diff | mate'
+alias gd='git diff | mvim -'
+alias gdc='git diff --cached | mvim -'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
 alias gb='git branch'
@@ -55,14 +56,6 @@ alias gitk='gitk --all &'
 #if [ "$OS" = "darwin" ]; then
   #alias ops='ssh -t ops.sea -l rohith screen -U'
 #fi
-function ops { 
-  if [ -z "$1" ]; then
-    ssh rohith@ops.sea
-  else
-    ssh -t rohith@ops.sea -- "screen -dr $1 2>/dev/null || screen -U -S $1"
-  fi
-}
-
 # http://blog.macromates.com/2008/working-with-history-in-bash/#more-189
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
@@ -72,8 +65,8 @@ export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 export CLICOLOR=1 
 
 if [ "$OS" = "darwin" ]; then
-  export EDITOR="mate"
-  export GIT_EDITOR="vim"
+  export EDITOR="mvim"
+  export GIT_EDITOR="mvim -f"
 
 else
   export EDITOR="vim"
@@ -99,6 +92,7 @@ bind "set completion-ignore-case on" # note: bind used instead of sticking these
 bind "set bell-style none" # no bell
 bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
+export NODE_PATH='/usr/local/lib/node_modules'
 
 # function to copy ssh keys to new machines
 function copy_keys {
@@ -109,25 +103,4 @@ function copy_keys {
     ssh ${1} "mkdir -p ~/.ssh && cat - >> ~/.ssh/authorized_keys" < $2;
     echo "Done!"
   fi
-}
-
-function syncer {
-  echo "Copying php files";
-  rsync --delete --exclude=Game.swf --exclude=Preloader.swf --exclude=flashLocaleXml.xml --exclude='templates_c/*' --exclude='public/assets' --exclude='screenshots' -a ~/treasure/Server/ ten:~/Server/;
-
-  echo "Generating local files";
-  ssh ten -- /home/rravi/bin/generate_locale &
-}
-
-
-function sync_swf {
-  [ -f ~/treasure/Client/Game/bin-debug/Game.swf ] && rsync ~/treasure/Client/Game/bin-debug/Game.swf ten:www/;
-  echo "Copied swf";
-}
-
-function sync_assets {
-  echo "Copying assets";
-  rsync --delete -a ~/treasure/Client/Game/src/assets ten:~/www/public/ &&
-  rsync -a ~/treasure/assets/ ten:~/www/public/assets/ 
-
 }

@@ -1,87 +1,42 @@
 # Zynga
-Host ev3
+Host *.zynga.com *.zc2
   User rravi
-  Hostname ec2-50-16-65-113.compute-1.amazonaws.com
   IdentityFile ~/.ssh/rravi_zynga
 
 Host ev2
   User rravi
   Hostname dev2-example-01.ec2.zynga.com
   IdentityFile ~/.ssh/rravi_zynga
+  RemoteForward 9001 localhost:9001
 
-Host tdeploy treasure-deploy.zynga.com
+Host dev-old
+  Hostname dev2-stg-01.zc2.zynga.com
   User rravi
-  Hostname treasure-deploy.zynga.com
   IdentityFile ~/.ssh/rravi_zynga
-
-Host ten
-  User rravi
-  Hostname 174.129.249.149
-  IdentityFile ~/.ssh/rravi_zynga
+  RemoteForward 9001 localhost:9001
 
 Host dev1
+  Hostname stg-dev-01.zc2.zynga.com
   User rravi
   IdentityFile ~/.ssh/rravi_zynga
-  Hostname treasure-dev-01.ec2.zynga.com
+  RemoteForward 9001 localhost:9001
 
 Host dev2
+  Hostname stg-dev-02.zc2.zynga.com
   User rravi
   IdentityFile ~/.ssh/rravi_zynga
-  Hostname treasure-dev-02.ec2.zynga.com
+  RemoteForward 9001 localhost:9001
 
-Host dev3
+Host jungle
+  Hostname dev2-jungle-01.zc2.zynga.com
   User rravi
   IdentityFile ~/.ssh/rravi_zynga
-  Hostname treasure-dev-03.ec2.zynga.com
+  RemoteForward 9001 localhost:9001
 
-# Serious Business, Inc
-Host noc ap??-payments dbr??-payments dbw-payments mdb?? sphinx??-* l?? m?? s??
-	User rohith
-  IdentityFile ~/.ssh/serious_key
-  ForwardAgent yes
-  ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
-
-Host *.ffs *.fb *.sea *.seriousops.com pay01 anchorman
-	User deploy
-  IdentityFile ~/.ssh/serious_key
-  ForwardAgent yes
-  ProxyCommand ssh deploy@208.43.177.33 exec 'nc %h %p' 2>/dev/null
-
-
-Host "mini"
-  Hostname 10.9.8.3
-  User rravi
-
-Host *.seriousbusiness.com
-  IdentityFile ~/.ssh/serious_key
-
-Host "sc"
-  Hostname 173.255.210.178
-  User deploy
-  
-Host "rdev1"
-	User rohith
-
-Host "serenity"
+Host linode
 	User rravi
-	Hostname code.servebeer.com
-	Port 1492
-		
-Host "ngp"
-	User rohith
-	Hostname ngp.getmyip.com
-
-Host "rea"
-	User rohith
-	Hostname 64.27.31.204
-
-Host "beer"
-  Hostname code.servebeer.com
-  Port 1337
-
-Host br.github.com
- User git
- Hostname github.com
+	IdentityFile ~/.ssh/id_rsa
+	Hostname 173.255.210.178
 
 Host *
     ServerAliveInterval 120
