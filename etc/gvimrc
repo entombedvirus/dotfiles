@@ -1,5 +1,11 @@
 " Start without the toolbar
 set guioptions-=T
+" Start without the right toolbar
+set guioptions-=r
+set guioptions-=R
+" Start without the left toolbar
+set guioptions-=l
+set guioptions-=L
 
 if has("gui_macvim")
 	set t_Co=256

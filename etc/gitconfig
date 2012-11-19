@@ -1,6 +1,6 @@
 [user]
 	name = Rohith Ravi
-	email = rohith@seriousbusiness.com
+	email = rravi@zynga.com
 [alias]
 	co = checkout
 	ci = commit
@@ -12,7 +12,7 @@
 	branch = auto
 	status = auto
 [push]
-	default = tracking
+	default = upstream
 [merge]
 	tool = diffmerge
 [mergetool "diffmerge"]
