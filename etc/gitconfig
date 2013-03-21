@@ -17,3 +17,5 @@
 	tool = araxis
 [diff]
 	tool = araxis
+[core]
+	excludesfile = ~/.cvsignore
