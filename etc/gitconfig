@@ -14,13 +14,6 @@
 [push]
 	default = upstream
 [merge]
-	tool = diffmerge
-[mergetool "diffmerge"]
-	cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
-	trustExitCode = true
-[mergetool]
-	keepBackup = false
+	tool = araxis
 [diff]
-	tool = diffmerge
-[difftool "diffmerge"]
-	cmd = diffmerge $LOCAL $REMOTE
+	tool = araxis

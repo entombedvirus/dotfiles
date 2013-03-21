@@ -104,3 +104,20 @@ function copy_keys {
     echo "Done!"
   fi
 }
+
+# For Maven
+export MAVEN_OPTS="-Xmx512m"
+
+# Set tmux window title 
+ssh() {                                                                                                                                                                                                                                                                                                                                                                    
+  if [[ "$TERM" =~ ^screen ]]; then
+    tmux rename-window "$1"                                                                                                                                                                                                                                                                                                                                                  
+    command /usr/bin/env TERM=screen ssh "$@"                                                                                                                                                                                                                                                                                                                                                         
+    tmux rename-window "`hostname -s`"                                                                                                                                                                                                                                                                                                                                                  
+  else
+    command ssh "$@"                                                                                                                                                                                                                                                                                                                                                         
+  fi
+}
+
+# For tmuxinator
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator

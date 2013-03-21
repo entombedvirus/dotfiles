@@ -2,8 +2,10 @@
 call pathogen#runtime_append_all_bundles() 
 call pathogen#helptags()
 
+
 " For powerline
-set rtp+=/Users/rravi/.vim/bundle/powerline/powerline/bindings/vim
+let g:Powerline_symbols = 'fancy'
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
