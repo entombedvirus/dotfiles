@@ -1,6 +1,9 @@
 " Initialize Pathogen, so that we can have selfcontained vim plugins
-call pathogen#runtime_append_all_bundles() 
-call pathogen#helptags()
+execute pathogen#infect()
+
+" For powerline
+let g:Powerline_symbols = 'fancy'
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
