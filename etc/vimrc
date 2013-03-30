@@ -134,6 +134,11 @@ endfunc
 set backup
 set backupdir=$HOME/.tmp
 set writebackup
+
+" folding settings
+set foldmethod=indent
+set foldlevelstart=20
+
 " Create .swp files here to avoid git status pollution
 set dir=$HOME/.tmp
 "
