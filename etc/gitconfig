@@ -12,7 +12,7 @@
 	branch = auto
 	status = auto
 [push]
-	default = upstream
+	default = current
 [merge]
 	tool = diffmerge
 [mergetool "diffmerge"]
