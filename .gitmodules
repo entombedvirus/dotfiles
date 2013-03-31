@@ -22,9 +22,6 @@
 [submodule "etc/vim/bundle/JSON.vim"]
 	path = etc/vim/bundle/JSON.vim
 	url = https://github.com/vim-scripts/JSON.vim.git
-[submodule "etc/vim/bundle/vim-coffee-script"]
-	path = etc/vim/bundle/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "etc/vim/bundle/powerline"]
 	path = etc/vim/bundle/powerline
 	url = https://github.com/Lokaltog/powerline.git
@@ -34,3 +31,6 @@
 [submodule "etc/vim/bundle/vim-git"]
 	path = etc/vim/bundle/vim-git
 	url = https://github.com/tpope/vim-git.git
+[submodule "etc/vim/bundle/vim-thrift"]
+	path = etc/vim/bundle/vim-thrift
+	url = https://github.com/agrewal/vim-thrift.git
