@@ -34,3 +34,6 @@
 [submodule "etc/vim/bundle/vim-thrift"]
 	path = etc/vim/bundle/vim-thrift
 	url = https://github.com/agrewal/vim-thrift.git
+[submodule "etc/vim/bundle/ag.vim"]
+	path = etc/vim/bundle/ag.vim
+	url = git@github.com:rking/ag.vim.git
