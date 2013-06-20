@@ -37,3 +37,6 @@
 [submodule "etc/vim/bundle/ag.vim"]
 	path = etc/vim/bundle/ag.vim
 	url = git@github.com:rking/ag.vim.git
+[submodule "etc/vim/bundle/vim-lucius"]
+	path = etc/vim/bundle/vim-lucius
+	url = https://github.com/jonathanfilip/vim-lucius.git
