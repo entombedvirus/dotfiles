@@ -2,3 +2,7 @@ etc/tmp/
 etc/ssh/
 !etc/ssh/config
 .netrwhist
+etc/vim/ruby/command-t/*.bundle
+etc/vim/ruby/command-t/Makefile
+*.log
+*.o
