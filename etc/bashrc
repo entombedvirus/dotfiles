@@ -39,6 +39,9 @@ alias rscreen="screen -c ~/.screen/rails.screen"
 alias mysqlroot="mysql -u root"
 alias mysql_start='mysqld_safe &'
 
+#Twitter Stuff
+alias zincstart='zinc -start -J"-Xmx1536m"'
+
 #Git Stuff
 alias gst='git status'
 alias gl='git pull'
@@ -93,6 +96,23 @@ bind "set bell-style none" # no bell
 bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 export NODE_PATH='/usr/local/lib/node_modules'
+
+# function to easily switch git branches
+function gcb {
+  branch=$1
+  count=`gb | grep $1  | wc -l`
+  if [[ $count -ge 2 ]]; then
+    echo "too many branches with $branch in the name:"
+    gb | grep $1
+    return
+  fi
+
+  if [[ $count -eq 1 ]]; then
+    git co `gb | grep $1`
+  else
+    echo "no branches with $bracnh in the name"
+  fi
+}
 
 # function to copy ssh keys to new machines
 function copy_keys {
