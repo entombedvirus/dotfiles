@@ -1,0 +1,13 @@
+#zshrc, interactive shell settings
+export ZSH=$HOME/.zsh
+
+# emacs integration
+# [[ $EMACS = t ]] && unsetopt zle
+
+# for tmux
+[ -n "$TMUX" ] && export TERM=screen
+#
+# source all files in zsh root
+for include in $ZSH/*.zsh; do
+  source $include
+done
