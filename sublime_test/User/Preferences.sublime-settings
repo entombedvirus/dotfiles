@@ -1,0 +1,59 @@
+{
+	"bold_folder_labels": true,
+	"caret_style": "phase",
+	"color_scheme": "Packages/Theme - Spacegray/base16-eighties.dark.tmTheme",
+	"drag_text": false,
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.sublime-workspace",
+		".classpath.txt",
+		".gitignore"
+	],
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		"target",
+		".idea"
+	],
+	"font_face": "PragmataPro",
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"AdvancedNewFile",
+		"Vintage"
+	],
+	"itg_small_tabs": true,
+	"overlay_scroll_bars": "enabled",
+	"rulers":
+	[
+		100
+	],
+	"scroll_past_end": false,
+	"show_minimap": false,
+	"tab_size": 2,
+	"theme": "Spacegray.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"use_simple_full_screen": true
+}

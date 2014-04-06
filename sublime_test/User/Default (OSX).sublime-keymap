@@ -1,0 +1,28 @@
+[
+	{ "keys": ["alt+shift+up"], "command": "swap_line_up" },
+	{ "keys": ["alt+shift+down"], "command": "swap_line_down" },
+	{ "keys": ["super+y"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} },
+	{ "keys": ["shift+super+l"], "command": "expand_selection", "args": {"to": "line"} },
+  { "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
+  { "keys": ["ctrl+shift+d"], "command": "duplicate_line" },
+  { "keys": ["ctrl+shift+j"], "command": "join_lines" },
+  { "keys": ["ctrl+super+w"], "command": "close_all" },
+  { "keys": ["ctrl+super+r"], "command": "reveal_in_side_bar" },
+  { "keys": ["shift+super+k"], "command": "next_result" },
+  { "keys": ["alt+super+i"], "command": "reindent" },
+
+  // swap the keybindings for paste and paste_and_indent
+  { "keys": ["super+v"], "command": "paste_and_indent" },
+  { "keys": ["super+shift+v"], "command": "paste" },
+
+  { "keys": ["ctrl+shift+t"], "command": "delete_trailing_spaces" }
+
+  // { "keys": ["enter"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Add Line in Braces.sublime-macro"}, "context":
+  //   [
+  //     { "key": "setting.auto_indent", "operator": "equal", "operand": true },
+  //     { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+  //     { "key": "preceding_text", "operator": "regex_contains", "operand": "\\(", "match_all": true },
+  //     { "key": "following_text", "operator": "regex_contains", "operand": "^\\)", "match_all": true }
+  //   ]
+  // }
+]

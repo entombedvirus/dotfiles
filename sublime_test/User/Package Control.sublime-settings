@@ -1,0 +1,24 @@
+{
+	"installed_packages":
+	[
+		"AAAPackageDev",
+		"AdvancedNewFile",
+		"Alignment",
+		"All Autocomplete",
+		"BracketHighlighter",
+		"Devastate",
+		"FileDiffs",
+		"Git",
+		"Pretty JSON",
+		"ScalaFormat",
+		"ScopeAlways",
+		"Select Quoted",
+		"SideBarEnhancements",
+		"SublimeREPL",
+		"Theme - itg.flat",
+		"Theme - Soda",
+		"Theme - Spacegray",
+		"Tomorrow Color Schemes",
+		"TrailingSpaces"
+	]
+}

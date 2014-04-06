@@ -1,0 +1,7 @@
+{
+  "live_mode": true,
+  "git_binary": "/opt/twitter/bin/git",
+  "non_blocking": true,
+  "show_markers_on_untracked_file": true,
+  "debounce_delay": 500
+}

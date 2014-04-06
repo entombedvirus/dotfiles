@@ -1,0 +1,5 @@
+{
+  "default_extend_env": {
+    "PATH": "/opt/twitter/bin:{PATH}"
+  }
+}

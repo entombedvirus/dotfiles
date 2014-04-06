@@ -1,0 +1,37 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Scala modified
+scopeName: source.scala.modified
+fileTypes: ["scala"]
+uuid: 9144dacf-0daa-4a86-979e-012e582b9b33
+
+patterns:
+-
+  name: "string.quoted.triple.scala"
+  begin: '"""'
+  end: '"""'
+  endCaptures:
+    "0":
+      name: "punctuation.definition.string"
+  beginCaptures:
+    "0":
+      name: "punctuation.definition.string"
+-
+  name: "string.quoted.double.scala"
+  begin: '(?<!\\)(")'
+  beginCaptures:
+    "1":
+      name: "punctuation.definition.string"
+  end: '"'
+  endCaptures:
+    "0":
+      name: "punctuation.definition.string"
+  patterns:
+  -
+    match: '\n'
+    name: "invalid.string.newline"
+  -
+    match: '\\.'
+    name: "constant.character.escape.scala"
+-
+  include: "source.scala"

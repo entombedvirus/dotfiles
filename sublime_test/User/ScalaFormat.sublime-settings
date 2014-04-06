@@ -1,0 +1,7 @@
+{
+  "autoformat_on_save": false,
+  "scalariform": {
+    "preserveDanglingCloseParenthesis": true,
+    "compactControlReadability": false
+  }
+}
