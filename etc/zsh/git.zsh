@@ -230,3 +230,8 @@ __gitdir ()
 		echo "$1"
 	fi
 }
+
+__git_files () { 
+	_wanted files expl 'local files' _files  
+}
+

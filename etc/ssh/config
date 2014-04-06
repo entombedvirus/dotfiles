@@ -2,7 +2,7 @@
 # fragment file inputs; changes should be made to those & setup_ssh.sh re-run.
 #
 # https://svn.twitter.biz/twitter-ops/utilities/ssh/setup_ssh.sh
-# Generated: Wed Aug 28 17:27:22 PDT 2013
+# Generated: Wed Jan 29 17:32:59 PST 2014
 #
 
 # If you have ~/.ssh/config.local.top, its content would be <--- here
@@ -21,11 +21,13 @@ Host *-ssh-bastion.twitter.biz
   UserKnownHostsFile ~/.ssh/known_hosts.bastions
   GSSAPIAuthentication yes
   GSSAPIDelegateCredentials yes
+  GSSAPITrustDns yes
 
 Host *.twttr.com
+  User rravi
   ProxyCommand none
 
-Host *nest*.twitter.biz
+Host *nest?.twitter.biz *nest?.corp.twitter.com *nest?
   User rravi
   IdentityFile ~/.ssh/id_rsa
   ForwardAgent yes
@@ -50,7 +52,7 @@ Host *.net.twitter.com *.net.twttr.net
   StrictHostKeyChecking ask
   PasswordAuthentication yes
 
-Host  *.atla.twitter.com atla* *.atlc.twitter.com atlc* *.atld.twitter.com atld* *.atlv.twitter.com atlv* *.sfo2.twitter.com sfo2* *.smf1.twitter.com smf1* *.smfc.twitter.com smfc* *.smfd.twitter.com smfd* *.smfv.twitter.com smfv*
+Host *.mopub.com *.atla.twitter.com atla* *.atlc.twitter.com atlc* *.atld.twitter.com atld* *.atlv.twitter.com atlv* *.atlz.twitter.com atlz* *.sfo2.twitter.com sfo2* *.smf1.twitter.com smf1* *.smfc.twitter.com smfc* *.smfd.twitter.com smfd* *.smfv.twitter.com smfv* *.smfz.twitter.com smfz*
   User rravi
   IdentityFile ~/.ssh/id_rsa
   ForwardAgent yes

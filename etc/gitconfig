@@ -17,5 +17,6 @@
 	tool = araxis
 [diff]
 	tool = araxis
+	algorithm = patience
 [core]
 	excludesfile = ~/.cvsignore

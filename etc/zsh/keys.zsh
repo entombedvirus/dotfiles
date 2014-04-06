@@ -9,5 +9,13 @@ bindkey "\e[A" history-search-backward
 bindkey " " magic-space
 
 # bash style delete word
-autoload -U select-word-style
-select-word-style bash
+export WORDCHARS=''
+#autoload -U select-word-style
+#select-word-style bash
+
+# But, make Ctrl W delete arguments not words
+function _backward_kill_default_word() {
+  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' zle backward-kill-word
+}
+zle -N backward-kill-default-word _backward_kill_default_word
+bindkey '^w' backward-kill-default-word

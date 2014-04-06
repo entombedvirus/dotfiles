@@ -18,3 +18,7 @@
 #   cwd=`pwd`
 #   $root/pants $@
 # }
+
+# Shortened ~/workspace/birdcage to just ~birdcage in prompts
+birdcage=~/workspace/birdcage
+: ~birdcage

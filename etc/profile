@@ -111,3 +111,7 @@ esac
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+# dottools: add distribution binary directories to PATH
+if [[ -r $HOME/.tools-cache/setup-dottools-path.sh ]]; then
+  source $HOME/.tools-cache/setup-dottools-path.sh
+fi

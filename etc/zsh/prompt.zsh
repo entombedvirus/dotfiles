@@ -21,28 +21,28 @@ fg_black=$'%{\e[0;30m%}'
 
 
 # Decide if we need to set titlebar text.
-case $TERM in
-  (xterm*|rxvt)
-  	titlebar_precmd () { print -Pn "\e]0;%~\a" }
-  	titlebar_preexec () { print -Pn "\e]0;$1\a" }
-  	;;
-	(screen)
-    titlebar_precmd () { echo -ne "\ek${1%% *}\e\\" }
-    titlebar_preexec () { echo -ne "\ek${1%% *}\e\\" }
-    ;;
-  (*)
-    titlebar_precmd () {}
-    titlebar_preexec () {}
-    ;;
-esac
-
-precmd () {
-  titlebar_precmd
-}
-
-preexec () {
-  titlebar_preexec
-}
+# case $TERM in
+#   (xterm*|rxvt)
+#   	titlebar_precmd () { print -Pn "\e]0;%~\a" }
+#   	titlebar_preexec () { print -Pn "\e]0;$1\a" }
+#   	;;
+# 	(screen)
+#     titlebar_precmd () { echo -ne "\ek${1%% *}\e\\" }
+#     titlebar_preexec () { echo -ne "\ek${1%% *}\e\\" }
+#     ;;
+#   (*)
+#     titlebar_precmd () {}
+#     titlebar_preexec () {}
+#     ;;
+# esac
+# 
+# precmd () {
+#   titlebar_precmd
+# }
+# 
+# preexec () {
+#   titlebar_preexec
+# }
 
 
 # prompt helpers

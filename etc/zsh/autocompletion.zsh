@@ -13,3 +13,6 @@ compinit
 # End of lines added by compinstall
 
 zstyle ':completion:*' menu select
+
+# disable git checkout completion cuz its super slow
+compdef -d git checkout
