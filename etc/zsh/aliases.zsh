@@ -6,6 +6,9 @@ alias twitter='cd ~/workspace/twitter'
 alias t='cd ~/workspace/twitter'
 alias eprofile='subl --new-window --wait ~/.zshrc && source ~/.zshrc'
 
+alias birdcage='cd ~/workspace/source/birdcage'
+alias science='cd ~/workspace/source/science'
+
 # Git Aliases
 alias gst='git status'
 alias gl='git pull'
@@ -56,3 +59,39 @@ function metrics {
 
 alias mvn="mvn -Pzinc"
 alias zinc-start='zinc -start -S"-JXmx=4G"'
+
+# pants
+function notify() {
+  terminal-notifier -message "$1"
+}
+
+function pc() {
+  ./pants compile $@
+  notify "compile done"
+}
+
+function pt() {
+  ./pants test $1
+  notify "test done"
+}
+
+function pb() {
+  ./pants bundle $1 --bundle-archive=zip
+  notify "bundle done"
+}
+
+function pca() {
+  ./pants clean-all
+  notify "clean-all done"
+}
+
+function nest1() {
+  local loginAs=${1:=$USER}
+  ssh nest.smfc.twitter.com -l $loginAs
+}
+
+function nest2() {
+  local loginAs=${1:=$USER}
+  ssh nest.atlc.twitter.com -l $loginAs
+}
+

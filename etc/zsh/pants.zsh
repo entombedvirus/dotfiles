@@ -20,5 +20,10 @@
 # }
 
 # Shortened ~/workspace/birdcage to just ~birdcage in prompts
-birdcage=~/workspace/birdcage
+birdcage='/Users/rravi/workspace/source/birdcage'
 : ~birdcage
+science='/Users/rravi/workspace/source/science'
+: ~science
+
+export PANTS_CONFIG_OVERRIDE=pants.ini.cache
+

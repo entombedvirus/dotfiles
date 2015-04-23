@@ -12,3 +12,7 @@ $HOME/.twitools/src/twitter-utilities/bin
 /usr/local/sbin
 $HOME/workspace/maven-tools/bin
 $path)
+
+if [[ -r $HOME/.tools-cache/setup-dottools-path.sh ]]; then
+	source $HOME/.tools-cache/setup-dottools-path.sh
+fi

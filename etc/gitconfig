@@ -14,9 +14,20 @@
 [push]
 	default = current
 [merge]
-	tool = araxis
+	tool = diffmerge
+	conflictstyle = diff3
 [diff]
-	tool = araxis
+	tool = diffmerge
 	algorithm = patience
+	renames = true
+	copies = true
+	copies = true
 [core]
 	excludesfile = ~/.cvsignore
+[http]
+	postBuffer = 10485760
+[difftool "diffmerge"]
+	cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+[mergetool "diffmerge"]
+	cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+	trustExitCode = true
