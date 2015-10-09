@@ -19,3 +19,6 @@ function _backward_kill_default_word() {
 }
 zle -N backward-kill-default-word _backward_kill_default_word
 bindkey '^w' backward-kill-default-word
+
+# Ctrl x kill region highlighted using Ctrl space
+bindkey "\C-x" kill-region
