@@ -1,9 +1,12 @@
 " Initialize Pathogen, so that we can have selfcontained vim plugins
 execute pathogen#infect()
 
+" For vim-airline
+let g:airline#extensions#tabline#enabled = 1
+
 " For powerline
-let g:Powerline_symbols = 'fancy'
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+" let g:Powerline_symbols = 'fancy'
+" set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -21,8 +24,8 @@ command! Wq wq
 " Some emacs keybindings thats used all over OS X
 
 " duplicate line / block
-nmap <C-D> yyp
-vmap <C-D> y']pgv
+" nmap <C-D> yyp
+" vmap <C-D> y']pgv
 
 " delete one char in front
 imap <C-d> <Delete>
@@ -83,7 +86,7 @@ set shiftwidth=2
 " set cursorline
 
 " turn mouse on
-set mouse=a
+" set mouse=a
 
 " space = pagedown, - = pageup
 noremap <Space> <PageDown>
@@ -167,4 +170,7 @@ map <leader>]p :tabprevious<cr>
 
 " reformat JSON
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
+
+" disable logipat plugin so that :E works again
+let g:loaded_logipat = 1
 

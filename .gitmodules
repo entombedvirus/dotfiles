@@ -43,3 +43,6 @@
 [submodule "etc/vim/bundle/vim-less"]
 	path = etc/vim/bundle/vim-less
 	url = git@github.com:groenewege/vim-less.git
+[submodule "etc/vim/bundle/vim-airline"]
+	path = etc/vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
