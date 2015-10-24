@@ -2,7 +2,10 @@ etc/tmp/
 etc/ssh/
 !etc/ssh/config
 .netrwhist
-etc/vim/ruby/command-t/*.bundle
-etc/vim/ruby/command-t/Makefile
+etc/vim/**/command-t*
+etc/vim/**/commandt*
 *.log
 *.o
+etc/vim/ruby/
+etc/vim/.VimballRecord
+etc/vim/doc/tags
