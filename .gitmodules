@@ -22,9 +22,6 @@
 [submodule "etc/vim/bundle/JSON.vim"]
 	path = etc/vim/bundle/JSON.vim
 	url = https://github.com/vim-scripts/JSON.vim.git
-[submodule "etc/vim/bundle/powerline"]
-	path = etc/vim/bundle/powerline
-	url = https://github.com/Lokaltog/powerline.git
 [submodule "etc/vim/bundle/xmledit"]
 	path = etc/vim/bundle/xmledit
 	url = https://github.com/sukima/xmledit.git
