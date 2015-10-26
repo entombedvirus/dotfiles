@@ -12,7 +12,7 @@ let g:airline#extensions#tabline#enabled = 1
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" set t_Co=256
+set t_Co=256
 set background=dark
 colorscheme ir_black_custom
 

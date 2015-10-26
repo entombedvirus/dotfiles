@@ -43,3 +43,6 @@
 [submodule "etc/vim/bundle/vim-airline"]
 	path = etc/vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
+[submodule "etc/vim/bundle/ctrlp.vim"]
+	path = etc/vim/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim.git
