@@ -33,10 +33,10 @@ Host jungle
   IdentityFile ~/.ssh/rravi_zynga
   RemoteForward 9001 localhost:9001
 
-Host linode
-	User rravi
-	IdentityFile ~/.ssh/id_rsa
-	Hostname 173.255.210.178
+Host cpp
+  User ubuntu
+  IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
+  Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
 
 Host *
     ServerAliveInterval 120
