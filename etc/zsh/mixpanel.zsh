@@ -1,6 +1,6 @@
 ###################################################################
 # ADDED FOR MIXPANEL.
-source ~/env/bin/activate # starts the virtualenv when you log in
+[ -r ~/env/bin/activate ] && source ~/env/bin/activate # starts the virtualenv when you log in
 # Various Mixpanel services use MP_ENV_TYPE to set their configuration.
 # Product engineers generally set it to "dev" here. Systems engineers generally leave it unset.
 # export MP_ENV_TYPE=dev

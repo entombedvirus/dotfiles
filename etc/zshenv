@@ -1,21 +1,12 @@
-export TERM=xterm-color
 export CLICOLOR=yes
-export EDITOR="subl --wait --new-window"
-
-export SBT_TWITTER=1
-export SBT_PROXY_REPO=http://artifactory.local.twitter.com/repo/
-
-export RAILS_ENV='development'
-export RUBY_HEAP_MIN_SLOTS=250000
-export RUBY_HEAP_SLOTS_INCREMENT=250000
-export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
-export RUBY_GC_MALLOC_LIMIT=50000000
+export EDITOR="vim"
 
 export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
 export PATH=/opt/twitter/bin:$PATH
+export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 export PATH=~/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 
