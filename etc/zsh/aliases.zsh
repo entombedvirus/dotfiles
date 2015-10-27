@@ -1,9 +1,16 @@
-alias ls="ls -G"
-alias ll='ls -al'
-alias grep="grep --color=auto"
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias ll='ls -la --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-alias twitter='cd ~/workspace/twitter'
-alias t='cd ~/workspace/twitter'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
 alias eprofile='subl --new-window --wait ~/.zshrc && source ~/.zshrc'
 
 # Git Aliases

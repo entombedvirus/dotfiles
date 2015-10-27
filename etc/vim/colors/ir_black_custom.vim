@@ -123,6 +123,10 @@ hi Special          guifg=#E18964     guibg=NONE        gui=NONE      ctermfg=wh
 hi Delimiter        guifg=#00A0A0     guibg=NONE        gui=NONE      ctermfg=cyan        ctermbg=NONE        cterm=NONE
 hi Operator         guifg=white       guibg=NONE        gui=NONE      ctermfg=white       ctermbg=NONE        cterm=NONE
 
+"Invisible character colors 
+hi NonText          guifg=#4a4a59     guibg=NONE        gui=NONE      ctermfg=darkgray    ctermbg=NONE        cterm=NONE
+hi SpecialKey       guifg=#4a4a59     guibg=NONE        gui=NONE      ctermfg=darkgray    ctermbg=NONE        cterm=NONE
+
 hi link Character       Constant
 hi link Boolean         Constant
 hi link Float           Number
@@ -210,3 +214,5 @@ hi  link csXmlTag             Keyword
 
 
 " Special for PHP
+
+
