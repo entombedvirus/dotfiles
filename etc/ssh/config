@@ -38,6 +38,12 @@ Host cpp
   IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
   Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
 
+Host rohith
+  User rohith
+  IdentityFile ~/.ssh/id_rsa
+  ForwardAgent yes
+  Hostname rohith.corp.mixpanel.com
+
 Host *
     ServerAliveInterval 120
     ServerAliveCountMax 3 
