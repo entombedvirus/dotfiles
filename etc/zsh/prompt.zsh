@@ -52,7 +52,7 @@ current_git_branch() {
 
 git_prompt_info() {
   if [[ -n "$(current_git_branch)" ]]; then
-    echo "$(current_git_branch) "
+    echo "($(current_git_branch)) "
   fi
 }
 
@@ -73,7 +73,9 @@ prompt_end='${fg_no_color}'
 setopt prompt_subst
 
 # left
-PS1=$'%{${fg[blue]}%}%~%{${fg[red]}%}\$(__git_ps1 " (%s)")%{${fg[default]}%} $\n→ '
+# PS1=$'%{${fg[blue]}%}%~%{${fg[red]}%}\$(__git_ps1 " (%s)")%{${fg[default]}%} $\n→ '
 # PS1="$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs$prompt_sigil$prompt_end"
+PS1="$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs$prompt_sigil$prompt_end
+→ "
 #right
 RPS1="$prompt_exit_code"
