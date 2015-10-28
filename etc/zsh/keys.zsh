@@ -1,3 +1,6 @@
+# emacs keys by default
+bindkey -e
+
 # Sane delete key
 bindkey "\e[3~" delete-char
 
