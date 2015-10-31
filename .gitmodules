@@ -46,3 +46,9 @@
 [submodule "etc/vim/bundle/ctrlp.vim"]
 	path = etc/vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim.git
+[submodule "etc/vim/bundle/gitgutter"]
+	path = etc/vim/bundle/gitgutter
+	url = git://github.com/airblade/vim-gitgutter.git
+[submodule "etc/vim/bundle/better-whitespace"]
+	path = etc/vim/bundle/better-whitespace
+	url = git://github.com/ntpeters/vim-better-whitespace.git

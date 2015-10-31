@@ -3,11 +3,15 @@ execute pathogen#infect()
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='powerlineish'
+
+let g:bufferline_echo = 0
 
 " For powerline
 " let g:Powerline_symbols = 'fancy'
 " set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-
+let g:airline_powerline_fonts = 1
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -19,7 +23,7 @@ colorscheme ir_black_custom
 " Common typos
 command! Q  quit
 command! W  write
-command! Wq wq 
+command! Wq wq
 
 " Some emacs keybindings thats used all over OS X
 
@@ -30,6 +34,17 @@ command! Wq wq
 " delete one char in front
 imap <C-d> <Delete>
 
+" CtrlP customization
+" Cmd + r -> show symbols in current buffer
+nmap <leader>r :CtrlPBufTagAll <CR>
+" treat git root dir as the working dir
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*.pyc,*.o
+let g:ctrlp_custom_ignore='\.(pyc|o)'
+
+" Automatically strip trailing whitespace
+autocmd BufWritePre * StripWhitespace
+
 " Center the current line vertically
 nmap <C-l> zz
 
@@ -38,6 +53,10 @@ set ruler
 
 " Command-T configuration
 let g:CommandTMaxHeight=20
+
+" always show gitgutter col so text doesn't jump around when they come in
+let g:gitgutter_sign_column_always=1
+set updatetime=750
 
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
@@ -63,7 +82,7 @@ autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 
 " Source the vimrc file after saving it
 if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
+  " autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
@@ -76,14 +95,14 @@ fixdel
 " tabs -> spaces
 " set expandtab
 
-" leave hardtabs
-set noexpandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+" don't leave hardtabs
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 
 " highlight the current line
-" set cursorline
+set cursorline
 
 " turn mouse on
 " set mouse=a
@@ -101,7 +120,7 @@ nnoremap <F3><F3> <C-W>w
 
 " Shortcut to rapidly toggle `set list` a.k.a show invisibles
 nmap <leader>l :set list!<CR>
- 
+
 " shortcuts to edit files in the same dir as the current open file
 map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
@@ -122,15 +141,15 @@ endfunc
 "   let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
 "   let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
 "   let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-" 
+"
 "   if match(current_line, braces_at_end) >= 0
-"     return "\<CR>}\<C-O>O" 
+"     return "\<CR>}\<C-O>O"
 "   elseif match(current_line, stuff_without_do) >= 0
-"     return "\<CR>end\<C-O>O" 
+"     return "\<CR>end\<C-O>O"
 "   elseif match(current_line, with_do) >= 0
-"     return "\<CR>end\<C-O>O" 
+"     return "\<CR>end\<C-O>O"
 "   else
-"     return "\<CR>" 
+"     return "\<CR>"
 "   endif
 " endfunction
 
@@ -167,6 +186,17 @@ map <leader>]c :tabclose<cr>
 map <leader>]m :tabmove
 map <leader>]n :tabnext<cr>
 map <leader>]p :tabprevious<cr>
+map <leader>]` :tabfirst<cr>
+map <leader>]1 1gt
+map <leader>]2 2gt
+map <leader>]3 3gt
+map <leader>]4 4gt
+map <leader>]5 5gt
+map <leader>]6 6gt
+map <leader>]7 7gt
+map <leader>]8 8gt
+map <leader>]9 9gt
+map <leader>]0 :tablast<cr>
 
 " reformat JSON
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
