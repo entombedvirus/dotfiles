@@ -5,6 +5,7 @@
 	co = checkout
 	ci = commit
 	mt = mergetool
+	ctags = !.git/hooks/ctags
 [apply]
 	whitespace = nowarn
 [color]
@@ -19,3 +20,5 @@
 	tool = araxis
 [core]
 	excludesfile = ~/.cvsignore
+[init]
+	templatedir = ~/.git_template
