@@ -25,6 +25,8 @@ alias gba='git branch -a'
 alias ga='git add .'
 alias ddd="gst | grep deleted | awk '{print \$3}' | xargs -I{} git rm {}"
 
+alias devt='ssh -t rohith tmux attach -d'
+
 alias gs="echo NOT GHOST SCRIPT!!1"
 
 alias lines-by-author='find . -type f \( -name "*.scala" -and -not -ipath "*scrooge*" -and -not -ipath "*plugins*" \)  -exec git blame -f {} \; |cawk 3|sed s/\(//g|grep -v Not| sort |uniq -c|sort -n'

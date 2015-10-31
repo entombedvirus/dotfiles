@@ -5,11 +5,7 @@ export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
-export PATH=/opt/twitter/bin:$PATH
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 export PATH=~/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 
-export MAVEN_OPTS="-Xmx2048m -XX:MaxPermSize=256m"
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
