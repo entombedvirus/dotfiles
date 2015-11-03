@@ -16,6 +16,9 @@ let g:airline_powerline_fonts = 1
 " take care of that
 set noshowmode
 
+" go import magic
+let g:go_fmt_command = "goimports"
+
 set t_Co=256
 set background=dark
 colorscheme ir_black_custom
@@ -24,6 +27,10 @@ colorscheme ir_black_custom
 command! Q  quit
 command! W  write
 command! Wq wq
+
+" Control-Shift-b invokes make -C <dirname(current buffer)>
+nmap <C-S-b> :make -C %:h<CR>
+nmap <leader>gi :GoInstall<CR>
 
 " remove the delay when pressing esc
 set noesckeys

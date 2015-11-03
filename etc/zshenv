@@ -5,7 +5,14 @@ export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
+
+# Go dev env
+export GOPATH=$HOME/analytics/go:$HOME/work/go
+export PATH=$HOME/analytics/go/bin:$HOME/work/go/bin:$PATH
+export GO15VENDOREXPERIMENT=1
+
 export PATH=~/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+

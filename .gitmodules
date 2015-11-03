@@ -58,3 +58,9 @@
 [submodule "etc/vim/bundle/fugitive"]
 	path = etc/vim/bundle/fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "etc/vim/bundle/vim-go"]
+	path = etc/vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "etc/vim/bundle/syntastic"]
+	path = etc/vim/bundle/syntastic
+	url = git@github.com:scrooloose/syntastic.git
