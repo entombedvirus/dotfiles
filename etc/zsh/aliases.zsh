@@ -17,13 +17,14 @@ alias eprofile='subl --new-window --wait ~/.zshrc && source ~/.zshrc'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
-alias gd='git diff HEAD | subl --new-window'
+alias gd='git diff'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
 alias gb='git branch'
 alias gba='git branch -a'
 alias ga='git add .'
 alias ddd="gst | grep deleted | awk '{print \$3}' | xargs -I{} git rm {}"
+alias gdn="git diff --name-only"
 
 # alias devt='mosh rohith -- tmux attach -d'
 # alias devt='env AUTOSSH_POLL=4 autossh -M 54678 rohith -t -- tmux attach -d'
