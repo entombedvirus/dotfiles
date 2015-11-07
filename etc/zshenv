@@ -10,6 +10,7 @@ export PATH=/usr/local/mysql/bin:$PATH
 export GOPATH=$HOME/analytics/go:$HOME/work/go
 export PATH=$HOME/analytics/go/bin:$HOME/work/go/bin:$PATH
 export GO15VENDOREXPERIMENT=1
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
 
 export PATH=~/bin:$PATH
 export PATH=$HOME/.bin:$PATH

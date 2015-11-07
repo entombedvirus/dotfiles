@@ -25,7 +25,8 @@ alias gba='git branch -a'
 alias ga='git add .'
 alias ddd="gst | grep deleted | awk '{print \$3}' | xargs -I{} git rm {}"
 
-alias devt='ssh -t rohith tmux attach -d'
+# alias devt='mosh rohith -- tmux attach -d'
+# alias devt='env AUTOSSH_POLL=4 autossh -M 54678 rohith -t -- tmux attach -d'
 
 alias gs="echo NOT GHOST SCRIPT!!1"
 
