@@ -64,10 +64,11 @@ pwd_length() {
 
 prompt_user_host='%(!.${fg_red}.$fg_green%B)'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b '
 prompt_jobs='${fg_cyan}%1(j.(%j) .)'
-prompt_pwd='${fg_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
-prompt_git_branch='${fg_purple}$(git_prompt_info)'
+prompt_pwd='${fg_blue}%$(pwd_length)<...<%(!.%/.%~)%<<'
+prompt_git_branch='${fg_purple}$(__git_ps1)'
+#prompt_git_branch='${fg_purple}$(git_prompt_info)'
 prompt_exit_code='${fg_light_red}%(0?..%? ↵)${fg_no_color}'
-prompt_sigil='${fg_no_color}%(!.${fg_red}.)» '
+prompt_sigil='${fg_no_color}%(!.${fg_red}.) » '
 prompt_end='${fg_no_color}'
 
 setopt prompt_subst
