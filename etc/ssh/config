@@ -1,50 +1,24 @@
-# Zynga
-Host *.zynga.com *.zc2
-  User rravi
-  IdentityFile ~/.ssh/rravi_zynga
-
-Host ev2
-  User rravi
-  Hostname dev2-example-01.ec2.zynga.com
-  IdentityFile ~/.ssh/rravi_zynga
-  RemoteForward 9001 localhost:9001
-
-Host dev-old
-  Hostname dev2-stg-01.zc2.zynga.com
-  User rravi
-  IdentityFile ~/.ssh/rravi_zynga
-  RemoteForward 9001 localhost:9001
-
-Host dev1
-  Hostname stg-dev-01.zc2.zynga.com
-  User rravi
-  IdentityFile ~/.ssh/rravi_zynga
-  RemoteForward 9001 localhost:9001
-
-Host dev2
-  Hostname stg-dev-02.zc2.zynga.com
-  User rravi
-  IdentityFile ~/.ssh/rravi_zynga
-  RemoteForward 9001 localhost:9001
-
-Host jungle
-  Hostname dev2-jungle-01.zc2.zynga.com
-  User rravi
-  IdentityFile ~/.ssh/rravi_zynga
-  RemoteForward 9001 localhost:9001
+# Mixpanel
 
 Host cpp
-  User ubuntu
-  IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
-  Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
+    User ubuntu
+    IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
+    Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
 
 Host rohith
-  User rohith
-  IdentityFile ~/.ssh/id_rsa
-  ForwardAgent yes
-  Hostname rohith.corp.mixpanel.com
+    User rohith
+    IdentityFile ~/.ssh/id_rsa
+    ForwardAgent yes
+    Hostname rohith.corp.mixpanel.com
+
+Host *.corp.mixpanel.com
+    ForwardAgent yes
+
+Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard*
+    User live
+    ForwardAgent yes
 
 Host *
     ServerAliveInterval 120
-    ServerAliveCountMax 3 
+    ServerAliveCountMax 3
     GSSAPIAuthentication no
