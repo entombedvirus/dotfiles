@@ -21,6 +21,6 @@ Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* int
     ForwardAgent yes
 
 Host *
-    ServerAliveInterval 120
+    ServerAliveInterval 2
     ServerAliveCountMax 3
     GSSAPIAuthentication no
