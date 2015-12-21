@@ -64,3 +64,6 @@
 [submodule "etc/vim/bundle/syntastic"]
 	path = etc/vim/bundle/syntastic
 	url = git@github.com:scrooloose/syntastic.git
+[submodule "etc/vim/bundle/vim-colors-solarized"]
+	path = etc/vim/bundle/vim-colors-solarized
+	url = git://github.com/altercation/vim-colors-solarized.git

@@ -12,10 +12,13 @@ if has("gui_macvim")
 
 	set transparency=5
 
+    set background=light
+    colorscheme solarized
+
 	" Set the font
 	"set guifont=Espresso\ Mono:h14
 	" set guifont=Inconsolata\ For\ Powerline:h14
-	set guifont=PragmataPro\ for\ Powerline:h14
+	set guifont=PragmataPro\ for\ Powerline:h13
 
 	" Fullscreen takes up entire screen
 	set fuoptions=maxhorz,maxvert
