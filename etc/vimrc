@@ -20,8 +20,10 @@ set noshowmode
 let g:go_fmt_command = "goimports"
 
 set t_Co=256
-set background=dark
-colorscheme ir_black_custom
+" set background=dark
+" colorscheme ir_black_custom
+set background=light
+colorscheme solarized
 
 " Common typos
 command! Q  quit
