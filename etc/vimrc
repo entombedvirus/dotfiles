@@ -32,6 +32,9 @@ command! Wq wq
 nmap <C-S-b> :make -C %:h<CR>
 nmap <leader>gi :GoInstall<CR>
 
+" Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
+vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
+
 " remove the delay when pressing esc
 set noesckeys
 
@@ -48,6 +51,7 @@ imap <C-d> <Delete>
 " Cmd + r -> show symbols in current buffer
 nmap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
+let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*.pyc,*.o
 let g:ctrlp_custom_ignore='\.(pyc|o)'
@@ -166,7 +170,7 @@ if executable('ag')
 endif
 
 " bind G to grep word under cursor
-nnoremap <C-S-G> :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <C-S-g> :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " function RubyEndToken ()
 "   let current_line = getline( '.' )

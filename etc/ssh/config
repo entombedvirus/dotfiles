@@ -24,3 +24,5 @@ Host *
     ServerAliveInterval 2
     ServerAliveCountMax 3
     GSSAPIAuthentication no
+    StrictHostKeyChecking no
+    HashKnownHosts no
