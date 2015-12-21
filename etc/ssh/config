@@ -9,8 +9,6 @@ Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
     ForwardAgent yes
-    # SOCKS proxy
-    DynamicForward 50001
     Hostname rohith.corp.mixpanel.com
 
 Host *.corp.mixpanel.com

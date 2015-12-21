@@ -7,5 +7,17 @@
 
 export VAULT_TOKEN=58d07566-6d4a-9a73-bb25-54476fa0278e
 
-export SL_USERNAME='rohith.ravi'
-export SL_API_KEY=f4836531d385dbdf0c2cf67b912d4c28225725606b73082c28468bf99d6a38ea
+be_mixpanel_admin() {
+    ssh -Nf -D 8080 rohith
+    sudo networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8080
+    sudo networksetup -setsocksfirewallproxystate "Wi-Fi" on
+}
+
+stop_being_mixpanel_admin() {
+    local PID
+    sudo networksetup -setsocksfirewallproxystate "Wi-Fi" off
+    PID=$(pgrep -f 'ssh -Nf -D 8080 rohith')
+    if [ -n "$PID" ]; then
+        kill $PID
+    fi
+}
