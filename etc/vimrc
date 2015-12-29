@@ -8,8 +8,8 @@ execute pathogen#infect()
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='ubaryd'
-let g:airline#extensions#tabline#buffer_idx_mode = 1
+" let g:airline_theme='ubaryd'
+let g:airline_theme='solarized'
 let g:airline_powerline_fonts = 1
 
 " disable the built-in showing of mode in the command bar since airline will
@@ -216,6 +216,8 @@ syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
+hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
+
 
 " Some tab helpers (<leader> is \)
 map <leader>]t :tabnew<cr>
