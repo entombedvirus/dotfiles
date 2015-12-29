@@ -5,6 +5,11 @@ Host cpp
     IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
     Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
 
+Host tools
+    User ubuntu
+    Hostname 52.34.135.87
+    IdentityFile ~/.ssh/tools.pem
+
 Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
