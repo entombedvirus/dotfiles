@@ -7,7 +7,7 @@ Host cpp
 
 Host tools
     User ubuntu
-    Hostname 52.34.135.87
+    Hostname 52.34.199.252
     IdentityFile ~/.ssh/tools.pem
 
 Host rohith
