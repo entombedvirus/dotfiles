@@ -9,6 +9,7 @@ Host tools
     User ubuntu
     Hostname 52.34.199.252
     IdentityFile ~/.ssh/tools.pem
+    ForwardAgent yes
 
 Host rohith
     User rohith
