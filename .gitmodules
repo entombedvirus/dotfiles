@@ -1,33 +1,15 @@
 [submodule "etc/vim/bundle/taglist.vim"]
 	path = etc/vim/bundle/taglist.vim
 	url = https://github.com/vim-scripts/taglist.vim.git
-[submodule "etc/vim/bundle/command-t"]
-	path = etc/vim/bundle/command-t
-	url = git://git.wincent.com/command-t.git
 [submodule "etc/vim/bundle/ack.vim"]
 	path = etc/vim/bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
-[submodule "etc/vim/bundle/vim-coffee-script"]
-	path = etc/vim/bundle/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
-[submodule "etc/vim/bundle/jade"]
-	path = etc/vim/bundle/jade
-	url = https://github.com/vim-scripts/jade.vim
-[submodule "etc/vim/bundle/Processing"]
-	path = etc/vim/bundle/Processing
-	url = https://github.com/vim-scripts/Processing.git
 [submodule "etc/vim/bundle/nerdcommenter"]
 	path = etc/vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
 [submodule "etc/vim/bundle/JSON.vim"]
 	path = etc/vim/bundle/JSON.vim
 	url = https://github.com/vim-scripts/JSON.vim.git
-[submodule "etc/vim/bundle/xmledit"]
-	path = etc/vim/bundle/xmledit
-	url = https://github.com/sukima/xmledit.git
-[submodule "etc/vim/bundle/vim-git"]
-	path = etc/vim/bundle/vim-git
-	url = https://github.com/tpope/vim-git.git
 [submodule "etc/vim/bundle/vim-thrift"]
 	path = etc/vim/bundle/vim-thrift
 	url = https://github.com/agrewal/vim-thrift.git
@@ -52,18 +34,12 @@
 [submodule "etc/vim/bundle/better-whitespace"]
 	path = etc/vim/bundle/better-whitespace
 	url = git://github.com/ntpeters/vim-better-whitespace.git
-[submodule "etc/vim/bundle/minibufexpl"]
-	path = etc/vim/bundle/minibufexpl
-	url = git@github.com:fholgado/minibufexpl.vim.git
 [submodule "etc/vim/bundle/fugitive"]
 	path = etc/vim/bundle/fugitive
 	url = git://github.com/tpope/vim-fugitive.git
 [submodule "etc/vim/bundle/vim-go"]
 	path = etc/vim/bundle/vim-go
 	url = https://github.com/fatih/vim-go.git
-[submodule "etc/vim/bundle/syntastic"]
-	path = etc/vim/bundle/syntastic
-	url = git@github.com:scrooloose/syntastic.git
 [submodule "etc/vim/bundle/vim-colors-solarized"]
 	path = etc/vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
