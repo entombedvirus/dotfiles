@@ -9,3 +9,4 @@ etc/vim/**/commandt*
 etc/vim/ruby/
 etc/vim/.VimballRecord
 etc/vim/doc/tags
+etc/nvim/bundle/

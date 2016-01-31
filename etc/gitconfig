@@ -21,4 +21,4 @@
 [core]
 	excludesfile = ~/.cvsignore
 [init]
-	templatedir = ~/.git_template
+#	templatedir = ~/.git_template
