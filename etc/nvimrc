@@ -18,20 +18,32 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Add or remove your Bundles here:
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'airblade/vim-gitgutter.git'
-NeoBundle 'altercation/vim-colors-solarized.git'
-NeoBundle 'benekastah/neomake'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'fatih/vim-go.git'
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'mileszs/ack.vim.git'
-NeoBundle 'ntpeters/vim-better-whitespace.git'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'vim-scripts/taglist.vim.git'
-
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+" Navigation
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'mileszs/ack.vim.git'
+NeoBundle 'scrooloose/nerdtree'
+
+" Git
+NeoBundle 'airblade/vim-gitgutter.git'
+NeoBundle 'fatih/vim-go.git'
+NeoBundle 'tpope/vim-fugitive'
+
+" Appearance
+NeoBundle 'bling/vim-airline'
+NeoBundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'flazz/vim-colorschemes'
+
+" Build
+NeoBundle 'benekastah/neomake'
+
+" Editing
+NeoBundle 'ntpeters/vim-better-whitespace.git'
+NeoBundle 'vim-scripts/taglist.vim.git'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'michaeljsmith/vim-indent-object'
 
 " Required:
 call neobundle#end()
@@ -44,36 +56,46 @@ filetype plugin indent on
 NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
+" NeoVim Settings
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+if has("nvim")
+endif
+
+" :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
 
 " bind G to grep word under cursor
-nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" Automatically lint files on save
-autocmd! BufWritePost * Neomake
-
-" Automatically strip trailing whitespace
-autocmd BufWritePre * StripWhitespace
+" nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-" let g:airline_theme='ubaryd'
-let g:airline_theme='solarized'
+let g:airline_theme='ubaryd'
+" let g:airline_theme='solarized'
+" let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
 
 " disable the built-in showing of mode in the command bar since airline will
 " take care of that
 set noshowmode
 
+" show both absolute current line no and relative numbers
+set relativenumber number
+
 " go import magic
 let g:go_fmt_command = "goimports"
+
+" NERDTree bindings
+map <C-n> :NERDTreeToggle %<CR>
 
 set t_Co=256
 " set background=dark
 " colorscheme ir_black_custom
-set background=light
-colorscheme solarized
+set background=dark
+colorscheme Tomorrow-Night
 
 " Common typos
 command! Q  quit
@@ -85,7 +107,8 @@ nmap <C-S-b> :make -C %:h<CR>
 nmap <leader>gi :GoInstall<CR>
 
 " Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
-vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
+" vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
+vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
 
 " remove the delay when pressing esc
 set noesckeys
@@ -112,7 +135,8 @@ let g:ctrlp_custom_ignore='\.(pyc|o)'
 nmap <C-l> zz
 
 " Show cursor position
-set ruler
+" 2016-01-31: disabling because perf & airline shows this anyway
+" set ruler
 
 " for letting swtich away from a modified buffer w/o warning
 set hidden
@@ -135,9 +159,6 @@ set list!
 
 set title
 
-" Show cursor position
-set ruler
-
 " Always show the status line (even if no split windows)
 set laststatus=2
 " set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
@@ -145,13 +166,21 @@ set laststatus=2
 " Number of lines to keep between cursor and window boundary before scrolling
 " kicks in.
 set scrolloff=7
+" Number of lines to jump when scrolling. Improves rendering speed
+set scrolljump=5
 
-" Auto-detect git commit messages
-autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
+" rendering speed optimization. speculative.
+set lazyredraw
 
-" Source the vimrc file after saving it
 if has("autocmd")
-    autocmd bufwritepost .vimrc source $MYVIMRC
+    " Automatically lint files on save
+    autocmd! BufWritePost * Neomake
+
+    " Automatically strip trailing whitespace
+    autocmd BufWritePre * StripWhitespace
+
+    " Auto-detect git commit messages
+    autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
@@ -171,7 +200,8 @@ set softtabstop=4
 set shiftwidth=4
 
 " highlight the current line
-set cursorline
+" 2016-01-32: disabling this since it slows down rendering
+" set cursorline
 
 " turn mouse on
 set mouse=a
@@ -198,7 +228,7 @@ map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Show syntax highlighting groups for word under cursor
-nmap <C-S-P> :call <SID>SynStack()<CR>
+" nmap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
   if !exists("*synstack")
     return
@@ -252,9 +282,8 @@ set dir=$HOME/.tmp
 " misc
 "set ai
 set incsearch
-set showcmd
+" set showcmd
 set nowrap
-set nu
 
 syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
