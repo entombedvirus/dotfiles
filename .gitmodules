@@ -43,3 +43,6 @@
 [submodule "etc/vim/bundle/vim-colors-solarized"]
 	path = etc/vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "etc/oh-my-zsh"]
+	path = etc/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
