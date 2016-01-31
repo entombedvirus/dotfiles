@@ -5,11 +5,11 @@ if has('vim_starting')
 endif
 
 " Required:
-set runtimepath+=/home/rohith/.nvim/bundle/neobundle.vim/
+set runtimepath+=~/.nvim/bundle/neobundle.vim/
 endif
 
 " Required:
-call neobundle#begin(expand('/home/rohith/.nvim/bundle'))
+call neobundle#begin(expand('~/.nvim/bundle'))
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -35,6 +35,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'vim-airline/vim-airline-themes'
 
 " Build
 NeoBundle 'benekastah/neomake'
