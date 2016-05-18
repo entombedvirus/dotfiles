@@ -1,3 +1,4 @@
+"
 "NeoBundle Scripts-----------------------------
 if has('vim_starting')
   if &compatible
@@ -28,7 +29,7 @@ NeoBundle 'scrooloose/nerdtree'
 
 " Git
 NeoBundle 'airblade/vim-gitgutter.git'
-NeoBundle 'fatih/vim-go.git'
+NeoBundle 'fatih/vim-go'
 NeoBundle 'tpope/vim-fugitive'
 
 " Appearance
@@ -36,6 +37,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'vim-airline/vim-airline-themes'
+NeoBundle 'nathanaelkane/vim-indent-guides.git'
 
 " Build
 NeoBundle 'benekastah/neomake'
@@ -59,10 +61,27 @@ NeoBundleCheck
 
 " NeoVim Settings
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 if has("nvim")
 endif
+
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+" set t_Co=256
+" set background=dark
+" colorscheme ir_black_custom
+set background=dark
+colorscheme Tomorrow-Night
+
+" these must come after the colorscheme
+hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
+" For vim-indent-guides
+hi IndentGuidesOdd ctermbg=237
+hi IndentGuidesEven ctermbg=236
 
 " :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
@@ -79,6 +98,11 @@ let g:airline_theme='ubaryd'
 " let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
 
+" For vim-indent-guides
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+
 " disable the built-in showing of mode in the command bar since airline will
 " take care of that
 set noshowmode
@@ -86,17 +110,12 @@ set noshowmode
 " show both absolute current line no and relative numbers
 set relativenumber number
 
-" go import magic
-let g:go_fmt_command = "goimports"
-
 " NERDTree bindings
-map <C-n> :NERDTreeToggle %<CR>
+" map <C-n> :NERDTreeToggle %:h<CR>
+map <C-n> :NERDTreeFind<CR>
 
-set t_Co=256
-" set background=dark
-" colorscheme ir_black_custom
-set background=dark
-colorscheme Tomorrow-Night
+" vim-go
+let g:go_fmt_command = "goimports"
 
 " Common typos
 command! Q  quit
@@ -129,7 +148,7 @@ nmap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.pyc,*.o
+set wildignore+=*.pyc,*.o,*.a
 let g:ctrlp_custom_ignore='\.(pyc|o)'
 
 " Center the current line vertically
@@ -169,9 +188,6 @@ set laststatus=2
 set scrolloff=7
 " Number of lines to jump when scrolling. Improves rendering speed
 set scrolljump=5
-
-" rendering speed optimization. speculative.
-set lazyredraw
 
 if has("autocmd")
     " Automatically lint files on save
@@ -246,7 +262,7 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
+  " let g:ctrlp_use_caching = 0
 endif
 
 " function RubyEndToken ()
@@ -285,13 +301,6 @@ set dir=$HOME/.tmp
 set incsearch
 " set showcmd
 set nowrap
-
-syntax on             " Enable syntax highlighting
-filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
-filetype plugin on    " Enable filetype-specific plugins
-hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
-
 
 " Some tab helpers (<leader> is \)
 map <leader>]t :tabnew<cr>

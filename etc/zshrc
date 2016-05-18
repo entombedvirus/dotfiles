@@ -50,7 +50,7 @@ ZSH_CUSTOM=${HOME}/cl/etc/oh-my-zsh-custom
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang)
+plugins=(gitfast golang)
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -81,3 +81,10 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/home/rohith/work/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/home/rohith/work/google-cloud-sdk/completion.zsh.inc'
+

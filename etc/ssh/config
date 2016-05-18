@@ -20,7 +20,7 @@ Host rohith
 Host *.corp.mixpanel.com
     ForwardAgent yes
 
-Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard*
+Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard* ephemeral-*
     User live
     ForwardAgent yes
 

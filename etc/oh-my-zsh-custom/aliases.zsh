@@ -11,6 +11,8 @@ alias ga='git add .'
 alias ddd="gst | grep deleted | awk '{print \$3}' | xargs -I{} git rm {}"
 alias gdn="git diff --name-only"
 
+# oh-my-zsh git plugin defines an alias that inteferes with this function
+unalias gcb
 function gcb {
   branch=$1
   count=`gb | grep $1  | wc -l`
