@@ -9,20 +9,24 @@ Host tools
     User ubuntu
     Hostname 52.34.199.252
     IdentityFile ~/.ssh/tools.pem
-    ForwardAgent yes
 
-Host rohith
+Host rohithi1
     User rohith
     IdentityFile ~/.ssh/id_rsa
-    ForwardAgent yes
     Hostname rohith.corp.mixpanel.com
 
+Host bastion1
+    User rohith
+    Hostname ssh-bastion.gcp.corp.mixpanel.org
+
+Host *.gcp
+    User rohith
+    ProxyCommand ssh -A %r@bastion1 -W $(h=%h; echo ${h%%.gcp}):%p
+
 Host *.corp.mixpanel.com
-    ForwardAgent yes
 
 Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard* ephemeral-*
     User live
-    ForwardAgent yes
 
 Host *
     ServerAliveInterval 2
@@ -30,3 +34,4 @@ Host *
     GSSAPIAuthentication no
     StrictHostKeyChecking no
     HashKnownHosts no
+    ForwardAgent yes

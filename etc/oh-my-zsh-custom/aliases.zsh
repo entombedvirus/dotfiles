@@ -28,3 +28,13 @@ function gcb {
     echo "no branches with $branch in the name"
   fi
 }
+
+# kubernetes
+alias k='kubectl'
+alias kpods='kubectl get pods'
+alias dpod='kubectl describe pod'
+alias dsvc='kubectl describe service'
+alias ddep='kubectl describe deployment'
+function kshell {
+    kubectl exec -ti $1 env COLUMNS=$(tput cols) LINES=$(tput lines) TERM=$TERM /bin/bash
+}
