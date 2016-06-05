@@ -1,29 +1,131 @@
-" This must be first, because it changes other options as a side effect.
-" Use Vim settings, rather then Vi settings (much better!).
-set nocompatible
+if has("nvim")
+    "NeoBundle Scripts-----------------------------
+    if has('vim_starting')
+      if &compatible
+          set nocompatible               " Be iMproved
+    endif
 
-" Initialize Pathogen, so that we can have selfcontained vim plugins
-execute pathogen#infect()
+    " Required:
+    set runtimepath+=~/.nvim/bundle/neobundle.vim/
+    endif
+
+    " Required:
+    call neobundle#begin(expand('~/.nvim/bundle'))
+
+    " Let NeoBundle manage NeoBundle
+    " Required:
+    NeoBundleFetch 'Shougo/neobundle.vim'
+
+    " Add or remove your Bundles here:
+    NeoBundle 'Shougo/neosnippet-snippets'
+    NeoBundle 'Shougo/neosnippet.vim'
+    " You can specify revision/branch/tag.
+    NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+    " Navigation
+    NeoBundle 'ctrlpvim/ctrlp.vim'
+    NeoBundle 'mileszs/ack.vim.git'
+    NeoBundle 'scrooloose/nerdtree'
+
+    " Git
+    NeoBundle 'airblade/vim-gitgutter.git'
+    NeoBundle 'fatih/vim-go'
+    NeoBundle 'tpope/vim-fugitive'
+
+    " Appearance
+    NeoBundle 'bling/vim-airline'
+    NeoBundle 'altercation/vim-colors-solarized.git'
+    NeoBundle 'flazz/vim-colorschemes'
+    NeoBundle 'vim-airline/vim-airline-themes'
+    NeoBundle 'nathanaelkane/vim-indent-guides.git'
+
+    " Build
+    NeoBundle 'benekastah/neomake'
+
+    " Editing
+    NeoBundle 'ntpeters/vim-better-whitespace.git'
+    NeoBundle 'vim-scripts/taglist.vim.git'
+    NeoBundle 'tpope/vim-surround'
+    NeoBundle 'michaeljsmith/vim-indent-object'
+
+    " Required:
+    call neobundle#end()
+
+    " Required:
+    filetype plugin indent on
+
+    " If there are uninstalled bundles found on startup,
+    " this will conveniently prompt you to install them.
+    NeoBundleCheck
+    "End NeoBundle Scripts-------------------------
+
+    " NeoVim Settings
+    " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+    set background=dark
+    colorscheme Tomorrow-Night
+endif
+
+if !has("nvim")
+    " This must be first, because it changes other options as a side effect.
+    " Use Vim settings, rather then Vi settings (much better!).
+    set nocompatible
+
+    " Initialize Pathogen, so that we can have selfcontained vim plugins
+    execute pathogen#infect()
+
+    set t_Co=256
+    " set background=dark
+    " colorscheme ir_black_custom
+    set background=dark
+    colorscheme solarized
+endif
+
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+" these must come after the colorscheme
+hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
+" For vim-indent-guides
+hi IndentGuidesOdd ctermbg=237
+hi IndentGuidesEven ctermbg=236
+
+" :Silent command to supress "Press Enter to continue" messages
+command! -nargs=+ Silent execute 'silent <args>' | redraw!
+
+" bind G to grep word under cursor
+" nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-" let g:airline_theme='ubaryd'
-let g:airline_theme='solarized'
+let g:airline_theme='ubaryd'
+" let g:airline_theme='solarized'
+" let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
+
+" For vim-indent-guides
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
 
 " disable the built-in showing of mode in the command bar since airline will
 " take care of that
 set noshowmode
 
-" go import magic
-let g:go_fmt_command = "goimports"
+" show both absolute current line no and relative numbers
+set relativenumber number
 
-set t_Co=256
-" set background=dark
-" colorscheme ir_black_custom
-set background=dark
-colorscheme solarized
+" NERDTree bindings
+" map <C-n> :NERDTreeToggle %:h<CR>
+map <C-n> :NERDTreeFind<CR>
+
+" vim-go
+let g:go_fmt_command = "goimports"
 
 " Common typos
 command! Q  quit
@@ -35,7 +137,8 @@ nmap <C-S-b> :make -C %:h<CR>
 nmap <leader>gi :GoInstall<CR>
 
 " Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
-vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
+" vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
+vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
 
 " remove the delay when pressing esc
 set noesckeys
@@ -55,17 +158,15 @@ nmap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.pyc,*.o
+set wildignore+=*.pyc,*.o,*.a
 let g:ctrlp_custom_ignore='\.(pyc|o)'
-
-" Automatically strip trailing whitespace
-autocmd BufWritePre * StripWhitespace
 
 " Center the current line vertically
 nmap <C-l> zz
 
 " Show cursor position
-set ruler
+" 2016-01-31: disabling because perf & airline shows this anyway
+" set ruler
 
 " for letting swtich away from a modified buffer w/o warning
 set hidden
@@ -88,9 +189,6 @@ set list!
 
 set title
 
-" Show cursor position
-set ruler
-
 " Always show the status line (even if no split windows)
 set laststatus=2
 " set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
@@ -98,13 +196,18 @@ set laststatus=2
 " Number of lines to keep between cursor and window boundary before scrolling
 " kicks in.
 set scrolloff=7
+" Number of lines to jump when scrolling. Improves rendering speed
+set scrolljump=5
 
-" Auto-detect git commit messages
-autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
-
-" Source the vimrc file after saving it
 if has("autocmd")
-    autocmd bufwritepost .vimrc source $MYVIMRC
+    " Automatically lint files on save
+    autocmd! BufWritePost * Neomake
+
+    " Automatically strip trailing whitespace
+    autocmd BufWritePre * StripWhitespace
+
+    " Auto-detect git commit messages
+    autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
@@ -112,7 +215,7 @@ endif
 " os x backspace fix
 set backspace=indent,eol,start
 "set t_kb
-fixdel
+" fixdel
 
 " tabs -> spaces
 " set expandtab
@@ -124,11 +227,12 @@ set softtabstop=4
 set shiftwidth=4
 
 " highlight the current line
-set cursorline
+" 2016-01-32: disabling this since it slows down rendering
+" set cursorline
 
 " turn mouse on
 set mouse=a
-set ttymouse=xterm2
+" set ttymouse=xterm2
 
 " space = pagedown, - = pageup
 noremap <Space> <PageDown>
@@ -151,7 +255,7 @@ map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Show syntax highlighting groups for word under cursor
-nmap <C-S-P> :call <SID>SynStack()<CR>
+" nmap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
   if !exists("*synstack")
     return
@@ -168,11 +272,8 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
+  " let g:ctrlp_use_caching = 0
 endif
-
-" bind G to grep word under cursor
-nnoremap <C-S-g> :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " function RubyEndToken ()
 "   let current_line = getline( '.' )
@@ -208,16 +309,8 @@ set dir=$HOME/.tmp
 " misc
 "set ai
 set incsearch
-set showcmd
+" set showcmd
 set nowrap
-set nu
-
-syntax on             " Enable syntax highlighting
-filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
-filetype plugin on    " Enable filetype-specific plugins
-hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
-
 
 " Some tab helpers (<leader> is \)
 map <leader>]t :tabnew<cr>
@@ -242,4 +335,3 @@ map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
 
 " disable logipat plugin so that :E works again
 let g:loaded_logipat = 1
-
