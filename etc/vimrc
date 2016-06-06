@@ -40,6 +40,9 @@ if has("nvim")
     NeoBundle 'nanotech/jellybeans.vim'
     NeoBundle 'nathanaelkane/vim-indent-guides.git'
     NeoBundle 'vim-airline/vim-airline-themes'
+    NeoBundle 'morhetz/gruvbox'
+    NeoBundle 'romainl/flattened'
+    NeoBundle 'whatyouhide/vim-gotham'
 
     " Build
     NeoBundle 'benekastah/neomake'
@@ -60,10 +63,15 @@ if has("nvim")
 
     " NeoVim Settings
     " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+    " makes neovim use gui colors in themes instead of cterm colors, usually
+    " this is only useful with a tmux and iterm2 both capable of displaying
+    " 24bit "True" color
     set termguicolors
     set background=dark
     " colorscheme Tomorrow-Night
-    colorscheme molokai
+    let g:gruvbox_italic=1
+    let g:gruvbox_contrast_dark="hard"
+    colorscheme gruvbox
 endif
 
 if !has("nvim")
@@ -79,6 +87,7 @@ if !has("nvim")
     " colorscheme ir_black_custom
     set background=dark
     colorscheme solarized
+
 endif
 
 syntax on             " Enable syntax highlighting
@@ -87,7 +96,7 @@ filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 
 " these must come after the colorscheme
-hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE
+hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE gui=bold,underline guifg=NONE guibg=NONE
 " For vim-indent-guides
 hi IndentGuidesOdd ctermbg=237
 hi IndentGuidesEven ctermbg=236
@@ -102,7 +111,8 @@ nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='ubaryd'
+"let g:airline_theme='gruvbox'
+" let g:airline_theme='ubaryd'
 " let g:airline_theme='solarized'
 " let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
