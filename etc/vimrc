@@ -62,13 +62,14 @@ if has("nvim")
     "End NeoBundle Scripts-------------------------
 
     " NeoVim Settings
-    " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
     " makes neovim use gui colors in themes instead of cterm colors, usually
     " this is only useful with a tmux and iterm2 both capable of displaying
     " 24bit "True" color
     set termguicolors
     set background=dark
     " colorscheme Tomorrow-Night
+
     let g:gruvbox_italic=1
     let g:gruvbox_contrast_dark="hard"
     colorscheme gruvbox
@@ -167,8 +168,8 @@ nmap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.pyc,*.o,*.a
-let g:ctrlp_custom_ignore='\.(pyc|o)'
+set wildignore+=*.pyc,*.o,*.a,*.js
+let g:ctrlp_custom_ignore='\.(pyc|o|js)'
 
 " Center the current line vertically
 nmap <C-l> zz
@@ -283,7 +284,7 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
-  " let g:ctrlp_use_caching = 0
+  let g:ctrlp_use_caching = 0
 endif
 
 " function RubyEndToken ()
