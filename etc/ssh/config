@@ -10,7 +10,7 @@ Host tools
     Hostname 52.34.199.252
     IdentityFile ~/.ssh/tools.pem
 
-Host rohithi1
+Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
     Hostname rohith.corp.mixpanel.com
