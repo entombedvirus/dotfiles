@@ -33,11 +33,13 @@ if has("nvim")
     NeoBundle 'tpope/vim-fugitive'
 
     " Appearance
-    NeoBundle 'bling/vim-airline'
     NeoBundle 'altercation/vim-colors-solarized.git'
+    NeoBundle 'bling/vim-airline'
     NeoBundle 'flazz/vim-colorschemes'
-    NeoBundle 'vim-airline/vim-airline-themes'
+    NeoBundle 'justinmk/molokai'
+    NeoBundle 'nanotech/jellybeans.vim'
     NeoBundle 'nathanaelkane/vim-indent-guides.git'
+    NeoBundle 'vim-airline/vim-airline-themes'
 
     " Build
     NeoBundle 'benekastah/neomake'
@@ -51,20 +53,17 @@ if has("nvim")
     " Required:
     call neobundle#end()
 
-    " Required:
-    filetype plugin indent on
-
     " If there are uninstalled bundles found on startup,
     " this will conveniently prompt you to install them.
     NeoBundleCheck
     "End NeoBundle Scripts-------------------------
 
     " NeoVim Settings
-    " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
     " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
+    set termguicolors
     set background=dark
-    colorscheme Tomorrow-Night
+    " colorscheme Tomorrow-Night
+    colorscheme molokai
 endif
 
 if !has("nvim")
