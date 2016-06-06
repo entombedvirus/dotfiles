@@ -200,8 +200,10 @@ set scrolloff=7
 set scrolljump=5
 
 if has("autocmd")
-    " Automatically lint files on save
-    autocmd! BufWritePost * Neomake
+    if has("nvim")
+        " Automatically lint files on save
+        autocmd! BufWritePost * Neomake
+    endif
 
     " Automatically strip trailing whitespace
     autocmd BufWritePre * StripWhitespace
