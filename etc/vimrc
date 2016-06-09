@@ -29,7 +29,7 @@ if has("nvim")
 
     " Git
     NeoBundle 'airblade/vim-gitgutter.git'
-    NeoBundle 'fatih/vim-go'
+    NeoBundle 'fatih/vim-go', { 'rev': 'v1.6' }
     NeoBundle 'tpope/vim-fugitive'
 
     " Appearance
@@ -71,8 +71,19 @@ if has("nvim")
     " colorscheme Tomorrow-Night
 
     let g:gruvbox_italic=1
-    let g:gruvbox_contrast_dark="hard"
+    let g:gruvbox_contrast_dark="medium"
     colorscheme gruvbox
+
+    let g:neomake_python_flake8_maker = {
+        \ 'args': ['--format=default', '--ignore=E302,E501'],
+        \ 'errorformat':
+            \ '%E%f:%l: could not compile,%-Z%p^,' .
+            \ '%A%f:%l:%c: %t%n %m,' .
+            \ '%A%f:%l: %t%n %m,' .
+            \ '%-G%.%#',
+        \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
+        \ }
+    let g:neomake_python_enabled_makers = ['flake8']
 endif
 
 if !has("nvim")
@@ -90,6 +101,10 @@ if !has("nvim")
     colorscheme solarized
 
 endif
+
+" vim-go
+let b:goimports_vendor_compatible=1
+let g:go_fmt_command = "goimports"
 
 syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
@@ -133,9 +148,6 @@ set relativenumber number
 " NERDTree bindings
 " map <C-n> :NERDTreeToggle %:h<CR>
 map <C-n> :NERDTreeFind<CR>
-
-" vim-go
-let g:go_fmt_command = "goimports"
 
 " Common typos
 command! Q  quit
@@ -212,7 +224,9 @@ set scrolljump=5
 if has("autocmd")
     if has("nvim")
         " Automatically lint files on save
-        autocmd! BufWritePost * Neomake
+        "autocmd! BufWritePost * Neomake
+        autocmd! BufWritePost *.py Neomake
+        autocmd! BufWritePost *.go Neomake
     endif
 
     " Automatically strip trailing whitespace
