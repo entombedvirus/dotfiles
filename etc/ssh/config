@@ -13,7 +13,7 @@ Host tools
 Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
-    Hostname rohith.corp.mixpanel.com
+    Hostname rohith.dev.mixpanel.org
 
 Host bastion1
     User rohith
