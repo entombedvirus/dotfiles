@@ -13,4 +13,3 @@ export PATH=$HOME/.linuxbrew/bin:$PATH
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 [ -f $HOME/analytics/.shellenv ] && source $HOME/analytics/.shellenv
-[ -f $HOME/.ssh/environment ] && source $HOME/.ssh/environment
