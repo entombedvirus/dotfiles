@@ -75,7 +75,7 @@ if has("nvim")
     colorscheme gruvbox
 
     let g:neomake_python_flake8_maker = {
-        \ 'args': ['--format=default', '--ignore=E302,E501'],
+        \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
         \ 'errorformat':
             \ '%E%f:%l: could not compile,%-Z%p^,' .
             \ '%A%f:%l:%c: %t%n %m,' .
