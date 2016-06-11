@@ -17,8 +17,6 @@ if has("nvim")
     NeoBundleFetch 'Shougo/neobundle.vim'
 
     " Add or remove your Bundles here:
-    NeoBundle 'Shougo/neosnippet-snippets'
-    NeoBundle 'Shougo/neosnippet.vim'
     " You can specify revision/branch/tag.
     NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 
@@ -33,7 +31,8 @@ if has("nvim")
     NeoBundle 'tpope/vim-fugitive'
 
     " Appearance
-    NeoBundle 'altercation/vim-colors-solarized.git'
+    NeoBundle 'frankier/neovim-colors-solarized-truecolor-only'
+    "NeoBundle 'altercation/vim-colors-solarized.git'
     NeoBundle 'bling/vim-airline'
     NeoBundle 'flazz/vim-colorschemes'
     NeoBundle 'justinmk/molokai'
@@ -53,6 +52,12 @@ if has("nvim")
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'michaeljsmith/vim-indent-object'
 
+    " AutoCompletion
+    NeoBundle 'Shougo/deoplete.nvim'
+    NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+    NeoBundle 'Shougo/neosnippet'
+    NeoBundle 'Shougo/neosnippet-snippets'
+
     " Required:
     call neobundle#end()
 
@@ -68,12 +73,14 @@ if has("nvim")
     " 24bit "True" color
     set termguicolors
     set background=dark
+    colorscheme kalisi
     " colorscheme Tomorrow-Night
 
-    let g:gruvbox_italic=1
-    let g:gruvbox_contrast_dark="medium"
-    colorscheme gruvbox
+    " let g:gruvbox_italic=1
+    " let g:gruvbox_contrast_dark="medium"
+    " colorscheme gruvbox
 
+    " Neomake configuration
     let g:neomake_python_flake8_maker = {
         \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
         \ 'errorformat':
@@ -84,6 +91,13 @@ if has("nvim")
         \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
         \ }
     let g:neomake_python_enabled_makers = ['flake8']
+
+    " Deoplete config
+    let g:deoplete#enable_at_startup = 1
+    " neocomplete like
+    set completeopt+=noinsert
+    " deoplete.nvim recommend
+    set completeopt+=noselect
 endif
 
 if !has("nvim")
@@ -97,9 +111,8 @@ if !has("nvim")
     set t_Co=256
     " set background=dark
     " colorscheme ir_black_custom
-    set background=dark
+    set background=light
     colorscheme solarized
-
 endif
 
 " vim-go
