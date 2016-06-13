@@ -1,5 +1,5 @@
 export CLICOLOR=yes
-export EDITOR="vim"
+export EDITOR="nvim"
 
 export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
@@ -7,9 +7,20 @@ export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
 
 export PATH=~/bin:$PATH
-export PATH=$HOME/.bin:$PATH
 export PATH=$HOME/.linuxbrew/bin:$PATH
 
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
+# The next line updates PATH for the Google Cloud SDK.
+function source_if_exists {
+    file=$1
+    [ -f "$file" ] && source "$file"
+}
+
+source_if_exists '/home/rohith/work/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source_if_exists '/home/rohith/work/google-cloud-sdk/completion.zsh.inc'
+
 [ -f $HOME/analytics/.shellenv ] && source $HOME/analytics/.shellenv
+
