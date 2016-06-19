@@ -139,9 +139,8 @@ if !has("nvim")
     execute pathogen#infect()
 
     set t_Co=256
-    " set background=dark
+    set background=dark
     " colorscheme ir_black_custom
-    set background=light
     colorscheme solarized
 endif
 
@@ -176,11 +175,6 @@ syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
-
-" these must come after the colorscheme
-" For vim-indent-guides
-hi IndentGuidesOdd ctermbg=237
-hi IndentGuidesEven ctermbg=236
 
 " :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
