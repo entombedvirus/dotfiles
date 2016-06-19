@@ -23,7 +23,6 @@ if has("nvim")
     " Navigation
     NeoBundle 'ctrlpvim/ctrlp.vim'
     NeoBundle 'mileszs/ack.vim.git'
-    " NeoBundle 'scrooloose/nerdtree'
     NeoBundle 'tpope/vim-vinegar'
 
     " Git
@@ -109,6 +108,14 @@ if has("nvim")
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
+
+    " go specific keybindings
+    augroup filetype_go
+        autocmd!
+        autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
+        autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
+    augroup END
+    let g:netrw_fastbrowse=1
 endif
 
 if !has("nvim")
@@ -178,9 +185,6 @@ command! Q  quit
 command! W  write
 command! Wq wq
 
-" Control-Shift-b invokes make -C <dirname(current buffer)>
-nmap <C-S-b> :make -C %:h<CR>
-nmap <leader>gi :GoInstall<CR>
 
 " Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
 " vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
@@ -388,3 +392,4 @@ let g:loaded_logipat = 1
 
 " netrw settings
 let g:netrw_liststyle=3
+let g:netrw_fastbrowse=2
