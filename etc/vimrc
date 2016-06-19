@@ -1,70 +1,76 @@
 if has("nvim")
-    "NeoBundle Scripts-----------------------------
-    if has('vim_starting')
-      if &compatible
-          set nocompatible               " Be iMproved
+    "dein Scripts-----------------------------
+    if &compatible
+      set nocompatible               " Be iMproved
     endif
 
     " Required:
-    set runtimepath+=~/.nvim/bundle/neobundle.vim/
-    endif
+    set runtimepath^=~/.nvim/bundle/repos/github.com/Shougo/dein.vim
 
     " Required:
-    call neobundle#begin(expand('~/.nvim/bundle'))
+    call dein#begin(expand('~/.nvim/bundle'))
 
-    " Let NeoBundle manage NeoBundle
+    " Let dein manage dein
     " Required:
-    NeoBundleFetch 'Shougo/neobundle.vim'
+    call dein#add('Shougo/dein.vim')
 
-    " Add or remove your Bundles here:
+    " Add or remove your plugins here:
+    call dein#add('Shougo/neosnippet.vim')
+    call dein#add('Shougo/neosnippet-snippets')
+
     " You can specify revision/branch/tag.
-    NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+    call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
     " Navigation
-    NeoBundle 'ctrlpvim/ctrlp.vim'
-    NeoBundle 'mileszs/ack.vim.git'
-    NeoBundle 'tpope/vim-vinegar'
+    call dein#add('ctrlpvim/ctrlp.vim')
+    call dein#add('mileszs/ack.vim.git')
+    call dein#add('tpope/vim-vinegar')
 
     " Git
-    NeoBundle 'airblade/vim-gitgutter.git'
-    NeoBundle 'fatih/vim-go', { 'rev': 'v1.6' }
-    NeoBundle 'tpope/vim-fugitive'
+    call dein#add('airblade/vim-gitgutter.git')
+    call dein#add('fatih/vim-go', { 'rev': 'v1.6' })
+    call dein#add('tpope/vim-fugitive')
 
     " Appearance
-    NeoBundle 'frankier/neovim-colors-solarized-truecolor-only'
-    "NeoBundle 'altercation/vim-colors-solarized.git'
-    NeoBundle 'bling/vim-airline'
-    NeoBundle 'flazz/vim-colorschemes'
-    NeoBundle 'justinmk/molokai'
-    NeoBundle 'nanotech/jellybeans.vim'
-    NeoBundle 'nathanaelkane/vim-indent-guides.git'
-    NeoBundle 'vim-airline/vim-airline-themes'
-    NeoBundle 'morhetz/gruvbox'
-    NeoBundle 'romainl/flattened'
-    NeoBundle 'whatyouhide/vim-gotham'
+    call dein#add('frankier/neovim-colors-solarized-truecolor-only')
+    "call dein#add('altercation/vim-colors-solarized.git')
+    call dein#add('bling/vim-airline')
+    call dein#add('flazz/vim-colorschemes')
+    call dein#add('justinmk/molokai')
+    call dein#add('nanotech/jellybeans.vim')
+    call dein#add('nathanaelkane/vim-indent-guides.git')
+    call dein#add('vim-airline/vim-airline-themes')
+    call dein#add('morhetz/gruvbox')
+    call dein#add('romainl/flattened')
+    call dein#add('whatyouhide/vim-gotham')
 
     " Build
-    NeoBundle 'benekastah/neomake'
+    call dein#add('benekastah/neomake')
 
     " Editing
-    NeoBundle 'ntpeters/vim-better-whitespace.git'
-    NeoBundle 'vim-scripts/taglist.vim.git'
-    NeoBundle 'tpope/vim-surround'
-    NeoBundle 'michaeljsmith/vim-indent-object'
+    call dein#add('ntpeters/vim-better-whitespace.git')
+    call dein#add('vim-scripts/taglist.vim.git')
+    call dein#add('tpope/vim-surround')
+    call dein#add('michaeljsmith/vim-indent-object')
 
     " AutoCompletion
-    NeoBundle 'Shougo/deoplete.nvim'
-    NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
-    NeoBundle 'Shougo/neosnippet'
-    NeoBundle 'Shougo/neosnippet-snippets'
+    call dein#add('Shougo/deoplete.nvim')
+    call dein#add('zchee/deoplete-go', {'build': 'make'})
+    call dein#add('Shougo/neosnippet')
+    call dein#add('Shougo/neosnippet-snippets')
 
     " Required:
-    call neobundle#end()
+    call dein#end()
 
-    " If there are uninstalled bundles found on startup,
-    " this will conveniently prompt you to install them.
-    NeoBundleCheck
-    "End NeoBundle Scripts-------------------------
+    " Required:
+    filetype plugin indent on
+
+    " If you want to install not installed plugins on startup.
+    if dein#check_install()
+      call dein#install()
+    endif
+
+    "End dein Scripts-------------------------
 
     " NeoVim Settings
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
@@ -115,7 +121,13 @@ if has("nvim")
         autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
     augroup END
+
+    " netrw settings
     let g:netrw_fastbrowse=1
+
+    " vim-go
+    let b:goimports_vendor_compatible=1
+    let g:go_fmt_command = "goimports"
 endif
 
 if !has("nvim")
@@ -133,9 +145,32 @@ if !has("nvim")
     colorscheme solarized
 endif
 
-" vim-go
-let b:goimports_vendor_compatible=1
-let g:go_fmt_command = "goimports"
+" Learn VimScript The Hard Way Excercises
+" chapter 04
+" turns current word to upper case
+inoremap <C-u> <Esc>mzviwU`za
+"nnoremap <C-u> mzviwU`z
+
+" chapter 07
+" edit my vimrv in a vsplit
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+" source my vimrv in a vsplit
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" chapter 09
+" surround visually selected word in single quotes
+vnoremap <leader>' <esc>`<i'<Esc>`>la'<esc>
+" jump to beginning of line
+nnoremap H ^
+" jump to end of line
+nnoremap L $
+
+" chapter 15
+" operator pending for inside-next-paren and inside-last-paren
+onoremap in( :<c-u>normal! f(vi(<cr>
+onoremap il( :<c-u>normal! F)vi(<cr>
+onoremap in{ :<c-u>normal! f{vi{<cr>
+onoremap il{ :<c-u>normal! F}vi{<cr>
 
 syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
@@ -143,7 +178,6 @@ filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 
 " these must come after the colorscheme
-hi Search cterm=bold,underline ctermfg=NONE ctermbg=NONE gui=bold,underline guifg=NONE guibg=NONE
 " For vim-indent-guides
 hi IndentGuidesOdd ctermbg=237
 hi IndentGuidesEven ctermbg=236
@@ -200,11 +234,11 @@ set noesckeys
 " vmap <C-D> y']pgv
 
 " delete one char in front
-imap <C-d> <Delete>
+inoremap <C-d> <Delete>
 
 " CtrlP customization
 " Cmd + r -> show symbols in current buffer
-nmap <leader>r :CtrlPBufTagAll <CR>
+nnoremap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
@@ -212,7 +246,7 @@ set wildignore+=*.pyc,*.o,*.a,*.js
 let g:ctrlp_custom_ignore='\.(pyc|o|js)'
 
 " Center the current line vertically
-nmap <C-l> zz
+nnoremap <C-l> zz
 
 " Show cursor position
 " 2016-01-31: disabling because perf & airline shows this anyway
@@ -253,15 +287,29 @@ if has("autocmd")
     if has("nvim")
         " Automatically lint files on save
         "autocmd! BufWritePost * Neomake
-        autocmd! BufWritePost *.py Neomake
-        autocmd! BufWritePost *.go Neomake
+        augroup neomake
+            autocmd!
+            autocmd BufWritePost *.py,*.go Neomake
+        augroup END
     endif
 
     " Automatically strip trailing whitespace
-    autocmd BufWritePre * StripWhitespace
+    augroup strip_whitespace
+        autocmd!
+        autocmd BufWritePre * StripWhitespace
+    augroup END
 
     " Auto-detect git commit messages
-    autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
+    augroup git_commit_msg
+        autocmd!
+        autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
+    augroup END
+
+    augroup fix_search_hi
+        autocmd!
+        autocmd BufNewFile,BufRead * highlight Search guifg=NONE guibg=NONE gui=bold,underline
+    augroup END
+
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
@@ -303,10 +351,10 @@ nnoremap <F3><F3> <C-W>w
 nmap <leader>l :set list!<CR>
 
 " shortcuts to edit files in the same dir as the current open file
-map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+"map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+"map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+"map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+"map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Show syntax highlighting groups for word under cursor
 " nmap <C-S-P> :call <SID>SynStack()<CR>
