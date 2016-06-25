@@ -17,10 +17,12 @@ function source_if_exists {
     [ -f "$file" ] && source "$file"
 }
 
-source_if_exists '/home/rohith/work/google-cloud-sdk/path.zsh.inc'
+source_if_exists "$HOME/work/google-cloud-sdk/path.zsh.inc"
 
 # The next line enables shell command completion for gcloud.
-source_if_exists '/home/rohith/work/google-cloud-sdk/completion.zsh.inc'
+source_if_exists "$HOME/work/google-cloud-sdk/completion.zsh.inc"
+
+source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
 
 [ -f $HOME/analytics/.shellenv ] && source $HOME/analytics/.shellenv
 

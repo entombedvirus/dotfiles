@@ -14,13 +14,6 @@ if has("nvim")
     " Required:
     call dein#add('Shougo/dein.vim')
 
-    " Add or remove your plugins here:
-    call dein#add('Shougo/neosnippet.vim')
-    call dein#add('Shougo/neosnippet-snippets')
-
-    " You can specify revision/branch/tag.
-    call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
     " Navigation
     call dein#add('ctrlpvim/ctrlp.vim')
     call dein#add('mileszs/ack.vim.git')
@@ -28,7 +21,7 @@ if has("nvim")
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
-    call dein#add('fatih/vim-go', { 'rev': 'v1.6' })
+    call dein#add('fatih/vim-go')
     call dein#add('tpope/vim-fugitive')
 
     " Appearance
@@ -120,10 +113,9 @@ if has("nvim")
         autocmd!
         autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
+        autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
+        autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
     augroup END
-
-    " netrw settings
-    let g:netrw_fastbrowse=1
 
     " vim-go
     let b:goimports_vendor_compatible=1
@@ -173,12 +165,6 @@ onoremap il{ :<c-u>normal! F}vi{<cr>
 
 " chapter 32
 " operator for :grep
-"nnoremap <leader>g :silent execute "grep! " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
-nnoremap ]q :cnext<cr>
-nnoremap [q :cprev<cr>
-nnoremap [] :cclose<cr>
-nnoremap ][ :copen<cr>
-
 nnoremap <leader>a :set operatorfunc=<sid>GrepOperator<cr>g@
 vnoremap <leader>a :<c-u>call <sid>GrepOperator(visualmode())<cr>
 
@@ -198,6 +184,24 @@ function! s:GrepOperator(type)
 
     let @@ = saved_unnamed_register
 endfunction
+
+" destroy add buffers
+nnoremap <leader>bd :bufdo bd<cr>
+
+" start profile
+nnoremap <leader>pr :profile start /tmp/profile.log<cr>:profile func *<cr>:profile file *<cr>
+
+" quickfix nav
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprev<cr>
+nnoremap [] :cclose<cr>
+nnoremap ][ :copen<cr>
+
+" location list nav
+nnoremap )q :lnext<cr>
+nnoremap (q :lprev<cr>
+nnoremap () :lclose<cr>
+nnoremap )( :lopen<cr>
 
 syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
@@ -232,10 +236,6 @@ set noshowmode
 " show both absolute current line no and relative numbers
 set relativenumber number
 
-" NERDTree bindings
-" map <C-n> :NERDTreeToggle %:h<CR>
-map <C-n> :NERDTreeFind<CR>
-
 " Common typos
 command! Q  quit
 command! W  write
@@ -267,9 +267,6 @@ let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*.pyc,*.o,*.a,*.js
 let g:ctrlp_custom_ignore='\.(pyc|o|js)'
 
-" Center the current line vertically
-nnoremap <C-l> zz
-
 " Show cursor position
 " 2016-01-31: disabling because perf & airline shows this anyway
 " set ruler
@@ -279,9 +276,6 @@ set hidden
 
 " for highlighting search word
 set hlsearch
-
-" Command-T configuration
-let g:CommandTMaxHeight=20
 
 " always show gitgutter col so text doesn't jump around when they come in
 let g:gitgutter_sign_column_always=1
@@ -309,7 +303,7 @@ if has("autocmd")
     if has("nvim")
         " Automatically lint files on save
         "autocmd! BufWritePost * Neomake
-        augroup neomake
+        augroup auto_neomake
             autocmd!
             autocmd BufWritePost *.py,*.go Neomake
         augroup END
@@ -366,7 +360,7 @@ nnoremap <F2><F2> :vsplit<CR>
 nnoremap <F3><F3> <C-W>w
 
 " Shortcut to rapidly toggle `set list` a.k.a show invisibles
-nmap <leader>l :set list!<CR>
+nnoremap <leader>l :set list!<CR>
 
 " shortcuts to edit files in the same dir as the current open file
 "map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -386,7 +380,7 @@ endfunc
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --ignore=js\ --ignore=css\ --ignore=clj/\ --vimgrep\ $*
+  set grepprg=ag\ --ignore=html\ --ignore=js\ --ignore=css\ --ignore=clj/\ --vimgrep\ $*
   set grepformat=%f:%l:%c:%m
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
@@ -395,25 +389,6 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
-
-" function RubyEndToken ()
-"   let current_line = getline( '.' )
-"   let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-"   let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
-"   let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-"
-"   if match(current_line, braces_at_end) >= 0
-"     return "\<CR>}\<C-O>O"
-"   elseif match(current_line, stuff_without_do) >= 0
-"     return "\<CR>end\<C-O>O"
-"   elseif match(current_line, with_do) >= 0
-"     return "\<CR>end\<C-O>O"
-"   else
-"     return "\<CR>"
-"   endif
-" endfunction
-
-" imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
 " backup to ~/.tmp
 set backup
@@ -459,4 +434,4 @@ let g:loaded_logipat = 1
 
 " netrw settings
 let g:netrw_liststyle=3
-let g:netrw_fastbrowse=2
+
