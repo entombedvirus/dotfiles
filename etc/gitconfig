@@ -20,5 +20,6 @@
 	tool = araxis
 [core]
 	excludesfile = ~/.cvsignore
+	pager = less -RSXF
 [init]
 #	templatedir = ~/.git_template

@@ -35,6 +35,14 @@ alias kpods='kubectl get pods'
 alias dpod='kubectl describe pod'
 alias dsvc='kubectl describe service'
 alias ddep='kubectl describe deployment'
+
 function kshell {
-    kubectl exec -ti $1 env COLUMNS=$(tput cols) LINES=$(tput lines) TERM=$TERM /bin/bash
+    local pod=$1
+    local container=$2
+
+    if [ -n "$container" ]; then
+        kubectl exec $pod -c $container -t -i -- env COLUMNS=$(tput cols) LINES=$(tput lines) TERM=$TERM /bin/bash
+    else
+        kubectl exec $pod -t -i -- env COLUMNS=$(tput cols) LINES=$(tput lines) TERM=$TERM /bin/bash
+    fi
 }
