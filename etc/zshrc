@@ -13,8 +13,10 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 # Load the theme.
 antigen theme amuse
 
+antigen bundle junegunn/fzf shell/
+
 # custom stuff
-antigen bundle $HOME/cl/etc/oh-my-zsh-custom --no-local-clone
+antigen bundle $HOME/cl/etc/oh-my-zsh-custom
 
 # Tell antigen that you're done.
 antigen apply
