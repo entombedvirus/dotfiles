@@ -46,3 +46,6 @@
 [submodule "etc/oh-my-zsh"]
 	path = etc/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "etc/antigen"]
+	path = etc/antigen
+	url = git@github.com:zsh-users/antigen.git
