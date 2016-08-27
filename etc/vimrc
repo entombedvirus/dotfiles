@@ -15,10 +15,11 @@ if has("nvim")
     call dein#add('Shougo/dein.vim')
 
     " Navigation
-    call dein#add('ctrlpvim/ctrlp.vim')
     call dein#add('mileszs/ack.vim.git')
     " call dein#add('tpope/vim-vinegar')
     call dein#add('justinmk/vim-dirvish')
+    call dein#add('ctrlpvim/ctrlp.vim')
+    "call dein#add('junegunn/fzf')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
@@ -47,6 +48,7 @@ if has("nvim")
     call dein#add('tpope/vim-surround')
     call dein#add('michaeljsmith/vim-indent-object')
     call dein#add('AndrewRadev/splitjoin.vim')
+    call dein#add('wellle/targets.vim')
 
     " AutoCompletion
     call dein#add('Shougo/deoplete.nvim')
@@ -132,10 +134,11 @@ if has("nvim")
     let g:go_fmt_command = "goimports"
     let g:go_highlight_types = 1
     let g:go_highlight_fields = 1
-    let g:go_highlight_functions = 1
-    let g:go_highlight_methods = 1
+    " let g:go_highlight_functions = 1
+    " let g:go_highlight_methods = 1
     let g:go_highlight_extra_types = 1
     let g:go_highlight_build_constraints = 1
+    " let g:go_auto_sameids = 1
 endif
 
 if !has("nvim")
