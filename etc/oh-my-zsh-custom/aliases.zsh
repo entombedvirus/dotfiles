@@ -12,21 +12,22 @@ alias ddd="gst | grep deleted | awk '{print \$3}' | xargs -I{} git rm {}"
 alias gdn="git diff --name-only"
 
 # oh-my-zsh git plugin defines an alias that inteferes with this function
-unalias gcb
+unalias gcb 2>/dev/null
 function gcb {
-  branch=$1
-  count=`gb | grep $1  | wc -l`
-  if [[ $count -ge 2 ]]; then
-    echo "too many branches with $branch in the name:"
-    gb | grep $1
-    return
-  fi
+  anyframe-widget-checkout-git-branch
+  # branch=$1
+  # count=`gb | grep $1  | wc -l`
+  # if [[ $count -ge 2 ]]; then
+  #   echo "too many branches with $branch in the name:"
+  #   gb | grep $1
+  #   return
+  # fi
 
-  if [[ $count -eq 1 ]]; then
-    git co `gb | grep $1`
-  else
-    echo "no branches with $branch in the name"
-  fi
+  # if [[ $count -eq 1 ]]; then
+  #   git co `gb | grep $1`
+  # else
+  #   echo "no branches with $branch in the name"
+  # fi
 }
 
 # kubernetes
