@@ -4,21 +4,31 @@ source ${HOME}/.antigen/antigen.zsh
 antigen use oh-my-zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
-antigen bundle gitfast
-antigen bundle golang
+antigen bundles <<EOBUNDLE
+    gitfast
+    golang
+EOBUNDLE
+
+# Load the theme.
+#antigen theme amuse
+
+# can't use antigen theme for these
+# order matters for the zsh-async & pure lines
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
 
 # Bundles from Github
-antigen bundle junegunn/fzf shell/
-antigen bundle mollifier/anyframe
+antigen bundles <<EOBUNDLE
+    # fzf completions
+    junegunn/fzf shell/
+    mollifier/anyframe
+EOBUNDLE
 
 # custom stuff
 antigen bundle $HOME/cl/etc/oh-my-zsh-custom
 
-# Syntax highlighting bundle.
+# Syntax highlighting bundle. should be last
 antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Load the theme.
-antigen theme amuse
 
 # Tell antigen that you're done.
 antigen apply
