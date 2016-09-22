@@ -20,6 +20,7 @@ if has("nvim")
     call dein#add('justinmk/vim-dirvish')
     call dein#add('ctrlpvim/ctrlp.vim')
     "call dein#add('junegunn/fzf')
+    call dein#add('ludovicchabant/vim-gutentags')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
@@ -38,13 +39,16 @@ if has("nvim")
     call dein#add('morhetz/gruvbox')
     call dein#add('romainl/flattened')
     call dein#add('whatyouhide/vim-gotham')
+    call dein#add('NLKNguyen/papercolor-theme')
+    call dein#add('rakr/vim-one')
+    call dein#add('rakr/vim-two-firewatch')
 
     " Build
     call dein#add('benekastah/neomake')
 
     " Editing
     call dein#add('ntpeters/vim-better-whitespace.git')
-    call dein#add('vim-scripts/taglist.vim.git')
+    "call dein#add('vim-scripts/taglist.vim.git')
     call dein#add('tpope/vim-surround')
     call dein#add('michaeljsmith/vim-indent-object')
     call dein#add('AndrewRadev/splitjoin.vim')
@@ -71,15 +75,19 @@ if has("nvim")
 
     " NeoVim Settings
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
     " makes neovim use gui colors in themes instead of cterm colors, usually
     " this is only useful with a tmux and iterm2 both capable of displaying
     " 24bit "True" color
     set termguicolors
-    set background=dark
+    set background=light
+    " colorscheme one
 
-    let g:rehash256 = 1
-    let g:molokai_original = 1
-    colorscheme molokai
+    colorscheme PaperColor
+
+    " let g:rehash256 = 1
+    " let g:molokai_original = 1
+    " colorscheme molokai
 
     " colorscheme kalisi
     " colorscheme Tomorrow-Night
@@ -132,13 +140,17 @@ if has("nvim")
 
     " vim-go
     let g:go_fmt_command = "goimports"
+    let g:go_metalinter_autosave = 1
+    let g:go_metalinter_autosave_enabled = ['vet']
+
     let g:go_highlight_types = 1
     let g:go_highlight_fields = 1
     " let g:go_highlight_functions = 1
     " let g:go_highlight_methods = 1
-    let g:go_highlight_extra_types = 1
+    " let g:go_highlight_extra_types = 1
     let g:go_highlight_build_constraints = 1
-    " let g:go_auto_sameids = 1
+    let g:go_auto_sameids = 1
+    let g:go_auto_type_info = 1
 endif
 
 if !has("nvim")
@@ -153,15 +165,6 @@ if !has("nvim")
     set background=dark
     " colorscheme ir_black_custom
     colorscheme solarized
-endif
-
-" Cursor Shape
-if exists('$TMUX')
-  let &t_SI = "\<Esc>[3 q"
-  let &t_EI = "\<Esc>[0 q"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
 " Learn VimScript The Hard Way Excercises
@@ -250,13 +253,11 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 " nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
+" switch between light and dark themes
+nnoremap <F5> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-"let g:airline_theme='gruvbox'
-" let g:airline_theme='ubaryd'
-" let g:airline_theme='solarized'
-" let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
 
 " For vim-indent-guides
@@ -299,7 +300,7 @@ nnoremap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.pyc,*.o,*.a,*.js
+set wildignore+=*.pyc,*.o,*.a,*.js,*.clj,*.css,*.html
 let g:ctrlp_custom_ignore='\.(pyc|o|js)'
 
 " Show cursor position
@@ -314,7 +315,9 @@ set hlsearch
 
 " always show gitgutter col so text doesn't jump around when they come in
 let g:gitgutter_sign_column_always=1
-set updatetime=750
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
+set updatetime=150
 
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
@@ -356,10 +359,10 @@ if has("autocmd")
         autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
     augroup END
 
-    augroup fix_search_hi
-        autocmd!
-        autocmd BufNewFile,BufRead * highlight Search guifg=NONE guibg=NONE gui=bold,underline
-    augroup END
+    " augroup fix_search_hi
+    "     autocmd!
+    "     autocmd BufNewFile,BufRead * highlight Search guifg=NONE guibg=NONE gui=bold,underline
+    " augroup END
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
