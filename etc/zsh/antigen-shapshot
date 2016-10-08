@@ -1,7 +1,7 @@
-version='1'; created_on='Sat Oct  8 15:34:43 PDT 2016'; checksum='5586be731dffa5dd058bacbfee397b6e';
-f958c9daf59439240c36d74f42187333c23bd8a4 https://github.com/junegunn/fzf.git
-db5651d87c809e1c317d86a5cb1cf34b5322a9e8 https://github.com/mafredri/zsh-async.git
+version='1'; created_on='Sat Oct  8 22:38:13 UTC 2016'; checksum='0ab61fd8550219ef6e85edf2da20454b';
+3222d62ddf0b8072e43ac2b5abd52b1d6d3f6eef https://github.com/junegunn/fzf.git
+c664f124d6422e0d4dcce95d86fefb64f01da4c4 https://github.com/mafredri/zsh-async.git
 4c23cb60aa9654cff6212fb01dce6d8028993bad https://github.com/mollifier/anyframe.git
-2ab67382e7b6892a745f02ec4c8f84e6ac632204 https://github.com/robbyrussell/oh-my-zsh.git
-780d1a5a08589afa051271bbe6c74c1f2e05c368 https://github.com/sindresorhus/pure.git
-11c908196700c00c4662295f44747a5826615c4b https://github.com/zsh-users/zsh-syntax-highlighting.git
+cd37d19ddaf9cc5acbf443f93f88ca355f74090d https://github.com/robbyrussell/oh-my-zsh.git
+5ccc336b35ab76d912eded04a5be132384d359c8 https://github.com/sindresorhus/pure.git
+094329eb145e00b810e65415ed4b9ad58aa7c34a https://github.com/zsh-users/zsh-syntax-highlighting.git
