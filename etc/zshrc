@@ -25,7 +25,7 @@ antigen bundles <<EOBUNDLE
 EOBUNDLE
 
 # custom stuff
-antigen bundle $HOME/cl/etc/oh-my-zsh-custom
+antigen bundle $HOME/cl/etc/zsh/custom
 
 # Syntax highlighting bundle. should be last
 antigen bundle zsh-users/zsh-syntax-highlighting

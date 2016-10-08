@@ -80,10 +80,16 @@ if has("nvim")
     " this is only useful with a tmux and iterm2 both capable of displaying
     " 24bit "True" color
     set termguicolors
-    set background=light
-    " colorscheme one
 
-    colorscheme PaperColor
+    " set background=dark
+    " let g:two_firewatch_italics=1
+    " colorscheme two-firewatch
+
+    colorscheme one
+    set background=dark
+
+    " set background=dark
+    " colorscheme PaperColor
 
     " let g:rehash256 = 1
     " let g:molokai_original = 1
