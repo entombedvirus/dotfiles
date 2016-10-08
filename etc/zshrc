@@ -7,6 +7,7 @@ antigen use oh-my-zsh
 antigen bundles <<EOBUNDLE
     gitfast
     golang
+    kubectl
 EOBUNDLE
 
 # Load the theme.
