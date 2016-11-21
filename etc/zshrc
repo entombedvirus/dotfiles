@@ -8,6 +8,7 @@ antigen bundles <<EOBUNDLE
     gitfast
     golang
     kubectl
+    history
 EOBUNDLE
 
 # Load the theme.
