@@ -25,7 +25,7 @@ Host *.gcp
 
 Host *.corp.mixpanel.com
 
-Host *arb* api* app* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard* ephemeral-*
+Host *arb* api* app* aliases* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard* ephemeral-*
     User live
 
 Host *

@@ -22,3 +22,6 @@ source_if_exists "$HOME/work/google-cloud-sdk/completion.zsh.inc"
 source_if_exists "$HOME/work/google-cloud-sdk/path.zsh.inc"
 
 source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
+
+source_if_exists "$HOME/analytics/.shellenv"
+source_if_exists "$HOME/analytics/google-cloud/scripts/kube.sh"

@@ -1,2 +1,0 @@
-[ -f $HOME/analytics/.shellenv ] && source $HOME/analytics/.shellenv
-
