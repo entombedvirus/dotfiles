@@ -26,6 +26,7 @@ if has("nvim")
     call dein#add('airblade/vim-gitgutter.git')
     call dein#add('fatih/vim-go')
     call dein#add('tpope/vim-fugitive')
+    call dein#add('tpope/vim-unimpaired')
 
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
@@ -117,7 +118,7 @@ if has("nvim")
         \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
         \ }
     let g:neomake_python_enabled_makers = ['flake8']
-    let g:neomake_go_enabled_makers = ['go', 'govet', 'errcheck']
+    "let g:neomake_go_enabled_makers = ['go', 'govet']
 
     " Deoplete config
     let g:deoplete#enable_at_startup = 1
@@ -150,6 +151,7 @@ if has("nvim")
         autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
+        autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
     augroup END
 
     " vim-go
@@ -239,14 +241,10 @@ nnoremap <leader>bd :bufdo bd<cr>
 nnoremap <leader>pr :profile start /tmp/profile.log<cr>:profile func *<cr>:profile file *<cr>
 
 " quickfix nav
-nnoremap ]q :cnext<cr>
-nnoremap [q :cprev<cr>
 nnoremap [] :cclose<cr>
 nnoremap ][ :copen<cr>
 
 " location list nav
-nnoremap )q :lnext<cr>
-nnoremap (q :lprev<cr>
 nnoremap () :lclose<cr>
 nnoremap )( :lopen<cr>
 
