@@ -377,6 +377,9 @@ if has("autocmd")
         autocmd BufNewFile,BufRead COMMIT_EDITMSG set filetype=gitcommit
     augroup END
 
+    " yaml indentation
+    autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
+
     " augroup fix_search_hi
     "     autocmd!
     "     autocmd BufNewFile,BufRead * highlight Search guifg=NONE guibg=NONE gui=bold,underline
