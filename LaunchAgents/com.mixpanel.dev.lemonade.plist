@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.mixpanel.dev.lemonade</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/rohithravi/work/go/bin/lemonade</string>
+        <string>server</string>
+        <string>--allow=127.0.0.1/32,::1</string>
+        <string>--port=2489</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.mixpanel.dev.lemonade.stderr.log</string>
+    <key>StandardOutPath</key>
+    <string>/tmp/com.mixpanel.dev.lemonade.stdout.log</string>
+</dict>
+</plist>

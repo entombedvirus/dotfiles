@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE              -->
+<!--                     Version 2, December 2004                         -->
+
+<!--  Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>                    -->
+
+<!--  Everyone is permitted to copy and distribute verbatim or modified   -->
+<!--  copies of this license document, and changing it is allowed as long -->
+<!--  as the name is changed.                                             -->
+
+<!--             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE              -->
+<!--    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION   -->
+
+<!--   0. You just DO WHAT THE FUCK YOU WANT TO.                          -->
+
+
+<!-- This script initially written by Pratul Kalia (pratul@pratul.in)     -->
+
+
+<!DOCTYPE plist PUBLIC -//Apple Computer//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd >
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>in.pratul.sshtunnel</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/bin/ssh</string>
+            <string>-o</string>
+            <string>ExitOnForwardFailure yes</string>
+            <string>-N</string>
+            <string>-x</string>
+            <string>-D</string>
+            <string>50001</string>
+            <string>-R2489:127.0.0.1:2489</string>
+            <string>rohith</string>
+        </array>
+        <key>KeepAlive</key>
+        <true/>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>/tmp/sshtunnel.err</string>
+    </dict>
+</plist>
