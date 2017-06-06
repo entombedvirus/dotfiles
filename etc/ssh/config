@@ -10,6 +10,11 @@ Host tools
     Hostname 52.34.199.252
     IdentityFile ~/.ssh/tools.pem
 
+Host rohith-gcp
+    User rohith
+    IdentityFile ~/.ssh/id_rsa
+    Hostname 35.185.219.216
+
 Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
