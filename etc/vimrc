@@ -16,17 +16,14 @@ if has("nvim")
 
     " Navigation
     call dein#add('mileszs/ack.vim.git')
-    " call dein#add('tpope/vim-vinegar')
     call dein#add('justinmk/vim-dirvish')
     call dein#add('ctrlpvim/ctrlp.vim')
-    "call dein#add('junegunn/fzf')
     call dein#add('ludovicchabant/vim-gutentags')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
     call dein#add('fatih/vim-go')
     call dein#add('tpope/vim-fugitive')
-    call dein#add('tpope/vim-unimpaired')
 
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
@@ -46,14 +43,17 @@ if has("nvim")
 
     " Build
     call dein#add('benekastah/neomake')
+    "call dein#add('w0rp/ale')
 
     " Editing
     call dein#add('ntpeters/vim-better-whitespace.git')
-    "call dein#add('vim-scripts/taglist.vim.git')
     call dein#add('tpope/vim-surround')
     call dein#add('michaeljsmith/vim-indent-object')
     call dein#add('AndrewRadev/splitjoin.vim')
     call dein#add('wellle/targets.vim')
+    call dein#add('justinmk/vim-sneak')
+    call dein#add('tpope/vim-unimpaired')
+    call dein#add('FooSoft/vim-argwrap')
 
     " AutoCompletion
     call dein#add('Shougo/deoplete.nvim')
@@ -75,7 +75,7 @@ if has("nvim")
     "End dein Scripts-------------------------
 
     " NeoVim Settings
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+    set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
     " makes neovim use gui colors in themes instead of cterm colors, usually
     " this is only useful with a tmux and iterm2 both capable of displaying
@@ -118,7 +118,9 @@ if has("nvim")
         \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
         \ }
     let g:neomake_python_enabled_makers = ['flake8']
-    "let g:neomake_go_enabled_makers = ['go', 'govet']
+    let g:neomake_go_enabled_makers = ['go', 'gometalinter']
+    "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
+    let g:neomake_go_gometalinter_args = ['--fast']
 
     " Deoplete config
     let g:deoplete#enable_at_startup = 1
@@ -156,9 +158,10 @@ if has("nvim")
 
     " vim-go
     let g:go_fmt_command = "goimports"
-    "let g:go_metalinter_autosave = 1
-    "let g:go_metalinter_autosave_enabled = ['vet']
-    "let g:go_metalinter_autosave_enabled = ['golint', 'errcheck', 'vet']
+    " let neomake / ale show syntax errors
+    let g:go_fmt_fail_silently = 1
+    let g:go_updatetime = 400
+    let g:go_snippet_engine = 'neosnippet'
 
     let g:go_highlight_types = 1
     let g:go_highlight_fields = 1
@@ -169,6 +172,21 @@ if has("nvim")
     " let g:go_highlight_functions = 1
     " let g:go_highlight_methods = 1
     " let g:go_highlight_extra_types = 1
+
+    " vim-sneak
+    " 2-character Sneak (don't let vim-sneak take s)
+    nmap f <Plug>Sneak_s
+    nmap F <Plug>Sneak_S
+    " visual-mode
+    xmap f <Plug>Sneak_s
+    xmap F <Plug>Sneak_S
+    " operator-pending-mode
+    omap f <Plug>Sneak_s
+    omap F <Plug>Sneak_S
+
+    " FooSoft/vim-argwrap config
+    let g:argwrap_tail_comma = 1
+    nnoremap <silent> <leader>w :ArgWrap<CR>
 endif
 
 if !has("nvim")
@@ -178,6 +196,9 @@ if !has("nvim")
 
     " Initialize Pathogen, so that we can have selfcontained vim plugins
     execute pathogen#infect()
+
+    " remove the delay when pressing esc
+    set noesckeys
 
     set t_Co=256
     set background=dark
@@ -298,9 +319,6 @@ command! Wq wq
 " Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
 " vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
 vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
-
-" remove the delay when pressing esc
-set noesckeys
 
 " Some emacs keybindings thats used all over OS X
 

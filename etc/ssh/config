@@ -34,7 +34,7 @@ Host *arb* api* app* aliases* backup* build* cache* consumer* *cron* *engage* ex
     User live
 
 Host *
-    ServerAliveInterval 2
+    ServerAliveInterval 30
     ServerAliveCountMax 3
     GSSAPIAuthentication no
     StrictHostKeyChecking no
