@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# sample script to use autossh to open up a remote screen
+# session, or reconnect to an existing one.
+#
+# $Id: rscreen,v 1.4 2002/05/07 17:54:13 harding Exp $
+#
+host=$1
+if [ "X$host" = "X" ]; then
+    host=rohith
+fi
+
+if [ "X$SSH_AUTH_SOCK" = "X" ]; then
+    eval `ssh-agent -s`
+    ssh-add $HOME/.ssh/id_rsa
+fi
+
+AUTOSSH_DEBUG=1
+AUTOSSH_FIRST_POLL=5
+AUTOSSH_POLL=60
+#AUTOSSH_PORT=20000
+AUTOSSH_GATETIME=30
+AUTOSSH_LOGFILE=/tmp/$host.log
+#AUTOSSH_DEBUG=yes
+#AUTOSSH_PATH=/usr/local/bin/ssh
+export AUTOSSH_POLL AUTOSSH_LOGFILE AUTOSSH_DEBUG AUTOSSH_PATH AUTOSSH_GATETIME AUTOSSH_PORT
+
+TMUX_OPTS=
+TMUX_OPTS="$TMUX_OPTS set -qg update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY'\\; "
+TMUX_OPTS="$TMUX_OPTS set-environment -g SSH_AUTH_SOCK \$HOME/.ssh/ssh-auth-sock.$HOSTNAME\\; "
+echo "starting with autossh..."
+#autossh -M 0 -t -Y -C -o CompressionLevel=9 -c arcfour,blowfish-cbc $host "ln -sf \"\${SSH_AUTH_SOCK}\" \"\${HOME}/.ssh/ssh-auth-sock.${HOSTNAME}\"; tmux ${TMUX_OPTS} attach -d || tmux ${TMUX_OPTS} new-session -s dev"
+autossh -M 0 -t -C -o CompressionLevel=9 -o ForwardAgent=no -c arcfour,blowfish-cbc $host "tmux attach -d || tmux new-session -s dev"
