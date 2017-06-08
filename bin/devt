@@ -5,6 +5,26 @@
 #
 # $Id: rscreen,v 1.4 2002/05/07 17:54:13 harding Exp $
 #
+set -o errexit -o pipefail
+
+# make sure only one instance can run locally
+LOCK=/tmp/devt.lock
+
+if ! shlock -p $$ -f ${LOCK} ; then
+    echo "another devt instance $(cat ${LOCK}) is already running"
+    exit 1
+fi
+
+# make sure to release remote forwarded ports when we exit so that another
+# session can claim those ports
+function cleanup {
+    if ssh -O check $host; then
+        ssh -O cancel $forward_args $host
+    fi
+    rm -f ${LOCK}
+}
+trap cleanup EXIT INT TERM
+
 host=$1
 if [ "X$host" = "X" ]; then
     host=rohith
@@ -15,6 +35,16 @@ if [ "X$SSH_AUTH_SOCK" = "X" ]; then
     ssh-add $HOME/.ssh/id_rsa
 fi
 
+forward_args="-D 50001 -R 2489:localhost:2489"
+
+# request port forwardings. will start local master if needed
+while ! ssh -f -N -o ExitOnForwardFailure=yes $forward_args $host; do
+    echo "unable to forward ports. detaching previously attached client"
+    ssh $host -- tmux detach-client || true
+    sleep 2
+done
+
+# attach to tmux session via autossh to handle laptop sleep-s, timeouts etc
 AUTOSSH_DEBUG=1
 AUTOSSH_FIRST_POLL=5
 AUTOSSH_POLL=60
