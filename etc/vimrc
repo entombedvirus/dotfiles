@@ -55,6 +55,9 @@ if has("nvim")
     call dein#add('tpope/vim-unimpaired')
     call dein#add('FooSoft/vim-argwrap')
 
+    " File Types
+    call dein#add('google/vim-jsonnet')
+
     " AutoCompletion
     call dein#add('Shougo/deoplete.nvim')
     call dein#add('zchee/deoplete-go', {'build': 'make'})
