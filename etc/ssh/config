@@ -21,7 +21,6 @@ Host rohith
     Hostname 198.11.223.244
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
-    ControlPersist 1
 
 Host bastion1
     User rohith

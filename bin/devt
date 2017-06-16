@@ -60,4 +60,4 @@ TMUX_OPTS="$TMUX_OPTS set -qg update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_
 TMUX_OPTS="$TMUX_OPTS set-environment -g SSH_AUTH_SOCK \$HOME/.ssh/ssh-auth-sock.$HOSTNAME\\; "
 echo "starting with autossh..."
 #autossh -M 0 -t -Y -C -o CompressionLevel=9 -c arcfour,blowfish-cbc $host "ln -sf \"\${SSH_AUTH_SOCK}\" \"\${HOME}/.ssh/ssh-auth-sock.${HOSTNAME}\"; tmux ${TMUX_OPTS} attach -d || tmux ${TMUX_OPTS} new-session -s dev"
-autossh -M 0 -t -C -o CompressionLevel=9 -o ForwardAgent=no -c arcfour,blowfish-cbc $host "tmux attach -d || tmux new-session -s dev"
+autossh -M 0 -- -E /tmp/devt.log -vvv -t -C -o CompressionLevel=9 -o ForwardAgent=no -c arcfour,blowfish-cbc $host "tmux attach -d || tmux new-session -s dev"
