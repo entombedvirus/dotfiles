@@ -5,7 +5,7 @@
 #
 # $Id: rscreen,v 1.4 2002/05/07 17:54:13 harding Exp $
 #
-set -o errexit -o pipefail
+set -o errexit -o pipefail -o nounset 
 
 # make sure only one instance can run locally
 LOCK=/tmp/devt.lock
@@ -18,19 +18,16 @@ fi
 # make sure to release remote forwarded ports when we exit so that another
 # session can claim those ports
 function cleanup {
-    if ssh -O check $host; then
-        ssh -O cancel $forward_args $host
-    fi
+    #if ssh -O check $host; then
+    #    ssh -O cancel $forward_args $host
+    #fi
     rm -f ${LOCK}
 }
 trap cleanup EXIT INT TERM
 
-host=$1
-if [ "X$host" = "X" ]; then
-    host=rohith
-fi
+host=${1:-rohith}
 
-if [ "X$SSH_AUTH_SOCK" = "X" ]; then
+if [ -z "$SSH_AUTH_SOCK" ]; then
     eval `ssh-agent -s`
     ssh-add $HOME/.ssh/id_rsa
 fi
@@ -38,11 +35,11 @@ fi
 forward_args="-D 50001 -R 2489:localhost:2489"
 
 # request port forwardings. will start local master if needed
-while ! ssh -f -N -o ExitOnForwardFailure=yes $forward_args $host; do
-    echo "unable to forward ports. detaching previously attached client"
-    ssh $host -- tmux detach-client || true
-    sleep 2
-done
+# while ! ssh -f -N -o ExitOnForwardFailure=yes $forward_args $host; do
+#     echo "unable to forward ports. detaching previously attached client"
+#     ssh $host -- tmux detach-client || true
+#     sleep 2
+# done
 
 # attach to tmux session via autossh to handle laptop sleep-s, timeouts etc
 AUTOSSH_DEBUG=1
@@ -58,6 +55,17 @@ export AUTOSSH_POLL AUTOSSH_LOGFILE AUTOSSH_DEBUG AUTOSSH_PATH AUTOSSH_GATETIME 
 TMUX_OPTS=
 TMUX_OPTS="$TMUX_OPTS set -qg update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY'\\; "
 TMUX_OPTS="$TMUX_OPTS set-environment -g SSH_AUTH_SOCK \$HOME/.ssh/ssh-auth-sock.$HOSTNAME\\; "
-echo "starting with autossh..."
 #autossh -M 0 -t -Y -C -o CompressionLevel=9 -c arcfour,blowfish-cbc $host "ln -sf \"\${SSH_AUTH_SOCK}\" \"\${HOME}/.ssh/ssh-auth-sock.${HOSTNAME}\"; tmux ${TMUX_OPTS} attach -d || tmux ${TMUX_OPTS} new-session -s dev"
-autossh -M 0 -- -E /tmp/devt.log -vvv -t -C -o CompressionLevel=9 -o ForwardAgent=no -c arcfour,blowfish-cbc $host "tmux attach -d || tmux new-session -s dev"
+
+# echo "starting with autossh..."
+# mkfifo /tmp/devt.fifo
+# ts < /tmp/devt.fifo > /tmp/devt.log &
+# autossh -M 0 -- -E /tmp/devt.fifo -vvv -t -C -o CompressionLevel=9 -o ForwardAgent=no -c arcfour,blowfish-cbc $host "tmux attach -d || tmux new-session -s dev"
+# wait
+
+ssh $host -- tmux detach-client > /dev/null 2>&1 || true
+
+[ ! -p /tmp/devt.fifo ] && mkfifo /tmp/devt.fifo
+ts < /tmp/devt.fifo > /tmp/devt.log &
+ssh -E /tmp/devt.fifo -vvv -t -C -o CompressionLevel=9 -o ForwardAgent=no -o ExitOnForwardFailure=yes -c arcfour,blowfish-cbc $forward_args $host "tmux attach -d || tmux new-session -s dev"
+wait
