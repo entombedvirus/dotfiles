@@ -28,12 +28,12 @@ if has("nvim")
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
     "call dein#add('altercation/vim-colors-solarized.git')
-    call dein#add('bling/vim-airline')
     call dein#add('flazz/vim-colorschemes')
     call dein#add('justinmk/molokai')
     call dein#add('nanotech/jellybeans.vim')
     call dein#add('nathanaelkane/vim-indent-guides.git')
     call dein#add('vim-airline/vim-airline-themes')
+    call dein#add('bling/vim-airline')
     call dein#add('morhetz/gruvbox')
     call dein#add('romainl/flattened')
     call dein#add('whatyouhide/vim-gotham')
@@ -61,8 +61,8 @@ if has("nvim")
     " AutoCompletion
     call dein#add('Shougo/deoplete.nvim')
     call dein#add('zchee/deoplete-go', {'build': 'make'})
-    call dein#add('Shougo/neosnippet')
-    call dein#add('Shougo/neosnippet-snippets')
+    "call dein#add('Shougo/neosnippet')
+    "call dein#add('Shougo/neosnippet-snippets')
 
     " Required:
     call dein#end()
@@ -86,29 +86,33 @@ if has("nvim")
     set termguicolors
 
     " let g:two_firewatch_italics=1
-    " colorscheme two-firewatch
-    " set background=dark
+    "colorscheme two-firewatch
+    "set background=dark
 
-    " colorscheme one
-    " set background=dark
+    "colorscheme one
+    "set background=dark
 
-    " set background=light
-    " colorscheme PaperColor
-
-    let g:rehash256 = 1
-    " let g:molokai_original = 1
-    " colorscheme molokai
-    " set background=dark
-
-    colorscheme jelleybeans
+    colorscheme PaperColor
     set background=light
 
-    " colorscheme kalisi
-    " colorscheme Tomorrow-Night
+    " let g:rehash256 = 1
+    " let g:molokai_original = 1
+    "colorscheme molokai
+    "set background=dark
 
-    " let g:gruvbox_italic=1
-    " let g:gruvbox_contrast_dark="medium"
-    " colorscheme gruvbox
+    " colorscheme jelleybeans
+    " set background=light
+
+    " set background=dark
+    " colorscheme kalisi
+
+    "colorscheme Tomorrow-Night
+    "set background=dark
+
+    "let g:gruvbox_italic=1
+    "let g:gruvbox_contrast_dark="medium"
+    "set background=dark
+    "colorscheme gruvbox
 
     " Neomake configuration
     let g:neomake_python_flake8_maker = {
@@ -157,6 +161,13 @@ if has("nvim")
         autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
         autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+    augroup END
+
+    " colorscheme overrides
+    augroup colorscheme_overrides
+        autocmd!
+        "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
+        autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=none
     augroup END
 
     " vim-go
@@ -208,6 +219,11 @@ if !has("nvim")
     " colorscheme ir_black_custom
     colorscheme solarized
 endif
+
+" For fast scrolling
+"set nocursorline
+"set lazyredraw
+set synmaxcol=200
 
 " Learn VimScript The Hard Way Excercises
 " chapter 04

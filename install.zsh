@@ -17,6 +17,11 @@ fi
 
 brew install go fzf ctags-exuberant autossh the_silver_searcher
 
+# source code tagging
+brew tap universal-ctags/universal-ctags
+brew install --HEAD universal-ctags
+brew install global
+
 export GOPATH=${HOME}/work/go
 mkdir -p ${GOPATH}
 
