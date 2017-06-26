@@ -5,7 +5,7 @@
 #
 # $Id: rscreen,v 1.4 2002/05/07 17:54:13 harding Exp $
 #
-set -o errexit -o pipefail -o nounset 
+set -o errexit -o pipefail -o nounset -x
 
 # make sure only one instance can run locally
 LOCK=/tmp/devt.lock
@@ -32,7 +32,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     ssh-add $HOME/.ssh/id_rsa
 fi
 
-forward_args="-D 50001 -R 2489:localhost:2489"
+forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
 
 # request port forwardings. will start local master if needed
 # while ! ssh -f -N -o ExitOnForwardFailure=yes $forward_args $host; do
