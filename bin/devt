@@ -65,7 +65,8 @@ TMUX_OPTS="$TMUX_OPTS set-environment -g SSH_AUTH_SOCK \$HOME/.ssh/ssh-auth-sock
 
 ssh $host -- tmux detach-client > /dev/null 2>&1 || true
 
-[ ! -p /tmp/devt.fifo ] && mkfifo /tmp/devt.fifo
-ts < /tmp/devt.fifo > /tmp/devt.log &
-ssh -E /tmp/devt.fifo -vvv -t -C -o CompressionLevel=9 -o ForwardAgent=no -o ExitOnForwardFailure=yes -c arcfour,blowfish-cbc $forward_args $host "tmux attach -d || tmux new-session -s dev"
-wait
+#[ ! -p /tmp/devt.fifo ] && mkfifo /tmp/devt.fifo
+#ts < /tmp/devt.fifo > /tmp/devt.log &
+ret=0
+ssh -t -o Compression=no -o ForwardAgent=no -o ExitOnForwardFailure=yes -c arcfour,blowfish-cbc $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+echo "ssh exited with code: $ret"

@@ -19,8 +19,8 @@ Host rohith
     User rohith
     IdentityFile ~/.ssh/id_rsa
     Hostname 198.11.223.244
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
+    #ControlPath ~/.ssh/cm-%r@%h:%p
+    #ControlMaster auto
 
 Host bastion1
     User rohith
