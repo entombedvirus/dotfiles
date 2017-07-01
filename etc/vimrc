@@ -1,17 +1,12 @@
-if has("nvim")
-    "dein Scripts-----------------------------
-    if &compatible
-      set nocompatible               " Be iMproved
-    endif
+if &compatible
+  set nocompatible
+endif
+set runtimepath+=~/.nvim/bundle/repos/github.com/Shougo/dein.vim
 
-    " Required:
-    set runtimepath^=~/.nvim/bundle/repos/github.com/Shougo/dein.vim
-
-    " Required:
-    call dein#begin(expand('~/.nvim/bundle'))
+if dein#load_state('~/.nvim/bundle')
+    call dein#begin('~/.nvim/bundle')
 
     " Let dein manage dein
-    " Required:
     call dein#add('Shougo/dein.vim')
 
     " Navigation
@@ -59,25 +54,65 @@ if has("nvim")
     call dein#add('google/vim-jsonnet')
 
     " AutoCompletion
-    call dein#add('Shougo/deoplete.nvim')
-    call dein#add('zchee/deoplete-go', {'build': 'make'})
-    "call dein#add('Shougo/neosnippet')
-    "call dein#add('Shougo/neosnippet-snippets')
-
-    " Required:
-    call dein#end()
-
-    " Required:
-    filetype plugin indent on
-
-    " If you want to install not installed plugins on startup.
-    if dein#check_install()
-      call dein#install()
+    if has("nvim")
+        call dein#add('Shougo/deoplete.nvim')
+        call dein#add('zchee/deoplete-go', {'build': 'make'})
+        "call dein#add('Shougo/neosnippet')
+        "call dein#add('Shougo/neosnippet-snippets')
     endif
 
-    "End dein Scripts-------------------------
+    call dein#end()
+    call dein#save_state()
+endif
 
-    " NeoVim Settings
+filetype plugin indent on
+syntax enable
+
+if has("gui")
+    " Start without the toolbar
+    set guioptions-=T
+    " Start without the right toolbar
+    set guioptions-=r
+    set guioptions-=R
+    " Start without the left toolbar
+    set guioptions-=l
+    set guioptions-=L
+endif
+
+if has("gui_macvim")
+    set guifont=Knack\ Nerd\ Font:h13
+
+    colorscheme one
+    set background=light
+
+    " Fullscreen takes up entire screen
+    set fuoptions=maxhorz,maxvert
+
+    " Map Command-# to switch tabs
+    map  <D-0> 0gt
+    imap <D-0> <Esc>0gt
+    map  <D-1> 1gt
+    imap <D-1> <Esc>1gt
+    map  <D-2> 2gt
+    imap <D-2> <Esc>2gt
+    map  <D-3> 3gt
+    imap <D-3> <Esc>3gt
+    map  <D-4> 4gt
+    imap <D-4> <Esc>4gt
+    map  <D-5> 5gt
+    imap <D-5> <Esc>5gt
+    map  <D-6> 6gt
+    imap <D-6> <Esc>6gt
+    map  <D-7> 7gt
+    imap <D-7> <Esc>7gt
+    map  <D-8> 8gt
+    imap <D-8> <Esc>8gt
+    map  <D-9> 9gt
+    imap <D-9> <Esc>9gt
+endif
+
+
+if has("nvim")
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
     " makes neovim use gui colors in themes instead of cterm colors, usually
@@ -114,33 +149,6 @@ if has("nvim")
     "set background=dark
     "colorscheme gruvbox
 
-    " Neomake configuration
-    let g:neomake_python_flake8_maker = {
-        \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
-        \ 'errorformat':
-            \ '%E%f:%l: could not compile,%-Z%p^,' .
-            \ '%A%f:%l:%c: %t%n %m,' .
-            \ '%A%f:%l: %t%n %m,' .
-            \ '%-G%.%#',
-        \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
-        \ }
-    let g:neomake_python_enabled_makers = ['flake8']
-    let g:neomake_go_enabled_makers = ['go', 'gometalinter']
-    "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
-    let g:neomake_go_gometalinter_args = ['--fast']
-
-    " Deoplete config
-    let g:deoplete#enable_at_startup = 1
-    " neocomplete like
-    set completeopt+=noinsert
-    " deoplete.nvim recommend
-    set completeopt+=noselect
-    " disable preview scratch buffer
-    set completeopt-=preview
-
-    " gutentags config
-    let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/node_modules/*']
-
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
     tnoremap <A-j> <C-\><C-n><C-w>j
@@ -151,74 +159,94 @@ if has("nvim")
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
 
-    " go specific keybindings
-    augroup filetype_go
-        autocmd!
-        autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
-        autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
-    augroup END
-
-    " colorscheme overrides
-    augroup colorscheme_overrides
-        autocmd!
-        "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
-        autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=none
-    augroup END
-
-    " vim-go
-    let g:go_fmt_command = "goimports"
-    " let neomake / ale show syntax errors
-    let g:go_fmt_fail_silently = 1
-    let g:go_updatetime = 400
-    let g:go_snippet_engine = 'neosnippet'
-
-    let g:go_highlight_types = 1
-    let g:go_highlight_fields = 1
-    let g:go_highlight_build_constraints = 1
-    let g:go_auto_sameids = 1
-    let g:go_auto_type_info = 1
-
-    " let g:go_highlight_functions = 1
-    " let g:go_highlight_methods = 1
-    " let g:go_highlight_extra_types = 1
-
-    " vim-sneak
-    " 2-character Sneak (don't let vim-sneak take s)
-    nmap f <Plug>Sneak_s
-    nmap F <Plug>Sneak_S
-    " visual-mode
-    xmap f <Plug>Sneak_s
-    xmap F <Plug>Sneak_S
-    " operator-pending-mode
-    omap f <Plug>Sneak_s
-    omap F <Plug>Sneak_S
-
-    " FooSoft/vim-argwrap config
-    let g:argwrap_tail_comma = 1
-    nnoremap <silent> <leader>w :ArgWrap<CR>
+    " Deoplete config
+    let g:deoplete#enable_at_startup = 1
+    " neocomplete like
+    set completeopt+=noinsert
+    " deoplete.nvim recommend
+    set completeopt+=noselect
+    " disable preview scratch buffer
+    set completeopt-=preview
 endif
 
 if !has("nvim")
-    " This must be first, because it changes other options as a side effect.
-    " Use Vim settings, rather then Vi settings (much better!).
-    set nocompatible
-
-    " Initialize Pathogen, so that we can have selfcontained vim plugins
-    execute pathogen#infect()
-
     " remove the delay when pressing esc
     set noesckeys
-
-    set t_Co=256
-    set background=dark
-    " colorscheme ir_black_custom
-    colorscheme solarized
 endif
+
+if !has("nvim") && !has("gui_macvim")
+    set t_Co=256
+
+    colorscheme jelleybeans
+    set background=dark
+endif
+
+let g:neomake_python_flake8_maker = {
+    \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
+    \ 'errorformat':
+        \ '%E%f:%l: could not compile,%-Z%p^,' .
+        \ '%A%f:%l:%c: %t%n %m,' .
+        \ '%A%f:%l: %t%n %m,' .
+        \ '%-G%.%#',
+    \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
+    \ }
+let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_go_enabled_makers = ['go', 'gometalinter']
+"let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
+let g:neomake_go_gometalinter_args = ['--fast']
+
+" gutentags config
+let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/node_modules/*']
+
+" colorscheme overrides
+"augroup colorscheme_overrides
+"    autocmd!
+"    "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
+"    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=none
+"augroup END
+
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
+let g:go_updatetime = 400
+let g:go_snippet_engine = 'neosnippet'
+
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_build_constraints = 1
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
+
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_extra_types = 1
+
+" go specific keybindings
+augroup filetype_go
+    autocmd!
+    autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+augroup END
+
+" vim-sneak
+" 2-character Sneak (don't let vim-sneak take s)
+nmap f <Plug>Sneak_s
+nmap F <Plug>Sneak_S
+" visual-mode
+xmap f <Plug>Sneak_s
+xmap F <Plug>Sneak_S
+" operator-pending-mode
+omap f <Plug>Sneak_s
+omap F <Plug>Sneak_S
+
+" FooSoft/vim-argwrap config
+let g:argwrap_tail_comma = 1
+nnoremap <silent> <leader>w :ArgWrap<CR>
 
 " For fast scrolling
 "set nocursorline
@@ -298,20 +326,12 @@ vnoremap <expr> // 'y/\V'.escape(@",'\').'<CR>'
 " persistent undo file
 set undofile
 
-syntax on             " Enable syntax highlighting
-filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
-filetype plugin on    " Enable filetype-specific plugins
-
 " :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
 
 " bind G to grep word under cursor
 " nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" switch between light and dark themes
-nnoremap <F5> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -349,7 +369,7 @@ vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
 inoremap <C-d> <Delete>
 
 " CtrlP customization
-" Cmd + r -> show symbols in current buffer
+" leader + r -> show symbols in current buffer
 nnoremap <leader>r :CtrlPBufTagAll <CR>
 " treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
@@ -377,7 +397,7 @@ set updatetime=150
 set listchars=tab:▸\ ,eol:¬
 
 " Show invisible chars
-set list!
+set list
 
 set title
 
@@ -392,7 +412,7 @@ set scrolloff=7
 set scrolljump=5
 
 if has("autocmd")
-    if has("nvim")
+    if has(":Neomake")
         " Automatically lint files on save
         "autocmd! BufWritePost * Neomake
         augroup auto_neomake
@@ -405,7 +425,7 @@ if has("autocmd")
     " Automatically strip trailing whitespace
     augroup strip_whitespace
         autocmd!
-        autocmd BufWritePre * StripWhitespace
+        autocmd BufWritePre * if exists(":StripWhitespace") | exe "StripWhitespace" | endif
     augroup END
 
     " Auto-detect git commit messages
@@ -416,11 +436,6 @@ if has("autocmd")
 
     " yaml indentation
     autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
-
-    " augroup fix_search_hi
-    "     autocmd!
-    "     autocmd BufNewFile,BufRead * highlight Search guifg=NONE guibg=NONE gui=bold,underline
-    " augroup END
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
@@ -450,19 +465,6 @@ set mouse=a
 
 " remap'd keys
 nnoremap <Tab><Tab> <C-W>w
-nnoremap <F5><F5> :set invhls hls?<CR>    " use f5f5 to toggle search hilight
-nnoremap <F4><F4> :set invwrap wrap?<CR>  " use f4f4 to toggle wordwrap
-nnoremap <F2><F2> :vsplit<CR>
-nnoremap <F3><F3> <C-W>w
-
-" Shortcut to rapidly toggle `set list` a.k.a show invisibles
-nnoremap <leader>l :set list!<CR>
-
-" shortcuts to edit files in the same dir as the current open file
-"map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
-"map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
-"map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
-"map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Show syntax highlighting groups for word under cursor
 " nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -546,4 +548,3 @@ let g:loaded_logipat = 1
 
 " netrw settings
 let g:netrw_liststyle=3
-
