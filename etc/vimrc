@@ -35,6 +35,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('NLKNguyen/papercolor-theme')
     call dein#add('rakr/vim-one')
     call dein#add('rakr/vim-two-firewatch')
+    call dein#add('mhartington/oceanic-next')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -127,8 +128,8 @@ if has("nvim")
     "colorscheme one
     "set background=dark
 
-    colorscheme PaperColor
-    set background=light
+    "colorscheme PaperColor
+    "set background=light
 
     " let g:rehash256 = 1
     " let g:molokai_original = 1
@@ -149,6 +150,10 @@ if has("nvim")
     "set background=dark
     "colorscheme gruvbox
 
+    colorscheme OceanicNext
+    set background=dark
+    let g:airline_theme='oceanicnext'
+
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
     tnoremap <A-j> <C-\><C-n><C-w>j
@@ -167,11 +172,51 @@ if has("nvim")
     set completeopt+=noselect
     " disable preview scratch buffer
     set completeopt-=preview
+
+    " Neomake configuration
+    let g:neomake_python_flake8_maker = {
+        \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
+        \ 'errorformat':
+            \ '%E%f:%l: could not compile,%-Z%p^,' .
+            \ '%A%f:%l:%c: %t%n %m,' .
+            \ '%A%f:%l: %t%n %m,' .
+            \ '%-G%.%#',
+        \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
+        \ }
+    let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_go_enabled_makers = ['go', 'gometalinter']
+    "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
+    let g:neomake_go_gometalinter_args = ['--fast']
+
+    " Deoplete config
+    let g:deoplete#enable_at_startup = 1
+    " neocomplete like
+    set completeopt+=noinsert
+    " deoplete.nvim recommend
+    set completeopt+=noselect
+    " disable preview scratch buffer
+    set completeopt-=preview
+
 endif
 
 if !has("nvim")
     " remove the delay when pressing esc
     set noesckeys
+
+    " cargo cult nvim defaults
+    set autoindent
+    set autoread
+    set backspace="indent,eol,start"
+    set display="lastline"
+    set formatoptions="tcqj"
+    set history=10000
+    set nrformats="bin,hex"
+    set showcmd
+    set smarttab
+    set tabpagemax=50
+    set tags="./tags;,tags"
+    set ttyfast
+    set wildmenu
 endif
 
 if !has("nvim") && !has("gui_macvim")
@@ -181,29 +226,15 @@ if !has("nvim") && !has("gui_macvim")
     set background=dark
 endif
 
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
-    \ 'errorformat':
-        \ '%E%f:%l: could not compile,%-Z%p^,' .
-        \ '%A%f:%l:%c: %t%n %m,' .
-        \ '%A%f:%l: %t%n %m,' .
-        \ '%-G%.%#',
-    \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
-    \ }
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_go_enabled_makers = ['go', 'gometalinter']
-"let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
-let g:neomake_go_gometalinter_args = ['--fast']
-
 " gutentags config
 let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/node_modules/*']
 
 " colorscheme overrides
-"augroup colorscheme_overrides
-"    autocmd!
-"    "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
-"    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=none
-"augroup END
+augroup colorscheme_overrides
+    autocmd!
+    "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
+    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=NONE
+augroup END
 
 " vim-go
 let g:go_fmt_command = "goimports"
@@ -272,6 +303,9 @@ vnoremap <leader>' <esc>`<i'<Esc>`>la'<esc>
 nnoremap H ^
 " jump to end of line
 nnoremap L $
+" scroll faster
+nnoremap <C-j> 5j
+nnoremap <C-k> 5k
 
 " chapter 15
 " operator pending for inside-next-paren and inside-last-paren
@@ -371,15 +405,15 @@ inoremap <C-d> <Delete>
 " CtrlP customization
 " leader + r -> show symbols in current buffer
 nnoremap <leader>r :CtrlPBufTagAll <CR>
-" treat git root dir as the working dir
 let g:ctrlp_cmd = 'CtrlPMRU'
+" treat git root dir as the working dir
 let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*.pyc,*.o,*.a,*.js,*.clj,*.css,*.html
 let g:ctrlp_custom_ignore='\.(pyc|o|js)'
 
 " Show cursor position
 " 2016-01-31: disabling because perf & airline shows this anyway
-" set ruler
+set noruler
 
 " for letting swtich away from a modified buffer w/o warning
 set hidden
@@ -439,14 +473,6 @@ if has("autocmd")
 endif
 
 " Taken from http://dotfiles.org/~defunkt/.vimrc
-
-" os x backspace fix
-set backspace=indent,eol,start
-"set t_kb
-" fixdel
-
-" tabs -> spaces
-" set expandtab
 
 " don't leave hardtabs
 set expandtab
@@ -519,7 +545,6 @@ set dir=$HOME/.tmp
 " misc
 "set ai
 set incsearch
-" set showcmd
 set nowrap
 
 " Some tab helpers (<leader> is \)
