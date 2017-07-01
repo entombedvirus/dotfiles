@@ -69,6 +69,13 @@ endif
 filetype plugin indent on
 syntax enable
 
+" colorscheme overrides. has to be before any colorscheme lines
+augroup colorscheme_overrides
+    autocmd!
+    "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
+    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=NONE
+augroup END
+
 if has("gui")
     " Start without the toolbar
     set guioptions-=T
@@ -219,6 +226,7 @@ if !has("nvim")
     set wildmenu
 endif
 
+" plain old vim
 if !has("nvim") && !has("gui_macvim")
     set t_Co=256
 
@@ -228,13 +236,6 @@ endif
 
 " gutentags config
 let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/node_modules/*']
-
-" colorscheme overrides
-augroup colorscheme_overrides
-    autocmd!
-    "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
-    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=NONE
-augroup END
 
 " vim-go
 let g:go_fmt_command = "goimports"
@@ -446,7 +447,7 @@ set scrolloff=7
 set scrolljump=5
 
 if has("autocmd")
-    if has(":Neomake")
+    if exists(":Neomake")
         " Automatically lint files on save
         "autocmd! BufWritePost * Neomake
         augroup auto_neomake
