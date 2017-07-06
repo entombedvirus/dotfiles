@@ -447,15 +447,13 @@ set scrolloff=7
 set scrolljump=5
 
 if has("autocmd")
-    if exists(":Neomake")
-        " Automatically lint files on save
-        "autocmd! BufWritePost * Neomake
-        augroup auto_neomake
-            autocmd!
-            autocmd BufWritePost *.py Neomake
-            autocmd BufWritePost *.go Neomake
-        augroup END
-    endif
+    " Automatically lint files on save
+    "autocmd! BufWritePost * Neomake
+    augroup auto_neomake
+        autocmd!
+        autocmd BufWritePost *.py if exists(":Neomake") | exe "Neomake" | endif
+        autocmd BufWritePost *.go if exists(":Neomake") | exe "Neomake" | endif
+    augroup END
 
     " Automatically strip trailing whitespace
     augroup strip_whitespace
