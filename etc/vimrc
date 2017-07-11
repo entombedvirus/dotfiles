@@ -17,8 +17,10 @@ if dein#load_state('~/.nvim/bundle')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
-    call dein#add('fatih/vim-go')
     call dein#add('tpope/vim-fugitive')
+
+    " Go
+    call dein#add('fatih/vim-go')
 
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
@@ -58,8 +60,9 @@ if dein#load_state('~/.nvim/bundle')
     if has("nvim")
         call dein#add('Shougo/deoplete.nvim')
         call dein#add('zchee/deoplete-go', {'build': 'make'})
-        "call dein#add('Shougo/neosnippet')
-        "call dein#add('Shougo/neosnippet-snippets')
+        call dein#add('Shougo/neosnippet')
+        call dein#add('Shougo/neosnippet-snippets')
+        call dein#add('sebdah/vim-delve')
     endif
 
     call dein#end()
@@ -149,17 +152,17 @@ if has("nvim")
     " set background=dark
     " colorscheme kalisi
 
-    "colorscheme Tomorrow-Night
-    "set background=dark
+    colorscheme Tomorrow-Night
+    set background=dark
 
     "let g:gruvbox_italic=1
     "let g:gruvbox_contrast_dark="medium"
     "set background=dark
     "colorscheme gruvbox
 
-    colorscheme OceanicNext
-    set background=dark
-    let g:airline_theme='oceanicnext'
+    "colorscheme OceanicNext
+    "set background=dark
+    "let g:airline_theme='oceanicnext'
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -204,6 +207,31 @@ if has("nvim")
     " disable preview scratch buffer
     set completeopt-=preview
 
+    " neosnippet config
+    " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+    " SuperTab like snippets behavior.
+    " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    "imap <expr><TAB>
+    " \ pumvisible() ? "\<C-n>" :
+    " \ neosnippet#expandable_or_jumpable() ?
+    " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+    " For conceal markers.
+    if has('conceal')
+        set conceallevel=2 concealcursor=niv
+    endif
+
+    " sebdah/vim-delve config
+    nnoremap <leader>db :DlvToggleBreakpoint<cr>
+    nnoremap <leader>dt :DlvTest<cr>
+    nnoremap <leader>dd :DlvDebug
 endif
 
 if !has("nvim")
