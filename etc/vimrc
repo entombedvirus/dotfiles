@@ -231,7 +231,7 @@ if has("nvim")
     " sebdah/vim-delve config
     nnoremap <leader>db :DlvToggleBreakpoint<cr>
     nnoremap <leader>dt :DlvTest<cr>
-    nnoremap <leader>dd :DlvDebug
+    nnoremap <leader>dd :DlvDebug<cr>
 endif
 
 if !has("nvim")
