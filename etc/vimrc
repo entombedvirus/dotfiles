@@ -14,6 +14,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('justinmk/vim-dirvish')
     call dein#add('ctrlpvim/ctrlp.vim')
     call dein#add('ludovicchabant/vim-gutentags')
+    call dein#add('junegunn/fzf')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
@@ -230,6 +231,8 @@ if has("nvim")
 
     " sebdah/vim-delve config
     nnoremap <leader>db :DlvToggleBreakpoint<cr>
+    nnoremap <leader>dr :DlvToggleTracepoint<cr>
+    nnoremap <leader>dc :DlvClearAll<cr>
     nnoremap <leader>dt :DlvTest<cr>
     nnoremap <leader>dd :DlvDebug<cr>
 endif
@@ -307,6 +310,45 @@ omap F <Plug>Sneak_S
 " FooSoft/vim-argwrap config
 let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
+
+" FZF + CtrlP config
+command! FZFMru call fzf#run(fzf#wrap({
+\ 'source':  s:mru_filelist(),
+\ 'options': '--multi --extended --no-sort',
+\ 'down':    '40%' }))
+let g:ctrlp_map = '<c-\>' " rename CtrlP binding to something else
+nnoremap <c-p> :FZFMru<cr>
+
+function! s:mru_filelist() abort
+    return extend(
+                \ ctrlp#mrufiles#list(),
+                \ split(system('git ls-files'), '\n')
+                \)
+endfunction
+
+" CtrlP customization
+" leader + r -> show symbols in current buffer
+" nnoremap <leader>r :CtrlPBufTagAll <CR>
+let g:ctrlp_cmd = 'CtrlPMRU'
+"let g:ctrlp_custom_ignore='\.(pyc|o|js)'
+
+" treat git root dir as the working dir
+"let g:ctrlp_working_path_mode = 'ra'
+"set wildignore+=*.pyc,*.o,*.a,*.clj,*.css,*.html,*.js
+set wildignore+=*.pyc,*.o,*.a,*.clj
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --ignore=html\ --ignore=js\ --ignore=css\ --ignore=clj/\ --ignore=vendor/\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore=js --ignore=css --ignore=clj/ --ignore=vendor/'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 " For fast scrolling
 "set nocursorline
@@ -431,15 +473,6 @@ vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
 " delete one char in front
 inoremap <C-d> <Delete>
 
-" CtrlP customization
-" leader + r -> show symbols in current buffer
-nnoremap <leader>r :CtrlPBufTagAll <CR>
-let g:ctrlp_cmd = 'CtrlPMRU'
-" treat git root dir as the working dir
-let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.pyc,*.o,*.a,*.js,*.clj,*.css,*.html
-let g:ctrlp_custom_ignore='\.(pyc|o|js)'
-
 " Show cursor position
 " 2016-01-31: disabling because perf & airline shows this anyway
 set noruler
@@ -543,19 +576,6 @@ function! s:CloseHiddenBuffers()
     endif
   endfor
 endfunction
-
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --ignore=html\ --ignore=js\ --ignore=css\ --ignore=clj/\ --ignore=vendor/\ --vimgrep\ $*
-  set grepformat=%f:%l:%c:%m
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore=js --ignore=css --ignore=clj/ --ignore=vendor/'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
 
 " backup to ~/.tmp
 set backup
