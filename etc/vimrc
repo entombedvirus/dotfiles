@@ -321,7 +321,7 @@ nnoremap <c-p> :FZFMru<cr>
 
 function! s:mru_filelist() abort
     return extend(
-                \ ctrlp#mrufiles#list(),
+                \ ctrlp#mrufiles#refresh(),
                 \ split(system('git ls-files'), '\n')
                 \)
 endfunction
