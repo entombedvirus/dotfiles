@@ -320,10 +320,8 @@ let g:ctrlp_map = '<c-\>' " rename CtrlP binding to something else
 nnoremap <c-p> :FZFMru<cr>
 
 function! s:mru_filelist() abort
-    return extend(
-                \ ctrlp#mrufiles#refresh(),
-                \ split(system('git ls-files'), '\n')
-                \)
+    let cmd = 'git ls-files --full-name'
+    return extend(ctrlp#mrufiles#refresh(), systemlist(cmd))
 endfunction
 
 " CtrlP customization
@@ -484,7 +482,11 @@ set hidden
 set hlsearch
 
 " always show gitgutter col so text doesn't jump around when they come in
-let g:gitgutter_sign_column_always=1
+if has("nvim")
+    set signcolumn=yes
+else
+    let g:gitgutter_sign_column_always=1
+endif
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
 set updatetime=150
