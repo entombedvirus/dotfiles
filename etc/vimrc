@@ -21,7 +21,9 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('tpope/vim-fugitive')
 
     " Go
-    call dein#add('fatih/vim-go')
+    if has("nvim")
+        call dein#add('fatih/vim-go')
+    endif
 
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
@@ -31,7 +33,6 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('nanotech/jellybeans.vim')
     call dein#add('nathanaelkane/vim-indent-guides.git')
     call dein#add('vim-airline/vim-airline-themes')
-    call dein#add('bling/vim-airline')
     call dein#add('morhetz/gruvbox')
     call dein#add('romainl/flattened')
     call dein#add('whatyouhide/vim-gotham')
@@ -39,6 +40,8 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('rakr/vim-one')
     call dein#add('rakr/vim-two-firewatch')
     call dein#add('mhartington/oceanic-next')
+    call dein#add('bling/vim-airline')
+    "call dein#add('ap/vim-buftabline')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -59,10 +62,15 @@ if dein#load_state('~/.nvim/bundle')
 
     " AutoCompletion
     if has("nvim")
-        call dein#add('Shougo/deoplete.nvim')
-        call dein#add('zchee/deoplete-go', {'build': 'make'})
-        call dein#add('Shougo/neosnippet')
-        call dein#add('Shougo/neosnippet-snippets')
+        "call dein#add('Shougo/neosnippet')
+        "call dein#add('Shougo/neosnippet-snippets')
+        call dein#add('SirVer/ultisnips')
+
+        "call dein#add('Shougo/deoplete.nvim')
+        "call dein#add('zchee/deoplete-go', {'build': 'make'})
+        "call dein#add('Shougo/echodoc.vim')
+        call dein#add('roxma/nvim-completion-manager')
+
         call dein#add('sebdah/vim-delve')
     endif
 
@@ -208,26 +216,26 @@ if has("nvim")
     " disable preview scratch buffer
     set completeopt-=preview
 
-    " neosnippet config
-    " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    xmap <C-k>     <Plug>(neosnippet_expand_target)
+    "" neosnippet config
+    "" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+    "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    "xmap <C-k>     <Plug>(neosnippet_expand_target)
 
-    " SuperTab like snippets behavior.
-    " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    "imap <expr><TAB>
-    " \ pumvisible() ? "\<C-n>" :
-    " \ neosnippet#expandable_or_jumpable() ?
-    " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    "" SuperTab like snippets behavior.
+    "" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+    "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    ""imap <expr><TAB>
+    "" \ pumvisible() ? "\<C-n>" :
+    "" \ neosnippet#expandable_or_jumpable() ?
+    "" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    "smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    "\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
     " For conceal markers.
-    if has('conceal')
-        set conceallevel=2 concealcursor=niv
-    endif
+    "if has('conceal')
+    "    set conceallevel=2 concealcursor=niv
+    "endif
 
     " sebdah/vim-delve config
     nnoremap <leader>db :DlvToggleBreakpoint<cr>
@@ -271,14 +279,17 @@ let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/nod
 " vim-go
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
-let g:go_updatetime = 400
-let g:go_snippet_engine = 'neosnippet'
+let g:go_updatetime = 800
+let g:go_snippet_engine = 'ultisnips'
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_build_constraints = 1
 let g:go_auto_sameids = 1
+
+" prevent "Press enter to continue" message on auto type info
 let g:go_auto_type_info = 1
+set cmdheight=2
 
 " let g:go_highlight_functions = 1
 " let g:go_highlight_methods = 1
@@ -439,6 +450,8 @@ nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+" only load what you want
+let g:airline_extensions = ['branch', 'tabline']
 
 " For vim-indent-guides
 let g:indent_guides_auto_colors = 0
@@ -448,6 +461,7 @@ let g:indent_guides_start_level = 2
 " disable the built-in showing of mode in the command bar since airline will
 " take care of that
 set noshowmode
+set noruler
 
 " show both absolute current line no and relative numbers
 set relativenumber number
