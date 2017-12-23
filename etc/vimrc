@@ -25,6 +25,10 @@ if dein#load_state('~/.nvim/bundle')
         call dein#add('fatih/vim-go')
     endif
 
+    " react / js
+    call dein#add('pangloss/vim-javascript')
+    call dein#add('mxw/vim-jsx')
+
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
     "call dein#add('altercation/vim-colors-solarized.git')
