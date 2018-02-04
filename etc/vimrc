@@ -21,9 +21,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('tpope/vim-fugitive')
 
     " Go
-    if has("nvim")
-        call dein#add('fatih/vim-go')
-    endif
+    call dein#add('fatih/vim-go')
 
     " react / js
     call dein#add('pangloss/vim-javascript')
@@ -45,7 +43,6 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('rakr/vim-two-firewatch')
     call dein#add('mhartington/oceanic-next')
     call dein#add('bling/vim-airline')
-    "call dein#add('ap/vim-buftabline')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -61,20 +58,14 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('tpope/vim-unimpaired')
     call dein#add('FooSoft/vim-argwrap')
 
-    " File Types
+    " Jsonnet
     call dein#add('google/vim-jsonnet')
 
-    " AutoCompletion
+    " Snippets
+    call dein#add('SirVer/ultisnips')
+
     if has("nvim")
-        "call dein#add('Shougo/neosnippet')
-        "call dein#add('Shougo/neosnippet-snippets')
-        call dein#add('SirVer/ultisnips')
-
-        "call dein#add('Shougo/deoplete.nvim')
-        "call dein#add('zchee/deoplete-go', {'build': 'make'})
-        "call dein#add('Shougo/echodoc.vim')
         call dein#add('roxma/nvim-completion-manager')
-
         call dein#add('sebdah/vim-delve')
     endif
 
@@ -91,6 +82,12 @@ augroup colorscheme_overrides
     "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
     autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=NONE
 augroup END
+
+" completion config
+set completeopt+=noinsert
+set completeopt+=noselect
+" disable preview scratch buffer
+set completeopt-=preview
 
 if has("gui")
     " Start without the toolbar
@@ -137,8 +134,6 @@ endif
 
 
 if has("nvim")
-    "set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-
     " makes neovim use gui colors in themes instead of cterm colors, usually
     " this is only useful with a tmux and iterm2 both capable of displaying
     " 24bit "True" color
@@ -187,15 +182,6 @@ if has("nvim")
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
 
-    " Deoplete config
-    let g:deoplete#enable_at_startup = 1
-    " neocomplete like
-    set completeopt+=noinsert
-    " deoplete.nvim recommend
-    set completeopt+=noselect
-    " disable preview scratch buffer
-    set completeopt-=preview
-
     " Neomake configuration
     let g:neomake_python_flake8_maker = {
         \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
@@ -211,31 +197,6 @@ if has("nvim")
     let g:neomake_go_enabled_makers = ['go', 'gometalinter']
     "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
     let g:neomake_go_gometalinter_args = ['--fast']
-
-    " Deoplete config
-    let g:deoplete#enable_at_startup = 1
-    " neocomplete like
-    set completeopt+=noinsert
-    " deoplete.nvim recommend
-    set completeopt+=noselect
-    " disable preview scratch buffer
-    set completeopt-=preview
-
-    "" neosnippet config
-    "" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-    "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    "xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-    "" SuperTab like snippets behavior.
-    "" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-    "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    ""imap <expr><TAB>
-    "" \ pumvisible() ? "\<C-n>" :
-    "" \ neosnippet#expandable_or_jumpable() ?
-    "" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-    "smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    "\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
     " For conceal markers.
     "if has('conceal')
@@ -282,7 +243,7 @@ if !has("nvim") && !has("gui_macvim")
 endif
 
 " gutentags config
-let g:gutentags_ctags_exclude = ['*/go/src/vendor/*', '*/clj/external/*', '*/node_modules/*']
+let g:gutentags_ctags_exclude = ['*go/src*/vendor/*', '*clj/external/*', '*node_modules/*', '*media/*', '*.json']
 
 " vim-go
 let g:go_fmt_command = "goimports"
@@ -380,7 +341,6 @@ endif
 " For fast scrolling
 "set nocursorline
 "set lazyredraw
-set synmaxcol=200
 
 " Learn VimScript The Hard Way Excercises
 " chapter 04
@@ -521,7 +481,6 @@ else
 endif
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
-set updatetime=150
 
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
