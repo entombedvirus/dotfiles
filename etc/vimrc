@@ -144,8 +144,8 @@ if has("nvim")
     "colorscheme two-firewatch
     "set background=dark
 
-    "colorscheme one
-    "set background=dark
+    colorscheme one
+    set background=dark
 
     "colorscheme PaperColor
     "set background=light
@@ -161,8 +161,8 @@ if has("nvim")
     " set background=dark
     " colorscheme kalisi
 
-    colorscheme Tomorrow-Night
-    set background=dark
+    "colorscheme Tomorrow-Night
+    "set background=dark
 
     "let g:gruvbox_italic=1
     "let g:gruvbox_contrast_dark="medium"
