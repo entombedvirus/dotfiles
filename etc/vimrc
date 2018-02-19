@@ -46,7 +46,6 @@ if dein#load_state('~/.nvim/bundle')
 
     " Build
     call dein#add('benekastah/neomake')
-    "call dein#add('w0rp/ale')
 
     " Editing
     call dein#add('ntpeters/vim-better-whitespace.git')
@@ -133,12 +132,14 @@ if has("gui_macvim")
 endif
 
 
-if has("nvim")
-    " makes neovim use gui colors in themes instead of cterm colors, usually
+if has("termguicolors")
+    " makes neovim / vim8 use gui colors in themes instead of cterm colors, usually
     " this is only useful with a tmux and iterm2 both capable of displaying
     " 24bit "True" color
     set termguicolors
+endif
 
+if has("nvim")
     " let g:two_firewatch_italics=1
     "colorscheme two-firewatch
     "set background=dark
@@ -198,13 +199,45 @@ if has("nvim")
     "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
     let g:neomake_go_gometalinter_args = ['--fast']
 
-    " For conceal markers.
-    "if has('conceal')
-    "    set conceallevel=2 concealcursor=niv
-    "endif
+    " don't use fancy unicode symbols since terminals seem to have trouble
+    " rendering them correctly.
+    "let g:neomake_error_sign = {
+    "    \   'text': '',
+    "    \   'texthl': 'NeomakeErrorSign',
+    "    \ }
+    "let g:neomake_warning_sign = {
+    "    \   'text': '',
+    "    \   'texthl': 'NeomakeWarningSign',
+    "    \ }
+    "let g:neomake_message_sign = {
+    "    \   'text': 'M',
+    "    \   'texthl': 'NeomakeMessageSign',
+    "    \ }
+    "let g:neomake_info_sign = {
+    "    \   'text': '',
+    "    \   'texthl': 'NeomakeInfoSign',
+    "    \ }
+    let g:neomake_error_sign = {
+        \   'text': 'E',
+        \   'texthl': 'NeomakeErrorSign',
+        \ }
+    let g:neomake_warning_sign = {
+        \   'text': 'W',
+        \   'texthl': 'NeomakeWarningSign',
+        \ }
+    let g:neomake_message_sign = {
+        \   'text': 'M',
+        \   'texthl': 'NeomakeMessageSign',
+        \ }
+    let g:neomake_info_sign = {
+        \   'text': 'I',
+        \   'texthl': 'NeomakeInfoSign',
+        \ }
 
-    " vim-jsx config
-    let g:jsx_ext_required = 0
+    " For conceal markers.
+    if has('conceal')
+        set conceallevel=2 concealcursor=niv
+    endif
 
     " sebdah/vim-delve config
     nnoremap <leader>db :DlvToggleBreakpoint<cr>
@@ -236,10 +269,25 @@ endif
 
 " plain old vim
 if !has("nvim") && !has("gui_macvim")
-    set t_Co=256
-
-    colorscheme jelleybeans
+    colorscheme Tomorrow-Night
     set background=dark
+
+    " change cursor shape
+    " Ps = 0  -> blinking block.
+    " Ps = 1  -> blinking block (default).
+    " Ps = 2  -> steady block.
+    " Ps = 3  -> blinking underline.
+    " Ps = 4  -> steady underline.
+    " Ps = 5  -> blinking bar (xterm).
+    " Ps = 6  -> steady bar (xterm).
+    let &t_SI = "\e[6 q"
+    let &t_EI = "\e[2 q"
+
+    " optional reset cursor on start:
+    augroup cursor_shapes
+        au!
+        autocmd VimEnter * silent !echo -ne "\e[2 q"
+    augroup END
 endif
 
 " gutentags config
@@ -248,23 +296,22 @@ let g:gutentags_ctags_exclude = ['*go/src*/vendor/*', '*clj/external/*', '*node_
 " vim-go
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
-let g:go_updatetime = 800
 let g:go_snippet_engine = 'ultisnips'
+let g:go_decls_mode = 'fzf'
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_build_constraints = 1
-let g:go_auto_sameids = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_generate_tags = 1
 let g:go_highlight_format_strings = 1
+" let g:go_highlight_extra_types = 1
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_generate_tags = 1
 
-" prevent "Press enter to continue" message on auto type info
+let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
+" prevent "Press enter to continue" message on auto type info
 set cmdheight=2
-
 
 " go specific keybindings
 augroup filetype_go
@@ -285,6 +332,9 @@ augroup filetype_js
     autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
     autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 augroup END
+
+" vim-jsx config
+let g:jsx_ext_required = 0
 
 " vim-sneak
 " 2-character Sneak (don't let vim-sneak take s)
@@ -315,13 +365,10 @@ function! s:mru_filelist() abort
 endfunction
 
 " CtrlP customization
-" leader + r -> show symbols in current buffer
-" nnoremap <leader>r :CtrlPBufTagAll <CR>
 let g:ctrlp_cmd = 'CtrlPMRU'
-"let g:ctrlp_custom_ignore='\.(pyc|o|js)'
-
 " treat git root dir as the working dir
-"let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'ra'
+
 "set wildignore+=*.pyc,*.o,*.a,*.clj,*.css,*.html,*.js
 set wildignore+=*.pyc,*.o,*.a,*.clj
 
@@ -474,16 +521,13 @@ set hidden
 set hlsearch
 
 " always show gitgutter col so text doesn't jump around when they come in
-if has("nvim")
-    set signcolumn=yes
-else
-    let g:gitgutter_sign_column_always=1
-endif
+set signcolumn=yes
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
 
 " Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬
+"set listchars=tab:▸\ ,eol:¬
+set listchars=tab:»\ ,eol:¬
 
 " Show invisible chars
 set list
