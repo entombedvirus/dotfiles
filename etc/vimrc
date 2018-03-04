@@ -22,6 +22,7 @@ if dein#load_state('~/.nvim/bundle')
 
     " Go
     call dein#add('fatih/vim-go')
+    call dein#add('majutsushi/tagbar')
 
     " react / js
     call dein#add('pangloss/vim-javascript')
@@ -79,7 +80,7 @@ syntax enable
 augroup colorscheme_overrides
     autocmd!
     "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
-    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=NONE
+    autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=NONE gui=underline guifg=#f0a0c0 guibg=NONE
 augroup END
 
 " completion config
@@ -132,10 +133,13 @@ if has("gui_macvim")
 endif
 
 
-if has("termguicolors")
-    " makes neovim / vim8 use gui colors in themes instead of cterm colors, usually
-    " this is only useful with a tmux and iterm2 both capable of displaying
-    " 24bit "True" color
+" makes neovim use gui colors in themes instead of cterm colors, usually this
+" is only useful with a tmux and iterm2 / kitty both capable of displaying
+" 24bit "True" color
+"
+" NOTE: setting this in vim8 causes colors to not work at all, so limiting
+" this to neovim only for now
+if has("nvim") && has("termguicolors")
     set termguicolors
 endif
 
@@ -144,8 +148,8 @@ if has("nvim")
     "colorscheme two-firewatch
     "set background=dark
 
-    colorscheme one
-    set background=dark
+    "colorscheme one
+    "set background=dark
 
     "colorscheme PaperColor
     "set background=light
@@ -158,8 +162,8 @@ if has("nvim")
     " colorscheme jelleybeans
     " set background=light
 
-    " set background=dark
-    " colorscheme kalisi
+    set background=dark
+    colorscheme kalisi
 
     "colorscheme Tomorrow-Night
     "set background=dark
@@ -298,16 +302,17 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
-
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_format_strings = 1
-" let g:go_highlight_extra_types = 1
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_highlight_generate_tags = 1
+let g:go_highlight_methods = 1
+"let g:go_highlight_extra_types = 1
+"let g:go_highlight_functions = 1
+"let g:go_highlight_generate_tags = 1
 
+" reduce the delay before auto_sameids and auto_type_info activates
+let g:go_updatetime = 300
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
 " prevent "Press enter to continue" message on auto type info
@@ -319,10 +324,14 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gtf :GoTestFunc<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+
+    " tagbar
+    autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<cr>
 augroup END
 
 " js specific keybindings
