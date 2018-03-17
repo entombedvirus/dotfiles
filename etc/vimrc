@@ -30,12 +30,10 @@ if dein#load_state('~/.nvim/bundle')
 
     " Appearance
     call dein#add('frankier/neovim-colors-solarized-truecolor-only')
-    "call dein#add('altercation/vim-colors-solarized.git')
     call dein#add('flazz/vim-colorschemes')
     call dein#add('justinmk/molokai')
     call dein#add('nanotech/jellybeans.vim')
     call dein#add('nathanaelkane/vim-indent-guides.git')
-    call dein#add('vim-airline/vim-airline-themes')
     call dein#add('morhetz/gruvbox')
     call dein#add('romainl/flattened')
     call dein#add('whatyouhide/vim-gotham')
@@ -43,7 +41,11 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('rakr/vim-one')
     call dein#add('rakr/vim-two-firewatch')
     call dein#add('mhartington/oceanic-next')
-    call dein#add('bling/vim-airline')
+    " disabling vim-airline because it caused rendering issues
+    " call dein#add('bling/vim-airline')
+    " call dein#add('vim-airline/vim-airline-themes')
+    call dein#add('itchyny/lightline.vim')
+    call dein#add('mgee/lightline-bufferline')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -314,7 +316,7 @@ let g:go_highlight_methods = 1
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
 let g:go_auto_sameids = 1
-let g:go_auto_type_info = 1
+let g:go_auto_type_info = 0 " too slow for now
 " prevent "Press enter to continue" message on auto type info
 set cmdheight=2
 
@@ -329,6 +331,7 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+    autocmd FileType go nnoremap <buffer> <C-i> :GoInfo<CR>
 
     " tagbar
     autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<cr>
@@ -344,6 +347,14 @@ augroup END
 
 " vim-jsx config
 let g:jsx_ext_required = 0
+
+" lightline config
+set showtabline=2
+let g:lightline#bufferline#unnamed      = '[No Name]'
+let g:lightline                  = {}
+let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
 
 " vim-sneak
 " 2-character Sneak (don't let vim-sneak take s)
