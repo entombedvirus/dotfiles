@@ -16,7 +16,7 @@ unalias gcb 2>/dev/null
 function gcb {
     local search=$1
     # desc sort on branches
-    git branch --sort=-committerdate \
+    git branch --sort=-committerdate --color=auto \
         | fzf --query "$search" --select-1 --ansi \
         | xargs -I {} git checkout {}
 }
