@@ -14,25 +14,9 @@ alias gdn="git diff --name-only"
 # oh-my-zsh git plugin defines an alias that inteferes with this function
 unalias gcb 2>/dev/null
 function gcb {
-  branch=$1
-  if [[ -z "$branch" ]]; then
-    anyframe-widget-checkout-git-branch
-    return
-  fi
-
-  count=`gb | grep $1  | wc -l`
-  if [[ $count -ge 2 ]]; then
-    anyframe-source-git-branch -n \
-      | anyframe-selector-auto "$branch" \
-      | awk '{print $1}' \
-      | anyframe-action-execute git checkout
-    return
-  fi
-
-  if [[ $count -eq 1 ]]; then
-    git co `gb | grep $1`
-  else
-    echo "no branches with $branch in the name"
-  fi
+    local search=$1
+    # desc sort on branches
+    git branch --sort=-committerdate \
+        | fzf --query "$search" --select-1 --ansi \
+        | xargs -I {} git checkout {}
 }
-
