@@ -153,8 +153,8 @@ if has("nvim")
     "colorscheme one
     "set background=dark
 
-    "colorscheme PaperColor
-    "set background=light
+    colorscheme PaperColor
+    set background=dark
 
     " let g:rehash256 = 1
     " let g:molokai_original = 1
@@ -164,8 +164,8 @@ if has("nvim")
     " colorscheme jelleybeans
     " set background=light
 
-    set background=dark
-    colorscheme kalisi
+    "set background=dark
+    "colorscheme kalisi
 
     "colorscheme Tomorrow-Night
     "set background=dark
@@ -224,7 +224,7 @@ if has("nvim")
     "    \   'texthl': 'NeomakeInfoSign',
     "    \ }
     let g:neomake_error_sign = {
-        \   'text': 'E',
+        \   'text': '>>',
         \   'texthl': 'NeomakeErrorSign',
         \ }
     let g:neomake_warning_sign = {
@@ -296,6 +296,9 @@ if !has("nvim") && !has("gui_macvim")
     augroup END
 endif
 
+" Toggle background with <leader>bg
+map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
+
 " gutentags config
 let g:gutentags_ctags_exclude = ['*go/src*/vendor/*', '*clj/external/*', '*node_modules/*', '*media/*', '*.json']
 
@@ -320,6 +323,9 @@ let g:go_auto_type_info = 0 " too slow for now
 " prevent "Press enter to continue" message on auto type info
 set cmdheight=2
 
+" Add the failing test name to the output of :GoTest
+let g:go_test_show_name = 1
+
 " go specific keybindings
 augroup filetype_go
     autocmd!
@@ -331,7 +337,7 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
-    autocmd FileType go nnoremap <buffer> <C-i> :GoInfo<CR>
+    autocmd FileType go nmap <buffer> <C-i> <Plug>(go-info)
 
     " tagbar
     autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<cr>
@@ -350,11 +356,19 @@ let g:jsx_ext_required = 0
 
 " lightline config
 set showtabline=2
-let g:lightline#bufferline#unnamed      = '[No Name]'
-let g:lightline                  = {}
-let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
-let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
-let g:lightline.component_type   = {'buffers': 'tabsel'}
+let g:lightline#bufferline#unnamed         = '[No Name]'
+let g:lightline#bufferline#filename_modifier = ':t'
+let g:lightline                    = {}
+let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']]}
+let g:lightline.tabline            = {'left': [['buffers']], 'right': [['tabs', 'close']]}
+let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
+let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type     = {'buffers': 'tabsel'}
+
+function! LightlineGitBranch()
+    let name = fugitive#head()
+    return name ==# '' ? '' : ' ' . name
+endfunction
 
 " vim-sneak
 " 2-character Sneak (don't let vim-sneak take s)
