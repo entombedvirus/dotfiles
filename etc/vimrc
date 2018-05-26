@@ -300,7 +300,7 @@ endif
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
 " gutentags config
-let g:gutentags_ctags_exclude = ['bazel-analytics/*', '*go/src*/vendor/*', '*clj/external/*', '*node_modules/*', '*media/*', '*.json']
+let g:gutentags_ctags_exclude = ['bazel-analytics/*', '*go/src*/vendor/*', '*clj/*', '*node_modules/*', '*media/*', 'servers/*', '*.json', '*.js', '*.html', '*.css']
 
 " nvim-completion-manager
 let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher'}
