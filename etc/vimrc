@@ -19,6 +19,7 @@ if dein#load_state('~/.nvim/bundle')
     " Git
     call dein#add('airblade/vim-gitgutter.git')
     call dein#add('tpope/vim-fugitive')
+    call dein#add('tpope/vim-rhubarb')
 
     " Go
     call dein#add('fatih/vim-go')
@@ -65,6 +66,9 @@ if dein#load_state('~/.nvim/bundle')
 
     " Snippets
     call dein#add('SirVer/ultisnips')
+
+    " Bazel
+    call dein#add('bazelbuild/vim-ft-bzl')
 
     if has("nvim")
         call dein#add('roxma/nvim-completion-manager')
