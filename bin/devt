@@ -1,22 +1,6 @@
 #!/bin/sh
 
-set -o errexit -o pipefail -o nounset -x
-
-# make sure only one instance can run locally # since we need exclusive rights
-# to ports
-LOCK=/tmp/devt.lock
-
-if ! shlock -p $$ -f ${LOCK} ; then
-    echo "another devt instance $(cat ${LOCK}) is already running"
-    exit 1
-fi
-
-# make sure to release remote forwarded ports when we exit so that another
-# session can claim those ports
-function cleanup {
-    rm -f ${LOCK}
-}
-trap cleanup EXIT INT TERM
+set -o errexit -o pipefail -o nounset -o xtrace
 
 host=${1:-rohith}
 
@@ -26,13 +10,16 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
+forward_args="$forward_args -o Compression=no -o ForwardAgent=no -o ExitOnForwardFailure=yes"
 
-ssh $host -- tmux detach-client > /dev/null 2>&1 || true
+# force release remote forwarded ports from prev sessions so that we can use them
+ssh $host -- "tmux detach-client; pkill --signal TERM --oldest sshd" > /dev/null 2>&1 || true
 
 while true; do
     ret=0
-    ssh -t -o Compression=no -o ForwardAgent=no -o ExitOnForwardFailure=yes $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+    ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
     if [ "$ret" -ne 255 ]; then #  255 means timeout. happens when laptop is closed, disconnected from network etc
         break
     fi
+    sleep 2
 done
