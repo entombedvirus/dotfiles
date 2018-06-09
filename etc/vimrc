@@ -45,6 +45,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('itchyny/lightline.vim')
     call dein#add('mgee/lightline-bufferline')
     call dein#add('joshdick/onedark.vim')
+    call dein#add('KeitaNakamura/neodark.vim')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -85,6 +86,8 @@ augroup colorscheme_overrides
     autocmd!
     "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
     autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=NONE gui=underline guifg=#f0a0c0 guibg=NONE
+    " comments should be italic
+    autocmd ColorScheme * highlight Comment cterm=italic gui=italic
 augroup END
 
 " completion config
@@ -181,8 +184,12 @@ if has("nvim")
     "set background=dark
     "let g:airline_theme='oceanicnext'
 
-    colorscheme onedark
+    "colorscheme onedark
+    "set background=dark
+
+    colorscheme neodark
     set background=dark
+    let g:neodark#terminal_transparent = 1 " default: 0
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -367,6 +374,7 @@ set showtabline=2
 let g:lightline#bufferline#unnamed         = '[No Name]'
 let g:lightline#bufferline#filename_modifier = ':t'
 let g:lightline                    = {}
+let g:lightline.colorscheme        = 'neodark'
 let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']]}
 let g:lightline.tabline            = {'left': [['buffers']], 'right': [['tabs', 'close']]}
 let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
