@@ -312,7 +312,26 @@ endif
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
 " gutentags config
-let g:gutentags_ctags_exclude = ['bazel-analytics/*', '*go/src*/vendor/*', '*clj/*', '*node_modules/*', '*media/*', 'servers/*', '*.json', '*.js', '*.html', '*.css']
+let g:gutentags_ctags_exclude = [
+            \    'bazel-analytics/*',
+            \    'bazel-out/*',
+            \    'bazel-bin/*',
+            \    'bazel-genfiles/*',
+            \    '*/third_party/*',
+            \    '*/external/*',
+            \    '*/eventlet/*',
+            \    'go/src*/vendor/*',
+            \    'go/src/wavefront/*',
+            \    'go/.build/*',
+            \    '*clj/*',
+            \    '*node_modules/*',
+            \    '*media/*',
+            \    'servers/*',
+            \    '*.json',
+            \    '*.js',
+            \    '*.html',
+            \    '*.css',
+            \]
 
 " nvim-completion-manager
 let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher'}
@@ -374,7 +393,10 @@ set showtabline=2
 let g:lightline#bufferline#unnamed         = '[No Name]'
 let g:lightline#bufferline#filename_modifier = ':t'
 let g:lightline                    = {}
-let g:lightline.colorscheme        = 'neodark'
+if has("nvim")
+    " this breaks in vanilla vim for some reason
+    let g:lightline.colorscheme        = 'neodark'
+endif
 let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']]}
 let g:lightline.tabline            = {'left': [['buffers']], 'right': [['tabs', 'close']]}
 let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
