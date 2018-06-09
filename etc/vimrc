@@ -42,11 +42,9 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('rakr/vim-one')
     call dein#add('rakr/vim-two-firewatch')
     call dein#add('mhartington/oceanic-next')
-    " disabling vim-airline because it caused rendering issues
-    " call dein#add('bling/vim-airline')
-    " call dein#add('vim-airline/vim-airline-themes')
     call dein#add('itchyny/lightline.vim')
     call dein#add('mgee/lightline-bufferline')
+    call dein#add('joshdick/onedark.vim')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -157,8 +155,8 @@ if has("nvim")
     "colorscheme one
     "set background=dark
 
-    colorscheme PaperColor
-    set background=dark
+    "colorscheme PaperColor
+    "set background=dark
 
     " let g:rehash256 = 1
     " let g:molokai_original = 1
@@ -182,6 +180,9 @@ if has("nvim")
     "colorscheme OceanicNext
     "set background=dark
     "let g:airline_theme='oceanicnext'
+
+    colorscheme onedark
+    set background=dark
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
