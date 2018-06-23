@@ -400,10 +400,14 @@ if has("nvim")
     let g:lightline.colorscheme        = 'neodark'
 endif
 let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']]}
-let g:lightline.tabline            = {'left': [['buffers']], 'right': [['tabs', 'close']]}
+let g:lightline.component          = {'sep': '-> '}
 let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
 let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type     = {'buffers': 'tabsel'}
+let g:lightline.tabline            = {'left': [['tabs'], ['sep'], ['buffers']]}
+let g:lightline.tab                = {}
+let g:lightline.tab.inactive       = ['tabnum']
+let g:lightline.tab.active         = ['tabnum']
 
 function! LightlineGitBranch()
     let name = fugitive#head()
