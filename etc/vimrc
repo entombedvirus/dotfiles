@@ -53,11 +53,13 @@ if dein#load_state('~/.nvim/bundle')
     " Editing
     call dein#add('ntpeters/vim-better-whitespace.git')
     call dein#add('tpope/vim-surround')
+    call dein#add('tpope/vim-unimpaired')
+    call dein#add('tpope/vim-abolish')
+    call dein#add('tpope/vim-repeat')
     call dein#add('michaeljsmith/vim-indent-object')
     call dein#add('AndrewRadev/splitjoin.vim')
     call dein#add('wellle/targets.vim')
     call dein#add('justinmk/vim-sneak')
-    call dein#add('tpope/vim-unimpaired')
     call dein#add('FooSoft/vim-argwrap')
 
     " Jsonnet
