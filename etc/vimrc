@@ -256,7 +256,8 @@ if has("nvim")
 
     " For conceal markers.
     if has('conceal')
-        set conceallevel=2 concealcursor=niv
+        " hide concealed chars, except in insert, visual and command modes
+        set conceallevel=2 concealcursor=n
     endif
 
     " sebdah/vim-delve config
@@ -573,11 +574,8 @@ set relativenumber number
 command! Q  quit
 command! W  write
 command! Wq wq
+command! Cq cq
 
-
-" Alt-c to copy to xclipboard. combined with ssh -X, this allows clipboard sync
-" vnoremap <Esc>c :w<Home>silent <End> !xclip -in -selection clipboard<CR>
-vnoremap <Esc>c Silent :w !xclip -in -selection clipboard<CR>
 
 " Some emacs keybindings thats used all over OS X
 
@@ -647,8 +645,6 @@ if has("autocmd")
     autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 endif
 
-" Taken from http://dotfiles.org/~defunkt/.vimrc
-
 " don't leave hardtabs
 set expandtab
 set tabstop=4
@@ -708,24 +704,6 @@ set dir=$HOME/.tmp
 "set ai
 set incsearch
 set nowrap
-
-" Some tab helpers (<leader> is \)
-map <leader>]t :tabnew<cr>
-map <leader>]c :tabclose<cr>
-map <leader>]m :tabmove
-map <leader>]n :tabnext<cr>
-map <leader>]p :tabprevious<cr>
-map <leader>]` :tabfirst<cr>
-map <leader>]1 1gt
-map <leader>]2 2gt
-map <leader>]3 3gt
-map <leader>]4 4gt
-map <leader>]5 5gt
-map <leader>]6 6gt
-map <leader>]7 7gt
-map <leader>]8 8gt
-map <leader>]9 9gt
-map <leader>]0 :tablast<cr>
 
 " reformat JSON
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
