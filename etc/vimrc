@@ -534,6 +534,10 @@ nnoremap ][ :copen<cr>
 nnoremap () :lclose<cr>
 nnoremap )( :lopen<cr>
 
+" tab pages
+nnoremap <leader>]t :tabnew<cr>
+nnoremap <leader>]c :tabclose<cr>
+
 " moving selected lines
 xnoremap <silent> <c-k> :move-2<CR>gv=gv
 xnoremap <silent> <c-j> :move'>+<CR>gv=gv
