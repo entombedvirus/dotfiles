@@ -374,6 +374,7 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>ge :GoIfErr<CR>
     autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
 
     " tagbar
@@ -543,7 +544,7 @@ xnoremap <silent> <c-k> :move-2<CR>gv=gv
 xnoremap <silent> <c-j> :move'>+<CR>gv=gv
 
 " search for visually selected text
-vnoremap <expr> // 'y/\V'.escape(@",'\').'<CR>'
+vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 
 " persistent undo file
 set undofile
@@ -708,6 +709,11 @@ set dir=$HOME/.tmp
 "set ai
 set incsearch
 set nowrap
+
+" show live previews for :substitute
+if has("inccommand")
+    set inccommand=nosplit
+endif
 
 " reformat JSON
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
