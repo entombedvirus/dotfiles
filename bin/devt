@@ -12,15 +12,15 @@ fi
 forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
 forward_args="$forward_args -o Compression=no -o ForwardAgent=no -o ExitOnForwardFailure=yes"
 
-while true; do
+#while true; do
     ret=0
     ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
     if [ "$ret" -ne 255 ]; then #  255 means timeout. happens when laptop is closed, disconnected from network etc
-        break
+        #break
+        exit 0
     fi
 
     # force release remote forwarded ports from prev sessions so that we can use them
     ssh $host -- "tmux detach-client; pkill --signal TERM --oldest sshd --uid \$USER" > /dev/null 2>&1 || true
-
-    sleep 2
-done
+    ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+#done
