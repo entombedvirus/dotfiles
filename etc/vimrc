@@ -47,6 +47,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('joshdick/onedark.vim')
     call dein#add('KeitaNakamura/neodark.vim')
     call dein#add('neutaaaaan/iosvkem')
+    call dein#add('chriskempson/base16-vim')
 
     " Build
     call dein#add('benekastah/neomake')
@@ -62,6 +63,7 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('wellle/targets.vim')
     call dein#add('justinmk/vim-sneak')
     call dein#add('FooSoft/vim-argwrap')
+    call dein#add('whiteinge/diffconflicts')
 
     " Jsonnet
     call dein#add('google/vim-jsonnet')
@@ -194,7 +196,10 @@ if has("nvim")
     "set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
 
-    colorscheme Iosvkem
+    "colorscheme Iosvkem
+    "set background=dark
+
+    colorscheme base16-gruvbox-dark-medium
     set background=dark
 
     " built-in terminal navigation
@@ -403,7 +408,7 @@ let g:lightline#bufferline#filename_modifier = ':t'
 let g:lightline                    = {}
 if has("nvim")
     " this breaks in vanilla vim for some reason
-    "let g:lightline.colorscheme        = 'neodark'
+    let g:lightline.colorscheme        = 'neodark'
 endif
 let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']]}
 let g:lightline.component          = {'sep': '-> '}
@@ -712,6 +717,7 @@ set dir=$HOME/.tmp
 " misc
 "set ai
 set incsearch
+set nowrapscan
 set nowrap
 
 " show live previews for :substitute
