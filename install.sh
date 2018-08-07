@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
 
-# vim: set ft=zsh
+# vim: set ft=bash
 
 set -o errexit
 set -o pipefail
