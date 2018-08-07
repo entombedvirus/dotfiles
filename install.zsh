@@ -7,7 +7,13 @@ set -o pipefail
 set -o nounset
 
 # install linux brew deps
-sudo apt-get install build-essential curl file git
+sudo apt-get install build-essential file git
+
+# linuxbrew's use of curl fails if there is both a /usr/bin/curl and a /usr/local/bin/curl
+if [ -e /usr/bin/curl -a ! -L /usr/bin/curl -a -e /usr/local/bin/curl ]; then
+    sudo mv /usr/bin/curl /usr/bin/curl.bak
+    sudo ln -nsf /usr/local/bin/curl /usr/bin/curl
+fi
 
 if ! command -v brew >/dev/null 2>&1; then
     # Install linuxbrew
