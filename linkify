@@ -3,17 +3,22 @@
 require 'fileutils'
 
 backup_dir = "/tmp/dotfiles.#{Time.now.to_i}.bak"
+FileUtils.mkdir_p(backup_dir)
 
 Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
   target_path = File.expand_path(target)
   dest_path = File.expand_path("~/.#{File.basename(target)}")
 
   if File.exists?(dest_path)
-    FileUtils.mkdir_p(backup_dir)
     FileUtils.mv dest_path, backup_dir
   end
 
   cmd = "ln -nsf %s %s" % [target_path, dest_path]
   system(cmd)
+  
+  # copy back .ssh/authorized_keys file to prevent getting locked out
+  if File.basename(target) == "ssh"
+    system("cp %s %s", File.join(backup_dir, ".ssh", "authorized_keys"), File.join(dest_path, "authorized_keys")) 
+  end
 end
 

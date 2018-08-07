@@ -27,6 +27,10 @@ if [ -d ~/cl/bin ]; then
 	export PATH=:~/cl/bin:$PATH  # add your bin folder to the path, if you have it
 fi
 
+if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
+	export PATH=:/home/linuxbrew/.linuxbrew/bin:$PATH  # add your bin folder to the path, if you have it
+fi
+
 if [ -d /usr/local/share/npm/bin ]; then
 	export PATH=:/usr/local/share/npm/bin:$PATH  # add your bin folder to the path, if you have it
 fi
@@ -101,4 +105,12 @@ esac
 # MacPorts Installer addition on 2009-11-13_at_11:48:26: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
-
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"

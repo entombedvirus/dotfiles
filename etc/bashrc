@@ -21,7 +21,6 @@ alias colorslist="set | egrep 'COLOR_\w*'"  # lists all the colors
 if [ -f /opt/local/etc/bash_completion ]; then
   . /opt/local/etc/bash_completion
 fi
-source ~/cl/etc/git-completion.bash
 
 # Aliases
 if [ "$OS" = "darwin" ]; then
@@ -88,9 +87,9 @@ export SUDO_PS1="\[${COLOR_LIGHT_RED}\]\u@\h \[${COLOR_BLUE}\]\w\$ \[${COLOR_NC}
 shopt -s checkwinsize # After each command, checks the windows size and changes lines and columns
 
 # bash completion settings (actually, these are readline settings)
-bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
-bind "set bell-style none" # no bell
-bind "set show-all-if-ambiguous On" # show list automatically, without double tab
+# bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+# bind "set bell-style none" # no bell
+# bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 export NODE_PATH='/usr/local/lib/node_modules'
 
