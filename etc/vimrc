@@ -84,7 +84,9 @@ if dein#load_state('~/.nvim/bundle')
 endif
 
 " install new things on startup
-call dein#install()
+if dein#check_install()
+  call dein#install()
+endif
 
 filetype plugin indent on
 syntax enable
