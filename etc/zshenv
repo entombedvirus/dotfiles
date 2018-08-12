@@ -19,10 +19,14 @@ function source_if_exists {
 }
 
 # The next line enables shell command completion for gcloud.
-source_if_exists "/usr/local/google-cloud-sdk/completion.zsh.inc"
-source_if_exists "/usr/local/google-cloud-sdk/path.zsh.inc"
+source_if_exists "$HOME/google-cloud-sdk/completion.zsh.inc"
+source_if_exists "$HOME/google-cloud-sdk/path.zsh.inc"
 
 source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
 
+# BEGIN specify machine as devbox
 source_if_exists "$HOME/analytics/.shellenv"
 source_if_exists "$HOME/analytics/google-cloud/scripts/kube.sh"
+export SETUP_MACHINE=1
+export DEVBOX=1
+export GCP_DEVBOX=1

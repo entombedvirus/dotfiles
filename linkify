@@ -15,10 +15,7 @@ Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
 
   cmd = "ln -nsf %s %s" % [target_path, dest_path]
   system(cmd)
-  
-  # copy back .ssh/authorized_keys file to prevent getting locked out
-  if File.basename(target) == "ssh"
-    system("cp %s %s", File.join(backup_dir, ".ssh", "authorized_keys"), File.join(dest_path, "authorized_keys")) 
-  end
 end
 
+# copy back .ssh/authorized_keys file to prevent getting locked out
+system("cp %s %s", File.join(backup_dir, ".ssh", "authorized_keys"), File.join("~/.ssh", "authorized_keys")) 

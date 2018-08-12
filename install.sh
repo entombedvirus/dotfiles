@@ -40,7 +40,7 @@ in
     ;;
 esac
 
-# brew install zsh ctags-exuberant global the_silver_searcher ruby neovim fzf tmux
+brew install zsh ctags-exuberant global the_silver_searcher ruby neovim fzf tmux
 
 # source code tagging
 # brew tap universal-ctags/universal-ctags
@@ -70,4 +70,8 @@ fi
 pip2 install neovim
 brew install python3
 pip3 install neovim
+
+# custom TERMs
+tic -x -o etc/terminfo etc/terminfo/*.src
+
 echo "logout and log back in and run linkify"
