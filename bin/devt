@@ -10,7 +10,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
-forward_args="$forward_args -o Compression=no -o ForwardAgent=no -o ExitOnForwardFailure=yes"
+forward_args="$forward_args -o Compression=no -o ExitOnForwardFailure=yes"
 
 #while true; do
     ret=0
