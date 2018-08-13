@@ -50,7 +50,7 @@ brew install zsh ctags-exuberant global the_silver_searcher ruby neovim fzf tmux
 LEMONADE_PATH=${HOME}/.bin/lemonade
 if [ ! -e "$LEMONADE_PATH" ]; then
     mkdir -p $(dirname "$LEMONADE_PATH")
-    curl --silent -L https://github.com/pocke/lemonade/releases/download/v1.1.1/lemonade_linux_amd64.tar.gz | tar -xz -C $(dirname $LEMONADE_PATH)
+    curl --silent -L https://github.com/entombedvirus/lemonade/releases/download/v1.1.1-7-g2cc49d8/lemonade_linux_amd64.tar.gz | tar -xz -C $(dirname $LEMONADE_PATH)
     chmod 755 "$LEMONADE_PATH"
 fi
 
