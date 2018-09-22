@@ -18,4 +18,4 @@ Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
 end
 
 # copy back .ssh/authorized_keys file to prevent getting locked out
-system("cp %s %s", File.join(backup_dir, ".ssh", "authorized_keys"), File.join("~/.ssh", "authorized_keys")) 
+system("cp %s %s" % [File.join(backup_dir, ".ssh", "authorized_keys"), File.join("~/.ssh", "authorized_keys")])
