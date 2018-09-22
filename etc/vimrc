@@ -75,7 +75,16 @@ if dein#load_state('~/.nvim/bundle')
     call dein#add('bazelbuild/vim-ft-bzl')
 
     if has("nvim")
-        call dein#add('roxma/nvim-completion-manager')
+        call dein#add('ncm2/ncm2')
+        call dein#add('roxma/nvim-yarp')
+        " NOTE: you need to install completion sources to get completions. Check
+        " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+        call dein#add('ncm2/ncm2-bufword')
+        call dein#add('ncm2/ncm2-tmux')
+        call dein#add('ncm2/ncm2-path')
+        call dein#add('ncm2/ncm2-go')
+        call dein#add('ncm2/ncm2-ultisnips')
+
         call dein#add('sebdah/vim-delve')
     endif
 
@@ -99,12 +108,6 @@ augroup colorscheme_overrides
     " comments should be italic
     autocmd ColorScheme * highlight Comment cterm=italic gui=italic
 augroup END
-
-" completion config
-set completeopt+=noinsert
-set completeopt+=noselect
-" disable preview scratch buffer
-set completeopt-=preview
 
 if has("gui")
     " Start without the toolbar
@@ -231,7 +234,7 @@ if has("nvim")
     let g:neomake_python_enabled_makers = ['flake8']
     let g:neomake_go_enabled_makers = ['go', 'gometalinter']
     "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
-    let g:neomake_go_gometalinter_args = ['--fast']
+    let g:neomake_go_gometalinter_args = ['--fast', '--disable=gosec']
 
     " don't use fancy unicode symbols since terminals seem to have trouble
     " rendering them correctly.
@@ -350,8 +353,16 @@ let g:gutentags_ctags_exclude = [
             \    '*.css',
             \]
 
-" nvim-completion-manager
-let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher'}
+" ncm2 completion config
+set completeopt=noinsert,noselect,menuone,noselect
+if has("nvim")
+    let g:ncm2#matcher = 'abbrfuzzy'
+    let g:ncm2#sorter = 'abbrfuzzy'
+    augroup ncm2_completion
+        autocmd!
+        autocmd BufEnter * call ncm2#enable_for_buffer()
+    augroup END
+endif
 
 " vim-go
 let g:go_fmt_command = "goimports"
