@@ -22,6 +22,11 @@ Host rohith
     #ControlPath ~/.ssh/cm-%r@%h:%p
     #ControlMaster auto
 
+Host rravi-1
+    User rravi-1
+    ForwardAgent yes
+    ProxyCommand ssh -A ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
+
 Host rravi
     User rravi
     ForwardAgent yes
