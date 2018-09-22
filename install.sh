@@ -71,6 +71,13 @@ pip2 install neovim
 brew install python3
 pip3 install neovim
 
+# unlink gcc and friends so that they don't interfere with bazel builds
+brew unlink gcc binutils glibc
+# libjemalloc (dep of neovim) needs to find gcc-5 even after the unlink above
+chmod 755 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+chmod 555 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+
 # custom TERMs
 tic -x -o etc/terminfo etc/terminfo/*.src
 
