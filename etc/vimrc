@@ -84,6 +84,7 @@ if dein#load_state('~/.nvim/bundle')
         call dein#add('ncm2/ncm2-path')
         call dein#add('ncm2/ncm2-go')
         call dein#add('ncm2/ncm2-ultisnips')
+        call dein#add('ncm2/ncm2-jedi')
 
         call dein#add('sebdah/vim-delve')
     endif
@@ -355,9 +356,20 @@ let g:gutentags_ctags_exclude = [
 
 " ncm2 completion config
 set completeopt=noinsert,noselect,menuone,noselect
+set shortmess+=c
 if has("nvim")
     let g:ncm2#matcher = 'abbrfuzzy'
     let g:ncm2#sorter = 'abbrfuzzy'
+
+    " c-j c-k for moving in snippet
+    imap <silent> <expr> <tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+    imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+    smap <c-u> <Plug>(ultisnips_expand)
+    let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
+    let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+    let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+    let g:UltiSnipsRemoveSelectModeMappings = 0
+
     augroup ncm2_completion
         autocmd!
         autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -392,7 +404,7 @@ let g:go_test_show_name = 1
 augroup filetype_go
     autocmd!
     autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall -i<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gtf :GoTestFunc<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
@@ -497,7 +509,7 @@ endif
 " Learn VimScript The Hard Way Excercises
 " chapter 04
 " turns current word to upper case
-inoremap <C-u> <Esc>mzviwU`za
+"inoremap <C-u> <Esc>mzviwU`za
 "nnoremap <C-u> mzviwU`z
 
 " chapter 07

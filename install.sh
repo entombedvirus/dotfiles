@@ -69,7 +69,7 @@ fi
 
 pip2 install neovim
 brew install python3
-pip3 install neovim
+pip3 install neovim jedi
 
 # unlink gcc and friends so that they don't interfere with bazel builds
 brew unlink gcc binutils glibc
