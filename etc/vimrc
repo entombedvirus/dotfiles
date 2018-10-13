@@ -368,7 +368,7 @@ if has("nvim")
     imap <silent> <expr> <tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
     imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
     smap <c-u> <Plug>(ultisnips_expand)
-    let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
+    let g:UltiSnipsExpandTrigger = "<tab>"
     let g:UltiSnipsJumpForwardTrigger = "<c-j>"
     let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
     let g:UltiSnipsRemoveSelectModeMappings = 0
