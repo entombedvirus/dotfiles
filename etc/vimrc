@@ -456,6 +456,11 @@ function! LightlineGitBranch()
     return name ==# '' ? '' : ' ' . name
 endfunction
 
+" fugitive shortcuts
+" copy Github url to clipboard
+nnoremap <leader>u :Gbrowse!<cr>
+xnoremap <leader>u :Gbrowse!<cr>
+
 " vim-sneak
 " 2-character Sneak (don't let vim-sneak take s)
 nmap f <Plug>Sneak_s
