@@ -336,21 +336,23 @@ endif
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
 " gutentags config
+"let g:gutentags_define_advanced_commands = 1
+" keep the lock and temp files outside of git workspace
+let g:gutentags_cache_dir = '~/.cache/gutentags'
+let g:gutentags_ctags_extra_args = ['--links=no']
+" NOTE: since we're using a cache_dir, exclude patterns cannot be relative to
+" project root.
 let g:gutentags_ctags_exclude = [
-            \    'bazel-analytics/*',
-            \    'bazel-out/*',
-            \    'bazel-bin/*',
-            \    'bazel-genfiles/*',
             \    '*/third_party/*',
             \    '*/external/*',
             \    '*/eventlet/*',
-            \    'go/src*/vendor/*',
-            \    'go/src/wavefront/*',
-            \    'go/.build/*',
+            \    '*/go/src*/vendor/*',
+            \    '*/go/src/wavefront/*',
+            \    '*/go/.build/*',
             \    '*clj/*',
             \    '*node_modules/*',
             \    '*media/*',
-            \    'servers/*',
+            \    '*/analytics/servers/*',
             \    '*.json',
             \    '*.js',
             \    '*.html',
@@ -453,7 +455,11 @@ if has("nvim")
     " this breaks in vanilla vim for some reason
     let g:lightline.colorscheme        = 'neodark'
 endif
-let g:lightline.active             = {'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified', 'gutentags']]}
+let g:lightline.active             = {
+\                                      'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']],
+\                                      'right': [['lineinfo'], ['percent'], ['gutentags', 'fileformat', 'fileencoding', 'filetype']]
+\                                    }
+let g:lightline.inactive           = {'left': [ [ 'relativepath' ] ], 'right': [ [ 'lineinfo' ],[ 'percent' ] ] }
 let g:lightline.component          = {'sep': '-> '}
 let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch', 'gutentags': 'gutentags#statusline'}
 let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
