@@ -361,21 +361,27 @@ let g:gutentags_ctags_exclude = [
 set completeopt=noinsert,noselect,menuone,noselect
 set shortmess+=c
 if has("nvim")
-    let g:ncm2#matcher = 'abbrfuzzy'
-    let g:ncm2#sorter = 'abbrfuzzy'
+    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+    inoremap <c-c> <ESC>
 
+    " make UltiSnips register a named key for triggering expansion. this named
+    " key is then used to expand the ncm2 completion (<tab>).
+    let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
     " c-j c-k for moving in snippet
-    imap <silent> <expr> <tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
-    imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
-    smap <c-u> <Plug>(ultisnips_expand)
-    let g:UltiSnipsExpandTrigger = "<tab>"
-    let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-    let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-    let g:UltiSnipsRemoveSelectModeMappings = 0
+    "let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+    "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+    "let g:UltiSnipsRemoveSelectModeMappings = 0
+
+    function! RRAVI_ncm2_expand()
+        call ncm2#enable_for_buffer()
+        " NOTE: this key binding has to be defined after
+        " ncm2#enable_for_buffer() for it to actually trigger the expansion
+        imap <silent> <expr> <tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+    endfunction
 
     augroup ncm2_completion
         autocmd!
-        autocmd BufEnter * call ncm2#enable_for_buffer()
+        autocmd BufEnter * call RRAVI_ncm2_expand()
     augroup END
 endif
 
