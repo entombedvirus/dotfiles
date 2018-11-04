@@ -392,22 +392,27 @@ let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
-let g:go_highlight_build_constraints = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_methods = 1
-"let g:go_highlight_extra_types = 1
-"let g:go_highlight_functions = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_functions = 1
+"let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
 
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
 let g:go_auto_sameids = 1
-"let g:go_auto_type_info = 1
-" prevent "Press enter to continue" message on auto type info
-set cmdheight=2
+
+let g:go_auto_type_info = 1
+let g:go_gocode_unimported_packages = 1
+" checking source is slow
+let g:go_gocode_propose_source = 0
 
 " Add the failing test name to the output of :GoTest
 let g:go_test_show_name = 1
+
+" prevent "Press enter to continue" message on auto type info
+set cmdheight=2
 
 " go specific keybindings
 augroup filetype_go
