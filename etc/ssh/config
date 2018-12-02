@@ -1,49 +1,17 @@
 # Mixpanel
 
-Host cpp
-    User ubuntu
-    IdentityFile "~/Google Drive/certs/keys/cpp_workspace_3.pem"
-    Hostname ec2-54-193-116-230.us-west-1.compute.amazonaws.com
-
-Host tools
-    User ubuntu
-    Hostname 52.34.199.252
-    IdentityFile ~/.ssh/tools.pem
-
-Host rohith-gcp
-    User rohith
-    IdentityFile ~/.ssh/id_rsa
-    Hostname 35.185.219.216
-
-Host rohith
-    User rohith
-    IdentityFile ~/.ssh/id_rsa
-    Hostname 198.11.223.244
-    #ControlPath ~/.ssh/cm-%r@%h:%p
-    #ControlMaster auto
-
 Host rravi-1
     User rravi-1
     ForwardAgent yes
     ProxyCommand ssh -A rohith@ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
 
-Host rravi
-    User rravi
-    ForwardAgent yes
-    ProxyCommand ssh -A ssh-bastion.gcp.corp.mixpanel.org -W %h:%p
-
-Host bastion1
-    User rohith
-    Hostname ssh-bastion.gcp.corp.mixpanel.org
-
-Host *.gcp
-    User rohith
-    ProxyCommand ssh -A %r@bastion1 -W $(h=%h; echo ${h%%.gcp}):%p
-
-Host *.corp.mixpanel.com
-
-Host *arb* api* app* aliases* backup* build* cache* consumer* *cron* *engage* export* integration* liveview* notifications* redis* trends* switchboard* ephemeral-*
-    User live
+Host rravi-1-2fa
+  ForwardAgent yes
+  HostName rravi-1
+  ProxyCommand ssh -A -o ServerAliveInterval=5 -o ServerAliveCountMax=2 -p 1883 rohith@ssh-bastion-global.mixpanel.org -W %h:%p
+  User rravi-1
+  ServerAliveInterval 5
+  ServerAliveCountMax 1
 
 Host *
     ServerAliveInterval 30
