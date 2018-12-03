@@ -12,9 +12,10 @@ if dein#load_state('~/.nvim/bundle')
     " Navigation
     call dein#add('mileszs/ack.vim.git')
     call dein#add('justinmk/vim-dirvish')
-    call dein#add('ctrlpvim/ctrlp.vim')
     call dein#add('ludovicchabant/vim-gutentags')
+    call dein#add('tweekmonster/fzf-filemru')
     call dein#add('junegunn/fzf')
+    call dein#add('junegunn/fzf.vim')
 
     " Git
     call dein#add('airblade/vim-gitgutter.git')
@@ -336,9 +337,9 @@ endif
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
 " gutentags config
-"let g:gutentags_define_advanced_commands = 1
+let g:gutentags_define_advanced_commands = 1
 " keep the lock and temp files outside of git workspace
-let g:gutentags_cache_dir = '~/.cache/gutentags'
+let g:gutentags_cache_dir = expand('~/.cache/gutentags')
 let g:gutentags_ctags_extra_args = ['--links=no']
 " NOTE: since we're using a cache_dir, exclude patterns cannot be relative to
 " project root.
@@ -379,7 +380,7 @@ if has("nvim")
         call ncm2#enable_for_buffer()
         " NOTE: this key binding has to be defined after
         " ncm2#enable_for_buffer() for it to actually trigger the expansion
-        imap <silent> <expr> <tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
     endfunction
 
     augroup ncm2_completion
@@ -494,23 +495,20 @@ omap F <Plug>Sneak_S
 let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
 
-" FZF + CtrlP config
-command! FZFMru call fzf#run(fzf#wrap({
-\ 'source':  s:mru_filelist(),
-\ 'options': '--multi --extended --no-sort',
-\ 'down':    '40%' }))
-let g:ctrlp_map = '<c-\>' " rename CtrlP binding to something else
-nnoremap <c-p> :FZFMru<cr>
+" ctrl-p style MRU
+nnoremap <c-p> :FilesMru --tiebreak=end<cr>
 
-function! s:mru_filelist() abort
-    let cmd = 'git ls-files --full-name'
-    return extend(ctrlp#mrufiles#refresh(), systemlist(cmd))
-endfunction
+" search contents of files
+nnoremap <leader>r :Rg<cr>
 
-" CtrlP customization
-let g:ctrlp_cmd = 'CtrlPMRU'
-" treat git root dir as the working dir
-let g:ctrlp_working_path_mode = 'ra'
+" search tags
+nnoremap <leader>t :Tags<cr>
+
+" update MRU when opening buffers through any means, not just from FZF
+augroup custom_filemru
+  autocmd!
+  autocmd BufWinEnter * UpdateMru
+augroup END
 
 "set wildignore+=*.pyc,*.o,*.a,*.clj,*.css,*.html,*.js
 set wildignore+=*.pyc,*.o,*.a,*.clj
@@ -520,12 +518,12 @@ if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --ignore=html\ --ignore=js\ --ignore=css\ --ignore=clj/\ --ignore=vendor/\ --vimgrep\ $*
   set grepformat=%f:%l:%c:%m
+endif
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore=js --ignore=css --ignore=clj/ --ignore=vendor/'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
+if executable('rg')
+  " Use ripgrep over grep
+  set grepprg=rg\ --type-not=html\ --type-not=js\ --type-not=css\ --type-not=clojure\ --glob=\"\!vendor/\*\"\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
 endif
 
 " For fast scrolling
