@@ -76,6 +76,10 @@ if dein#load_state('~/.nvim/bundle')
     " Bazel
     call dein#add('bazelbuild/vim-ft-bzl')
 
+    " Language Server Protocol (LSP) support
+    call dein#add('prabirshrestha/async.vim')
+    call dein#add('prabirshrestha/vim-lsp')
+
     if has("nvim")
         call dein#add('ncm2/ncm2')
         call dein#add('roxma/nvim-yarp')
@@ -84,10 +88,11 @@ if dein#load_state('~/.nvim/bundle')
         call dein#add('ncm2/ncm2-bufword')
         call dein#add('ncm2/ncm2-tmux')
         call dein#add('ncm2/ncm2-path')
-        call dein#add('ncm2/ncm2-go')
+        " call dein#add('ncm2/ncm2-go')
         call dein#add('ncm2/ncm2-ultisnips')
         call dein#add('ncm2/ncm2-jedi')
 
+        call dein#add('ncm2/ncm2-vim-lsp')
         call dein#add('sebdah/vim-delve')
     endif
 
@@ -391,7 +396,17 @@ if has("nvim")
 endif
 
 " vim-go
-let g:go_fmt_command = "goimports"
+if executable('gopls')
+    " register gopls for autocompletion and go-to-def
+    let g:go_def_mode = 'gopls'
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
+let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
