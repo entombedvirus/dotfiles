@@ -86,13 +86,14 @@ if dein#load_state('~/.nvim/bundle')
         " NOTE: you need to install completion sources to get completions. Check
         " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
         call dein#add('ncm2/ncm2-bufword')
-        call dein#add('ncm2/ncm2-tmux')
-        call dein#add('ncm2/ncm2-path')
-        " call dein#add('ncm2/ncm2-go')
+        " call dein#add('ncm2/ncm2-tmux')
+        " call dein#add('ncm2/ncm2-path')
         call dein#add('ncm2/ncm2-ultisnips')
         call dein#add('ncm2/ncm2-jedi')
 
-        call dein#add('ncm2/ncm2-vim-lsp')
+        call dein#add('ncm2/ncm2-go')
+        " call dein#add('ncm2/ncm2-vim-lsp')
+
         call dein#add('sebdah/vim-delve')
     endif
 
