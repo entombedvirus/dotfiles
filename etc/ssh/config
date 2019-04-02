@@ -5,6 +5,11 @@ Host rravi-1
     ForwardAgent yes
     ProxyCommand ssh -A rohith@ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
 
+Host rravi-2
+    User rravi-2
+    ForwardAgent yes
+    ProxyCommand ssh -A rohith@ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
+
 Host rravi-1-2fa
   ForwardAgent yes
   HostName rravi-1
