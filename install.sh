@@ -72,13 +72,16 @@ brew install python3
 pip3 install neovim jedi
 
 # unlink gcc and friends so that they don't interfere with bazel builds
-brew unlink gcc binutils glibc
+brew unlink gcc || true
+brew unlink binutils || true
+brew unlink glibc || true
+
 # libjemalloc (dep of neovim) needs to find gcc-5 even after the unlink above
 chmod 755 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
 patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
 chmod 555 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
 
 # custom TERMs
-tic -x -o etc/terminfo etc/terminfo/*.src
+for src in etc/terminfo/*.src; do tic -x -o etc/terminfo $src; done
 
 echo "logout and log back in and run linkify"
