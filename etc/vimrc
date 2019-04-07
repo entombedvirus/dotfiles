@@ -1,110 +1,101 @@
 if &compatible
   set nocompatible
 endif
-set runtimepath+=~/.nvim/bundle/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('~/.nvim/bundle')
-    call dein#begin('~/.nvim/bundle')
+" Bootstrap Plug
+let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
+if !filereadable(autoload_plug_path)
+  silent execute '!curl -fLo ' . autoload_plug_path . '  --create-dirs
+      \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+unlet autoload_plug_path
 
-    " Let dein manage dein
-    call dein#add('Shougo/dein.vim')
+call plug#begin('~/.nvim/plugged')
 
-    " Navigation
-    call dein#add('mileszs/ack.vim.git')
-    call dein#add('justinmk/vim-dirvish')
-    call dein#add('ludovicchabant/vim-gutentags')
-    call dein#add('tweekmonster/fzf-filemru')
-    call dein#add('junegunn/fzf')
-    call dein#add('junegunn/fzf.vim')
+" Navigation
+Plug 'mileszs/ack.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'tweekmonster/fzf-filemru'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
-    " Git
-    call dein#add('airblade/vim-gitgutter.git')
-    call dein#add('tpope/vim-fugitive')
-    call dein#add('tpope/vim-rhubarb')
+" Git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
-    " Go
-    call dein#add('fatih/vim-go')
-    call dein#add('majutsushi/tagbar')
+" Go
+Plug 'fatih/vim-go'
+Plug 'majutsushi/tagbar'
 
-    " react / js
-    call dein#add('pangloss/vim-javascript')
-    call dein#add('mxw/vim-jsx')
+" react / js
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
-    " Appearance
-    call dein#add('frankier/neovim-colors-solarized-truecolor-only')
-    call dein#add('flazz/vim-colorschemes')
-    call dein#add('justinmk/molokai')
-    call dein#add('nanotech/jellybeans.vim')
-    call dein#add('nathanaelkane/vim-indent-guides.git')
-    call dein#add('morhetz/gruvbox')
-    call dein#add('romainl/flattened')
-    call dein#add('whatyouhide/vim-gotham')
-    call dein#add('NLKNguyen/papercolor-theme')
-    call dein#add('rakr/vim-one')
-    call dein#add('rakr/vim-two-firewatch')
-    call dein#add('mhartington/oceanic-next')
-    call dein#add('itchyny/lightline.vim')
-    call dein#add('mgee/lightline-bufferline')
-    call dein#add('joshdick/onedark.vim')
-    call dein#add('KeitaNakamura/neodark.vim')
-    call dein#add('neutaaaaan/iosvkem')
-    call dein#add('chriskempson/base16-vim')
+" Appearance
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'flazz/vim-colorschemes'
+Plug 'justinmk/molokai'
+Plug 'nanotech/jellybeans.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'morhetz/gruvbox'
+Plug 'romainl/flattened'
+Plug 'whatyouhide/vim-gotham'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'rakr/vim-one'
+Plug 'rakr/vim-two-firewatch'
+Plug 'mhartington/oceanic-next'
+Plug 'itchyny/lightline.vim'
+Plug 'mgee/lightline-bufferline'
+Plug 'joshdick/onedark.vim'
+Plug 'KeitaNakamura/neodark.vim'
+Plug 'neutaaaaan/iosvkem'
+Plug 'chriskempson/base16-vim'
 
-    " Build
-    call dein#add('benekastah/neomake')
+" Linting
+Plug 'benekastah/neomake'
 
-    " Editing
-    call dein#add('ntpeters/vim-better-whitespace.git')
-    call dein#add('tpope/vim-surround')
-    call dein#add('tpope/vim-unimpaired')
-    call dein#add('tpope/vim-abolish')
-    call dein#add('tpope/vim-repeat')
-    call dein#add('michaeljsmith/vim-indent-object')
-    call dein#add('coderifous/textobj-word-column.vim')
-    call dein#add('AndrewRadev/splitjoin.vim')
-    call dein#add('wellle/targets.vim')
-    call dein#add('justinmk/vim-sneak')
-    call dein#add('FooSoft/vim-argwrap')
-    call dein#add('whiteinge/diffconflicts')
+" Editing
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-repeat'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'coderifous/textobj-word-column.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'wellle/targets.vim'
+Plug 'justinmk/vim-sneak'
+Plug 'FooSoft/vim-argwrap'
+Plug 'whiteinge/diffconflicts'
 
-    " Jsonnet
-    call dein#add('google/vim-jsonnet')
+" Jsonnet
+Plug 'google/vim-jsonnet'
 
-    " Snippets
-    call dein#add('SirVer/ultisnips')
+" Snippets
+Plug 'SirVer/ultisnips'
 
-    " Bazel
-    call dein#add('bazelbuild/vim-ft-bzl')
+" Bazel
+Plug 'bazelbuild/vim-ft-bzl'
 
-    " Language Server Protocol (LSP) support
-    call dein#add('prabirshrestha/async.vim')
-    call dein#add('prabirshrestha/vim-lsp')
+" auto complete
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-tmux'
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-go'
 
-    if has("nvim")
-        call dein#add('ncm2/ncm2')
-        call dein#add('roxma/nvim-yarp')
-        " NOTE: you need to install completion sources to get completions. Check
-        " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-        call dein#add('ncm2/ncm2-bufword')
-        " call dein#add('ncm2/ncm2-tmux')
-        " call dein#add('ncm2/ncm2-path')
-        call dein#add('ncm2/ncm2-ultisnips')
-        call dein#add('ncm2/ncm2-jedi')
 
-        call dein#add('ncm2/ncm2-go')
-        " call dein#add('ncm2/ncm2-vim-lsp')
-
-        call dein#add('sebdah/vim-delve')
-    endif
-
-    call dein#end()
-    call dein#save_state()
+if has("nvim")
+    Plug 'sebdah/vim-delve'
 endif
 
-" install new things on startup
-if dein#check_install()
-  call dein#install()
-endif
+" Initialize plugin system
+call plug#end()
 
 filetype plugin indent on
 syntax enable
@@ -245,27 +236,10 @@ if has("nvim")
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_python_enabled_makers = ['flake8']
     let g:neomake_go_enabled_makers = ['go', 'gometalinter']
-    "let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=gosimple', '--enable=staticcheck', '--enable=unused']
     let g:neomake_go_gometalinter_args = ['--fast', '--disable=gosec']
 
     " don't use fancy unicode symbols since terminals seem to have trouble
     " rendering them correctly.
-    "let g:neomake_error_sign = {
-    "    \   'text': '',
-    "    \   'texthl': 'NeomakeErrorSign',
-    "    \ }
-    "let g:neomake_warning_sign = {
-    "    \   'text': '',
-    "    \   'texthl': 'NeomakeWarningSign',
-    "    \ }
-    "let g:neomake_message_sign = {
-    "    \   'text': 'M',
-    "    \   'texthl': 'NeomakeMessageSign',
-    "    \ }
-    "let g:neomake_info_sign = {
-    "    \   'text': '',
-    "    \   'texthl': 'NeomakeInfoSign',
-    "    \ }
     let g:neomake_error_sign = {
         \   'text': '>>',
         \   'texthl': 'NeomakeErrorSign',
@@ -400,11 +374,6 @@ endif
 if executable('gopls')
     " register gopls for autocompletion and go-to-def
     let g:go_def_mode = 'gopls'
-    autocmd User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
-        \ 'whitelist': ['go'],
-        \ })
 endif
 
 let g:go_fmt_command = 'goimports'
@@ -423,7 +392,6 @@ let g:go_highlight_functions = 1
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
 let g:go_auto_sameids = 1
-
 let g:go_auto_type_info = 1
 let g:go_gocode_unimported_packages = 1
 " checking source is slow
