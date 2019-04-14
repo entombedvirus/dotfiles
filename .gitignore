@@ -11,3 +11,4 @@ etc/vim/.VimballRecord
 etc/vim/doc/tags
 etc/nvim/bundle/
 etc/tmux/plugins/
+etc/vim/autoload/plug.vim
