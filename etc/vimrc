@@ -3,11 +3,11 @@ if &compatible
 endif
 
 " Bootstrap Plug
-if has('stdpath')
+try
     let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
-else
+catch E117
     let autoload_plug_path = expand('~/.vim/autoload/plug.vim')
-endif
+endtry
 
 if !filereadable(autoload_plug_path)
   silent execute '!curl -fLo ' . autoload_plug_path . '  --create-dirs
@@ -377,8 +377,9 @@ endif
 
 " vim-go
 if executable('gopls')
-    " register gopls for autocompletion and go-to-def
+    " register gopls for go-to-def and auto-info
     let g:go_def_mode = 'gopls'
+    let g:go_info_mode = 'gopls'
 endif
 
 let g:go_fmt_command = 'goimports'
