@@ -72,14 +72,26 @@ brew install python3
 pip3 install neovim jedi
 
 # unlink gcc and friends so that they don't interfere with bazel builds
-brew unlink gcc || true
-brew unlink binutils || true
-brew unlink glibc || true
+brew unlink gcc 2>/dev/null || true
+brew unlink binutils 2>/dev/null || true
+brew unlink glibc 2>/dev/null || true
 
 # libjemalloc (dep of neovim) needs to find gcc-5 even after the unlink above
-chmod 755 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
-patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
-chmod 555 /home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+file_to_patch=/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+if [ -f "$file_to_patch" ]; then
+    chmod 755 "$file_to_patch"
+    patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' $file_to_patch
+    chmod 555 "$file_to_patch"
+fi
+
+# add zsh to list of known shells
+zsh_path=$(command -v zsh)
+if [ -n "$zsh_path" ]; then
+    if ! grep -q "$zsh_path" /etc/shells; then
+        echo "adding zsh to /etc/shells"
+        command -v zsh | sudo tee -a /etc/shells
+    fi
+fi
 
 # custom TERMs
 for src in etc/terminfo/*.src; do tic -x -o etc/terminfo $src; done
