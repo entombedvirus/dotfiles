@@ -54,12 +54,6 @@ if [ ! -e "$LEMONADE_PATH" ]; then
     chmod 755 "$LEMONADE_PATH"
 fi
 
-DEIN_HOME=${HOME}/.nvim/bundle/repos/github.com/Shougo
-if [ ! -d "$DEIN_HOME" ]; then
-    mkdir -p "$DEIN_HOME"
-    git clone git@github.com:Shougo/dein.vim.git "${DEIN_HOME}/dein.vim"
-fi
-
 NVIM_INIT_PATH="${HOME}/.config/nvim/init.vim"
 if [ ! -L "$NVIM_INIT_PATH" ]; then
     mkdir -p $(dirname $NVIM_INIT_PATH)
@@ -89,7 +83,9 @@ zsh_path=$(command -v zsh)
 if [ -n "$zsh_path" ]; then
     if ! grep -q "$zsh_path" /etc/shells; then
         echo "adding zsh to /etc/shells"
-        command -v zsh | sudo tee -a /etc/shells
+        echo $zsh_path | sudo tee -a /etc/shells >/dev/null
+        echo "changing $USER shell to $zsh_path"
+        sudo chsh --shell "$zsh_path" $USER
     fi
 fi
 
