@@ -12,6 +12,7 @@ Host rravi-2
 
 Host rravi-2-2fa
     User rravi-2
+    Hostname rravi-2
     ForwardAgent yes
     ProxyCommand ssh -A -p 1883 rohith@ssh-bastion-global.mixpanel.org -W %h:%p
 
