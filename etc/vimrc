@@ -92,8 +92,8 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
 Plug 'ncm2/ncm2-jedi'
-Plug 'ncm2/ncm2-go'
-
+"Plug 'ncm2/ncm2-go'
+Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
     Plug 'sebdah/vim-delve'
@@ -202,8 +202,8 @@ if has("nvim")
     "set background=dark
     "let g:airline_theme='oceanicnext'
 
-    "colorscheme onedark
-    "set background=dark
+    colorscheme onedark
+    set background=dark
 
     "colorscheme neodark
     "set background=dark
@@ -215,8 +215,8 @@ if has("nvim")
     "colorscheme base16-gruvbox-dark-medium
     "set background=dark
 
-    colorscheme base16-eighties
-    set background=dark
+    "colorscheme base16-eighties
+    "set background=dark
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
