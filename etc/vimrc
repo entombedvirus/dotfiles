@@ -745,18 +745,21 @@ function! s:CloseHiddenBuffers()
   endfor
 endfunction
 
-" backup to ~/.tmp
+" the "//" at the end of each directory means that file names will be built
+" from the complete path to the file with all path separators substituted to
+" percent "%" sign. This will ensure file name uniqueness in the preserve
+" directory.
+set undodir=~/.tmp/.undo//
+set backupdir=~/.tmp/.backup//
+set directory=~/.tmp/.swp//
+silent execute '!mkdir -p ' . &undodir . ' ' . &backupdir . ' ' &directory
 set backup
-set backupdir=$HOME/.tmp
 set writebackup
 
 " folding settings
 set foldmethod=indent
 set foldlevelstart=20
 
-" Create .swp files here to avoid git status pollution
-set dir=$HOME/.tmp
-"
 " misc
 "set ai
 set incsearch
