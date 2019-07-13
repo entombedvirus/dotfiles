@@ -9,6 +9,13 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     ssh-add $HOME/.ssh/id_rsa
 fi
 
+priv_key=$HOME/.ssh/id_rsa
+if [ -f "$priv_key" ]; then
+    if ! ssh-add -L >/dev/null 2>&1; then
+        ssh-add "$priv_key"
+    fi
+fi
+
 forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
 forward_args="$forward_args -o Compression=no -o ExitOnForwardFailure=yes"
 
