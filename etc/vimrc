@@ -32,7 +32,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
 " Go
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'majutsushi/tagbar'
 
 " react / js
@@ -386,12 +386,12 @@ let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
+"let g:go_highlight_types = 1
+"let g:go_highlight_fields = 1
 let g:go_highlight_format_strings = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_functions = 1
+"let g:go_highlight_methods = 1
+"let g:go_highlight_extra_types = 1
+"let g:go_highlight_functions = 1
 "let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
 
