@@ -79,9 +79,6 @@ Plug 'whiteinge/diffconflicts'
 " Jsonnet
 Plug 'google/vim-jsonnet'
 
-" Snippets
-Plug 'SirVer/ultisnips'
-
 " Bazel
 Plug 'bazelbuild/vim-ft-bzl'
 
@@ -92,11 +89,14 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
 Plug 'ncm2/ncm2-jedi'
-"Plug 'ncm2/ncm2-go'
 Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
-    Plug 'sebdah/vim-delve'
+    " vim-go has it's own dlv support now
+    "Plug 'sebdah/vim-delve'
+
+    " Snippets
+    Plug 'SirVer/ultisnips'
 endif
 
 " Initialize plugin system
