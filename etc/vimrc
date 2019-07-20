@@ -75,6 +75,8 @@ Plug 'wellle/targets.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'FooSoft/vim-argwrap'
 Plug 'whiteinge/diffconflicts'
+Plug 'junegunn/vim-peekaboo' " shows register contents
+Plug 'nelstrom/vim-visual-star-search' " search visual selected contents with '*' and '#'
 
 " Jsonnet
 Plug 'google/vim-jsonnet'
@@ -386,12 +388,12 @@ let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
-"let g:go_highlight_types = 1
-"let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
 let g:go_highlight_format_strings = 1
-"let g:go_highlight_methods = 1
-"let g:go_highlight_extra_types = 1
-"let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_functions = 1
 "let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
 
@@ -595,12 +597,6 @@ nnoremap <leader>]c :tabclose<cr>
 xnoremap <silent> <c-k> :move-2<CR>gv=gv
 xnoremap <silent> <c-j> :move'>+<CR>gv=gv
 
-" search for visually selected text
-vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
-
-" persistent undo file
-set undofile
-
 " :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
 
@@ -745,16 +741,18 @@ function! s:CloseHiddenBuffers()
   endfor
 endfunction
 
+" persistent undo file
+set undofile
 " the "//" at the end of each directory means that file names will be built
 " from the complete path to the file with all path separators substituted to
 " percent "%" sign. This will ensure file name uniqueness in the preserve
 " directory.
 set undodir=~/.tmp/.undo//
+set backup
+set writebackup
 set backupdir=~/.tmp/.backup//
 set directory=~/.tmp/.swp//
 silent execute '!mkdir -p ' . &undodir . ' ' . &backupdir . ' ' &directory
-set backup
-set writebackup
 
 " folding settings
 set foldmethod=indent
