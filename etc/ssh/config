@@ -1,20 +1,23 @@
 # Mixpanel
 
-Host rravi-1
-    User rravi-1
+Host bastion
     ForwardAgent yes
-    ProxyCommand ssh -A rohith@ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
+    User rohithravi
+    HostName west-dev-bastion.mixpanel.org
+    ServerAliveInterval 5
+    ServerAliveCountMax 2
 
 Host rravi-2
     User rravi-2
+    Hostname rravi-2
     ForwardAgent yes
-    ProxyCommand ssh -A rohith@ssh-bastion-west.gcp.corp.mixpanel.org -W %h:%p
+    ProxyCommand ssh -A bastion -W %h:%p
 
 Host rravi-2-2fa
     User rravi-2
     Hostname rravi-2
     ForwardAgent yes
-    ProxyCommand ssh -A -p 1883 rohith@ssh-bastion-global.mixpanel.org -W %h:%p
+    ProxyCommand ssh -A -p 1883 bastion -W %h:%p
 
 Host *
     ServerAliveInterval 30
