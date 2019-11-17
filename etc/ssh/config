@@ -6,6 +6,9 @@ Host bastion
     HostName west-dev-bastion.mixpanel.org
     ServerAliveInterval 5
     ServerAliveCountMax 2
+    ControlPath ~/.ssh/controlmasters/%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
 
 Host rravi-2
     User rravi-2

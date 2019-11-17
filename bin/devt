@@ -2,7 +2,7 @@
 
 set -o errexit -o pipefail -o nounset -o xtrace
 
-host=${1:-rohith}
+host=${1:-rravi-1}
 
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval `ssh-agent -s`
@@ -16,10 +16,10 @@ if [ -f "$priv_key" ]; then
     fi
 fi
 
-forward_args="-D 50001 -R 2489:localhost:2489 -o ServerAliveInterval=5 -o ServerAliveCountMax=2"
-forward_args="$forward_args -o Compression=no -o ExitOnForwardFailure=yes"
+forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489"
+forward_args="$forward_args -o ExitOnForwardFailure=yes"
 
-#while true; do
+while true; do
     ret=0
     ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
     if [ "$ret" -ne 255 ]; then #  255 means timeout. happens when laptop is closed, disconnected from network etc
@@ -28,6 +28,7 @@ forward_args="$forward_args -o Compression=no -o ExitOnForwardFailure=yes"
     fi
 
     # force release remote forwarded ports from prev sessions so that we can use them
+    echo "got exit code ${ret} from ssh. killing sshd on the server to release ports"
     ssh $host -- "tmux detach-client; pkill --signal TERM --oldest sshd --uid \$USER" > /dev/null 2>&1 || true
-    ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
-#done
+    #ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+done
