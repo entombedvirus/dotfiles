@@ -19,6 +19,18 @@ Host rravi-2-2fa
     ForwardAgent yes
     ProxyCommand ssh -A -p 1883 bastion -W %h:%p
 
+Host rravi-1
+    User rravi
+    Hostname devbox-956
+    ForwardAgent yes
+    ProxyCommand ssh -A bastion -W %h:%p
+
+Host rravi-1-2fa
+    User rravi
+    Hostname devbox-956
+    ForwardAgent yes
+    ProxyCommand ssh -A -p 1883 bastion -W %h:%p
+
 Host *
     ServerAliveInterval 30
     ServerAliveCountMax 3
