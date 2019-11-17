@@ -242,8 +242,8 @@ if has("nvim")
         \ }
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_python_enabled_makers = ['flake8']
-    let g:neomake_go_enabled_makers = ['go', 'gometalinter']
-    let g:neomake_go_gometalinter_args = ['--fast', '--disable=gosec']
+    let g:neomake_go_enabled_makers = ['go', 'golangci_lint']
+    "let g:neomake_go_golangci_lint_args = ['run']
 
     " don't use fancy unicode symbols since terminals seem to have trouble
     " rendering them correctly.
