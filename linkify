@@ -19,6 +19,7 @@ end
 
 # copy back .ssh/authorized_keys file to prevent getting locked out
 system("cp %s %s" % [File.join(backup_dir, ".ssh", "authorized_keys"), File.join("~/.ssh", "authorized_keys")])
+system("mkdir -p %s" % [File.join("~", ".ssh", "controlmasters")])
 
 # create
 Dir["#{File.dirname(__FILE__)}/xdg_config/*"].each do |target|
