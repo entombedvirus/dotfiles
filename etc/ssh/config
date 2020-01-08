@@ -8,7 +8,7 @@ Host bastion
     ServerAliveCountMax 2
     ControlPath ~/.ssh/controlmasters/%r@%h:%p
     ControlMaster auto
-    ControlPersist 10m
+    ControlPersist yes
 
 Host rravi-2
     User rravi-2
