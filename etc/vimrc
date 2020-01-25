@@ -28,7 +28,8 @@ Plug 'junegunn/fzf.vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+" newer versions interact badly with dirvish
+Plug 'tpope/vim-fugitive', { 'commit': '036fe0f08460ad64e3b2e06e3b7b299269c5ccc9' }
 Plug 'tpope/vim-rhubarb'
 
 " Go
@@ -243,7 +244,7 @@ if has("nvim")
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_python_enabled_makers = ['flake8']
     let g:neomake_go_enabled_makers = ['go', 'golangci_lint']
-    "let g:neomake_go_golangci_lint_args = ['run']
+    "let g:neomake_go_golangci_lint_args = ['run', '--no-config']
 
     " don't use fancy unicode symbols since terminals seem to have trouble
     " rendering them correctly.
@@ -380,9 +381,8 @@ endif
 
 " fzf config
 if has("nvim")
-    let $FZF_DEFAULT_OPTS='--layout=reverse'
-    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-    highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
+    let $FZF_DEFAULT_OPTS='--layout=reverse --border --margin=0,2'
+    "highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
 
     function! FloatingFZF()
         let buf = nvim_create_buf(v:false, v:true)
@@ -411,6 +411,7 @@ if has("nvim")
                 \ norelativenumber
                 \ signcolumn=no
     endfunction
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
 
 " vim-go
@@ -418,6 +419,7 @@ if executable('gopls')
     " register gopls for go-to-def and auto-info
     let g:go_def_mode = 'gopls'
     let g:go_info_mode = 'gopls'
+    let g:go_gopls_complete_unimported = 1
 endif
 
 let g:go_fmt_command = 'goimports'
@@ -432,14 +434,16 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_functions = 1
 "let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
+let g:go_diagnostics_enabled = 1
+let g:go_doc_popup_window = 1
+
+" seems to lead to weird artifacts
+"let g:go_gopls_use_placeholders = 1
 
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
-let g:go_gocode_unimported_packages = 1
-" checking source is slow
-let g:go_gocode_propose_source = 0
 
 " Add the failing test name to the output of :GoTest
 let g:go_test_show_name = 1
@@ -618,6 +622,8 @@ nnoremap <leader>bd :bufdo bd<cr>
 nnoremap <leader>pr :profile start /tmp/profile.log<cr>:profile func *<cr>:profile file *<cr>
 
 " quickfix nav
+" default python plugin maps these to something else
+let g:no_python_maps = 1
 nnoremap [] :cclose<cr>
 nnoremap ][ :copen<cr>
 
