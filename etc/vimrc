@@ -25,6 +25,8 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'rbtnn/vim-jumptoline'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -419,12 +421,14 @@ if executable('gopls')
     " register gopls for go-to-def and auto-info
     let g:go_def_mode = 'gopls'
     let g:go_info_mode = 'gopls'
+    let g:go_referrers_mode = 'gopls'
     let g:go_gopls_complete_unimported = 1
 endif
 
 let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
+" let g:go_gopls_use_placeholders = 1
 let g:go_decls_mode = 'fzf'
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -644,7 +648,8 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 
 " bind G to grep word under cursor
 " nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+"nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <M-g> :Silent grep "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
