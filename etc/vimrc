@@ -649,7 +649,7 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 " bind G to grep word under cursor
 " nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-nnoremap <M-g> :Silent grep "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
+nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
