@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-set -o errexit -o pipefail -o nounset -o xtrace
+set -o errexit -o pipefail -o nounset # -o xtrace
 
 host=${1:-rravi-1}
 
@@ -16,19 +16,30 @@ if [ -f "$priv_key" ]; then
     fi
 fi
 
+function debug_log() {
+    echo >&2 "$(date +'%h %d %H:%M:%S')> $@"
+}
+
+stderr_file=$(mktemp /tmp/devt-${host}.stderr.XXXX)
+trap "{ rm -f ${stderr_file}; }" EXIT
+
 forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489"
-forward_args="$forward_args -o ExitOnForwardFailure=yes"
 
 while true; do
     ret=0
-    ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
-    if [ "$ret" -ne 255 ]; then #  255 means timeout. happens when laptop is closed, disconnected from network etc
-        #break
-        exit 0
+    ssh 2>${stderr_file} -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+
+    if [ "$ret" -eq 255 ]; then
+        if grep -q 'Could not request local forwarding.' ${stderr_file}; then
+            # force release remote forwarded ports from prev sessions so that we can use them
+            debug_log "got exit code ${ret} from ssh. killing sshd on the server to release ports"
+            ssh $host -- "tmux detach-client || (sleep 1; pkill --signal TERM --oldest sshd --uid \$USER)" > /dev/null 2>&1 || true
+            continue
+        fi
     fi
 
-    # force release remote forwarded ports from prev sessions so that we can use them
-    echo "got exit code ${ret} from ssh. killing sshd on the server to release ports"
-    ssh $host -- "tmux detach-client; pkill --signal TERM --oldest sshd --uid \$USER" > /dev/null 2>&1 || true
-    #ssh -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+    if [ "$ret" -ne 0 ]; then
+        cat >&2 ${stderr_file}
+    fi
+    exit $ret
 done

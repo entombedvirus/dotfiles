@@ -4,40 +4,29 @@ Host bastion
     ForwardAgent yes
     User rohithravi
     HostName west-dev-bastion.mixpanel.org
-    ServerAliveInterval 5
-    ServerAliveCountMax 2
+    # keep a persistent connection to bastion so that we don't get prompted for
+    # 2fa on each connection attempt
     ControlPath ~/.ssh/controlmasters/%r@%h:%p
     ControlMaster auto
     ControlPersist yes
 
-Host rravi-2
-    User rravi-2
-    Hostname rravi-2
-    ForwardAgent yes
+Host rravi-?
     ProxyCommand ssh -A bastion -W %h:%p
 
-Host rravi-2-2fa
-    User rravi-2
-    Hostname rravi-2
-    ForwardAgent yes
+Host rravi-?-2fa
     ProxyCommand ssh -A -p 1883 bastion -W %h:%p
 
-Host rravi-1
+Host rravi-*
     User rravi
     Hostname devbox-956
     ForwardAgent yes
-    ProxyCommand ssh -A bastion -W %h:%p
 
-Host rravi-1-2fa
-    User rravi
-    Hostname devbox-956
-    ForwardAgent yes
-    ProxyCommand ssh -A -p 1883 bastion -W %h:%p
+    # by setting max count to zero, we can force a disconnect if the client has
+    # been idle for the configured alive interval. this helps when I forget to
+    # logout
+    ServerAliveCountMax 0
+    ServerAliveInterval 60m
 
-Host *
-    ServerAliveInterval 30
-    ServerAliveCountMax 3
     GSSAPIAuthentication no
     StrictHostKeyChecking no
     HashKnownHosts no
-    ForwardAgent yes
