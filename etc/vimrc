@@ -422,7 +422,7 @@ if executable('gopls')
     let g:go_def_mode = 'gopls'
     let g:go_info_mode = 'gopls'
     let g:go_referrers_mode = 'gopls'
-    let g:go_gopls_complete_unimported = 1
+    let g:go_fmt_command = 'gopls'
 endif
 
 let g:go_fmt_command = 'goimports'
@@ -649,6 +649,10 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 " bind G to grep word under cursor
 " nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+"
+" yank selection to the 'q' register, then grep, then open preview window
+"xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
+xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
 nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
 
 " For vim-airline
