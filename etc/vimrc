@@ -358,21 +358,13 @@ set completeopt=noinsert,noselect,menuone,noselect
 set shortmess+=c
 if has("nvim")
     " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-    inoremap <c-c> <ESC>
-
-    " make UltiSnips register a named key for triggering expansion. this named
-    " key is then used to expand the ncm2 completion (<tab>).
-    let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-    " c-j c-k for moving in snippet
-    "let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-    "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-    "let g:UltiSnipsRemoveSelectModeMappings = 0
+    inoremap <silent> <c-c> <ESC>
 
     function! RRAVI_ncm2_expand()
         call ncm2#enable_for_buffer()
         " NOTE: this key binding has to be defined after
         " ncm2#enable_for_buffer() for it to actually trigger the expansion
-        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("", 'm')
     endfunction
 
     augroup ncm2_completion
@@ -441,8 +433,12 @@ let g:go_highlight_functions = 1
 let g:go_diagnostics_enabled = 1
 let g:go_doc_popup_window = 1
 
-" seems to lead to weird artifacts
-"let g:go_gopls_use_placeholders = 1
+" seems to lead to weird artifacts. vim-go uncoditionally calls UltiSnips#Anon
+" if this is turned on and that does not interact well with ncm2_ultisnips.
+let g:go_gopls_use_placeholders = 0
+
+" suppress "Completion SUCCESS" messages
+let g:go_echo_go_info = 0
 
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
