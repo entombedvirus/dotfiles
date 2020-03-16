@@ -416,9 +416,9 @@ if executable('gopls')
     let g:go_def_mode = 'gopls'
     let g:go_info_mode = 'gopls'
     let g:go_referrers_mode = 'gopls'
-    let g:go_fmt_command = 'gopls'
 endif
 
+let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
