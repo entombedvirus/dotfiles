@@ -6,6 +6,7 @@ etc/vim/**/command-t*
 etc/vim/**/commandt*
 *.log
 *.o
+etc/vim/sessions/
 etc/vim/ruby/
 etc/vim/.VimballRecord
 etc/vim/doc/tags
