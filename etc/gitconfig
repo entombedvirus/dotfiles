@@ -19,3 +19,5 @@
 	pager = less -RSXF
 [init]
 #	templatedir = ~/.git_template
+[http]
+	cookiefile = /home/rravi/.gitcookies

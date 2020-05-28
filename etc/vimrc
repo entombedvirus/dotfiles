@@ -27,7 +27,6 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'rbtnn/vim-jumptoline'
-Plug 'thaerkh/vim-workspace'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -82,6 +81,7 @@ Plug 'FooSoft/vim-argwrap'
 Plug 'whiteinge/diffconflicts'
 Plug 'junegunn/vim-peekaboo' " shows register contents
 Plug 'nelstrom/vim-visual-star-search' " search visual selected contents with '*' and '#'
+Plug 'mg979/vim-visual-multi' " multiple cursors
 
 " Jsonnet
 Plug 'google/vim-jsonnet'
@@ -219,16 +219,16 @@ if has("nvim")
     "colorscheme Iosvkem
     "set background=dark
 
-    "colorscheme base16-gruvbox-dark-medium
-    "set background=dark
+    colorscheme base16-gruvbox-dark-medium
+    set background=dark
 
     "colorscheme base16-eighties
     "set background=dark
 
     "let ayucolor="light"
-    let ayucolor="mirage"
     "let ayucolor="dark"
-    colorscheme ayu
+    "let ayucolor="mirage"
+    "colorscheme ayu
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -655,13 +655,11 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 "
 " yank selection to the 'q' register, then grep, then open preview window
 "xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
-xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
-nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
+xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
+nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
 
 " For vim-workspace
-let g:workspace_session_disable_on_args = 1
-let g:workspace_session_directory = $HOME . '/.vim/sessions/'
-nnoremap <leader>s :ToggleWorkspace<CR>
+nnoremap <leader>s :mksession! /tmp/sess.vim<CR>:qa<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1
