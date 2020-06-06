@@ -40,7 +40,7 @@ in
     ;;
 esac
 
-brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat 1password-cli
+brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat
 
 # source code tagging
 # brew tap universal-ctags/universal-ctags
@@ -61,9 +61,8 @@ if [ ! -L "$NVIM_INIT_PATH" ]; then
     ln -snf $HOME/.vimrc $NVIM_INIT_PATH
 fi
 
-pip2 install neovim
-brew install python3
-pip3 install neovim jedi
+#brew install python3
+pip3 install neovim python-language-server pyls-black
 
 # unlink gcc and friends so that they don't interfere with bazel builds
 brew unlink gcc 2>/dev/null || true

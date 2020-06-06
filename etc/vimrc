@@ -30,12 +30,12 @@ Plug 'rbtnn/vim-jumptoline'
 
 " Git
 Plug 'airblade/vim-gitgutter'
-" newer versions interact badly with dirvish
-Plug 'tpope/vim-fugitive', { 'commit': '036fe0f08460ad64e3b2e06e3b7b299269c5ccc9' }
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'neovim/nvim-lsp'
 Plug 'majutsushi/tagbar'
 
 " react / js
@@ -64,7 +64,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 
 " Linting
-Plug 'benekastah/neomake'
+"Plug 'benekastah/neomake'
 
 " Editing
 Plug 'ntpeters/vim-better-whitespace'
@@ -95,8 +95,8 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
-Plug 'ncm2/ncm2-jedi'
-Plug 'entombedvirus/ncm2-vim-go'
+"Plug 'ncm2/ncm2-jedi'
+"Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
     " vim-go has it's own dlv support now
@@ -414,6 +414,12 @@ if has("nvim")
     endfunction
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
+
+" nvim-lsp
+lua << EOF
+    require'nvim_lsp'.gopls.setup{}
+    require'nvim_lsp'.pyls.setup{}
+EOF
 
 " vim-go
 let g:go_fmt_command = 'goimports'
