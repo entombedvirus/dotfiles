@@ -35,7 +35,6 @@ Plug 'tpope/vim-rhubarb'
 
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'neovim/nvim-lsp'
 Plug 'majutsushi/tagbar'
 
 " react / js
@@ -64,7 +63,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 
 " Linting
-"Plug 'benekastah/neomake'
+Plug 'benekastah/neomake'
 
 " Editing
 Plug 'ntpeters/vim-better-whitespace'
@@ -95,12 +94,13 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
+
+" disabled to give pyls + nvim-lsp a chance
 "Plug 'ncm2/ncm2-jedi'
 "Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
-    " vim-go has it's own dlv support now
-    "Plug 'sebdah/vim-delve'
+    Plug 'neovim/nvim-lsp'
 
     " Snippets
     Plug 'SirVer/ultisnips'
@@ -119,6 +119,7 @@ augroup colorscheme_overrides
     autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=NONE gui=italic guifg=#f0a0c0 guibg=NONE
     " comments should be italic
     autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+    autocmd ColorScheme * highlight default link LspReferenceText Search
 augroup END
 
 if has("gui")
@@ -183,8 +184,8 @@ if has("nvim")
     "colorscheme PaperColor
     "set background=dark
 
-    " let g:rehash256 = 1
-    " let g:molokai_original = 1
+    "let g:rehash256 = 1
+    "let g:molokai_original = 1
     "colorscheme molokai
     "set background=dark
 
@@ -219,16 +220,16 @@ if has("nvim")
     "colorscheme Iosvkem
     "set background=dark
 
-    colorscheme base16-gruvbox-dark-medium
-    set background=dark
+    "colorscheme base16-gruvbox-dark-medium
+    "set background=dark
 
     "colorscheme base16-eighties
     "set background=dark
 
     "let ayucolor="light"
     "let ayucolor="dark"
-    "let ayucolor="mirage"
-    "colorscheme ayu
+    let ayucolor="mirage"
+    colorscheme ayu
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -252,7 +253,7 @@ if has("nvim")
         \ }
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_python_enabled_makers = ['flake8']
-    let g:neomake_go_enabled_makers = ['go', 'golangci_lint']
+    "let g:neomake_go_enabled_makers = ['go', 'golangci_lint']
     "let g:neomake_go_golangci_lint_args = ['run', '--no-config']
 
     " don't use fancy unicode symbols since terminals seem to have trouble
@@ -286,6 +287,8 @@ if has("nvim")
     nnoremap <leader>dc :DlvClearAll<cr>
     nnoremap <leader>dt :DlvTest<cr>
     nnoremap <leader>dd :DlvDebug<cr>
+
+    lua require'lsp_init'
 endif
 
 if !has("nvim")
@@ -361,17 +364,30 @@ let g:gutentags_ctags_exclude = [
             \]
 
 " ncm2 completion config
-set completeopt=noinsert,noselect,menuone,noselect
+set completeopt=noinsert,noselect,menuone
 set shortmess+=c
 if has("nvim")
     " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
     inoremap <silent> <c-c> <ESC>
 
+    function! Lsp_snippet_expand() abort
+        try
+            let l:ud = json_decode(v:completed_item.user_data)
+            let l:snippet = l:ud.nvim.lsp.completion_item.textEdit.newText
+            let l:snippet = substitute(l:snippet, '{\\}', '\{}', 'g')
+            call UltiSnips#Anon(l:snippet, v:completed_item.word, '', 'i')
+        catch /E716/ " key does not exist
+            "noop
+        finally
+            return ''
+        endtry
+    endfunction
+
     function! RRAVI_ncm2_expand()
         call ncm2#enable_for_buffer()
         " NOTE: this key binding has to be defined after
         " ncm2#enable_for_buffer() for it to actually trigger the expansion
-        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("", 'm')
+        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<c-r>=Lsp_snippet_expand()\<cr>", 'm')
     endfunction
 
     augroup ncm2_completion
@@ -415,14 +431,9 @@ if has("nvim")
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
 
-" nvim-lsp
-lua << EOF
-    require'nvim_lsp'.gopls.setup{}
-    require'nvim_lsp'.pyls.setup{}
-EOF
-
 " vim-go
 let g:go_fmt_command = 'goimports'
+"let g:go_debug = ["lsp"]
 
 if executable('gopls')
     " register gopls for go-to-def and auto-info
@@ -443,8 +454,9 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_functions = 1
 "let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
-let g:go_diagnostics_enabled = 1
-let g:go_doc_popup_window = 1
+let g:go_diagnostics_enabled = 0
+let g:go_doc_popup_window = 0
+let g:go_doc_keywordprg_enabled = 0
 
 " seems to lead to weird artifacts. vim-go uncoditionally calls UltiSnips#Anon
 " if this is turned on and that does not interact well with ncm2_ultisnips.
@@ -455,8 +467,8 @@ let g:go_echo_go_info = 0
 
 " reduce the delay before auto_sameids and auto_type_info activates
 let g:go_updatetime = 300
-let g:go_auto_sameids = 1
-let g:go_auto_type_info = 1
+let g:go_auto_sameids = 0
+let g:go_auto_type_info = 0
 
 " Add the failing test name to the output of :GoTest
 let g:go_test_show_name = 1
@@ -476,12 +488,30 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
     autocmd FileType go nnoremap <buffer> <localleader>ge :GoIfErr<CR>
-    autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
+    "autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
 
     " tagbar
-    autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<cr>
+    autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<CR>
+
+    autocmd FileType go nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+    autocmd FileType go nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+    autocmd FileType go nnoremap <silent> <c-i> <cmd>lua vim.lsp.buf.signature_help()<CR>
+
+    " auto type id
+    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+
+    " switch to these if vim-go is disabled
+    "autocmd FileType go nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+    "autocmd FileType go nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+    "autocmd FileType go nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+    "autocmd FileType go nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+    "autocmd FileType go nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+    "autocmd FileType go nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 augroup END
 
+"
 " js specific keybindings
 augroup filetype_js
     autocmd!
@@ -742,7 +772,7 @@ if has("autocmd")
     augroup auto_neomake
         autocmd!
         autocmd BufWritePost *.py if exists(":Neomake") | exe "Neomake" | endif
-        autocmd BufWritePost *.go if exists(":Neomake") | exe "Neomake" | endif
+        "autocmd BufWritePost *.go if exists(":Neomake") | exe "Neomake" | endif
     augroup END
 
     " Automatically strip trailing whitespace
@@ -832,6 +862,10 @@ if has("inccommand")
     set inccommand=nosplit
 endif
 
+" default is 4000 (4s), which is too long to wait to trigger events
+" like "CursorHold"
+set updatetime=300
+
 " reformat JSON
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
 
@@ -840,3 +874,8 @@ let g:loaded_logipat = 1
 
 " netrw settings
 let g:netrw_liststyle=3
+
+function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
