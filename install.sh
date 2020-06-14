@@ -40,7 +40,7 @@ in
     ;;
 esac
 
-brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat
+brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat nodejs llvm
 
 # source code tagging
 # brew tap universal-ctags/universal-ctags
@@ -63,19 +63,21 @@ fi
 
 #brew install python3
 pip3 install neovim python-language-server pyls-black
+# needed for typescript language server
+npm install --global typescript
 
 # unlink gcc and friends so that they don't interfere with bazel builds
-brew unlink gcc 2>/dev/null || true
-brew unlink binutils 2>/dev/null || true
-brew unlink glibc 2>/dev/null || true
-
-# libjemalloc (dep of neovim) needs to find gcc-5 even after the unlink above
-file_to_patch=/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
-if [ -f "$file_to_patch" ]; then
-    chmod 755 "$file_to_patch"
-    patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' $file_to_patch
-    chmod 555 "$file_to_patch"
-fi
+#brew unlink gcc 2>/dev/null || true
+#brew unlink binutils 2>/dev/null || true
+#brew unlink glibc 2>/dev/null || true
+#
+## libjemalloc (dep of neovim) needs to find gcc-5 even after the unlink above
+#file_to_patch=/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/libjemalloc.so.2
+#if [ -f "$file_to_patch" ]; then
+#    chmod 755 "$file_to_patch"
+#    patchelf --set-rpath '/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/tls:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib/x86_64:/home/linuxbrew/.linuxbrew/Cellar/jemalloc/5.1.0/lib:/home/linuxbrew/.linuxbrew/lib:/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_4/lib' $file_to_patch
+#    chmod 555 "$file_to_patch"
+#fi
 
 # add zsh to list of known shells
 zsh_path=$(command -v zsh)

@@ -81,6 +81,7 @@ Plug 'whiteinge/diffconflicts'
 Plug 'junegunn/vim-peekaboo' " shows register contents
 Plug 'nelstrom/vim-visual-star-search' " search visual selected contents with '*' and '#'
 Plug 'mg979/vim-visual-multi' " multiple cursors
+Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 
 " Jsonnet
 Plug 'google/vim-jsonnet'
@@ -288,7 +289,8 @@ if has("nvim")
     nnoremap <leader>dt :DlvTest<cr>
     nnoremap <leader>dd :DlvDebug<cr>
 
-    lua require'lsp_init'
+    " entry point to all of lua config
+    lua require'init'
 endif
 
 if !has("nvim")
