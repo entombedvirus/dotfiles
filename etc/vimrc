@@ -799,7 +799,8 @@ function! <SID>SynStack()
   if !exists("*synstack")
     return
   endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  let l:s = synID(line('.'), col('.'), 1)
+  echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfunc
 
 " delete all hidden buffers
@@ -859,7 +860,5 @@ let g:loaded_logipat = 1
 " netrw settings
 let g:netrw_liststyle=3
 
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
+" sync to system clipboard
+set clipboard=unnamedplus

@@ -67,6 +67,7 @@ vim.api.nvim_command [[autocmd CursorMoved *.go,*.py,*.vim lua vim.lsp.buf.clear
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>]]
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>]]
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> <c-i> <cmd>lua vim.lsp.buf.signature_help()<CR>]]
+vim.api.nvim_command [[autocmd FileType go,python,vim inoremap <silent> <c-i> <cmd>lua vim.lsp.buf.signature_help()<CR>]]
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>]]
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>]]
 vim.api.nvim_command [[autocmd FileType go,python,vim nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>]]
