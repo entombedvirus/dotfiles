@@ -457,6 +457,7 @@ let g:go_highlight_functions = 1
 let g:go_diagnostics_enabled = 0
 let g:go_doc_popup_window = 0
 let g:go_doc_keywordprg_enabled = 0
+let g:go_def_mapping_enabled = 0
 
 " seems to lead to weird artifacts. vim-go uncoditionally calls UltiSnips#Anon
 " if this is turned on and that does not interact well with ncm2_ultisnips.
@@ -492,23 +493,6 @@ augroup filetype_go
 
     " tagbar
     autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<CR>
-
-    autocmd FileType go nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-    autocmd FileType go nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-    autocmd FileType go nnoremap <silent> <c-i> <cmd>lua vim.lsp.buf.signature_help()<CR>
-
-    " auto type id
-    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-
-    " switch to these if vim-go is disabled
-    "autocmd FileType go nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-    "autocmd FileType go nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-    "autocmd FileType go nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-    "autocmd FileType go nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-    "autocmd FileType go nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-    "autocmd FileType go nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 augroup END
 
 "
