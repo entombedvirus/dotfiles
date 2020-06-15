@@ -196,8 +196,8 @@ if has("nvim")
     "set background=dark
     "colorscheme kalisi
 
-    "colorscheme Tomorrow-Night
-    "set background=dark
+    colorscheme Tomorrow-Night
+    set background=dark
 
     "let g:gruvbox_italic=1
     "let g:gruvbox_contrast_dark="medium"
@@ -229,8 +229,8 @@ if has("nvim")
 
     "let ayucolor="light"
     "let ayucolor="dark"
-    let ayucolor="mirage"
-    colorscheme ayu
+    "let ayucolor="mirage"
+    "colorscheme ayu
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -797,7 +797,7 @@ nnoremap <Tab><Tab> <C-W>w
 
 " Show syntax highlighting groups for word under cursor
 " nmap <C-S-P> :call <SID>SynStack()<CR>
-function! <SID>SynStack()
+function! SynStack()
   if !exists("*synstack")
     return
   endif
