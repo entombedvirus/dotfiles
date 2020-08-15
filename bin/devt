@@ -28,6 +28,7 @@ forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489"
 while true; do
     ret=0
     ssh 2>${stderr_file} -t $forward_args $host "tmux attach -d || tmux new-session -s dev" || ret=$?
+    debug_log "got exit code ${ret}"
 
     if [ "$ret" -eq 255 ]; then
         if grep -q 'Could not request local forwarding.' ${stderr_file}; then

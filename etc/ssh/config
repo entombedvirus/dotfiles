@@ -24,8 +24,10 @@ Host rravi-*
     # by setting max count to zero, we can force a disconnect if the client has
     # been idle for the configured alive interval. this helps when I forget to
     # logout
-    ServerAliveCountMax 0
-    ServerAliveInterval 60m
+    # ServerAliveCountMax 0
+    # ServerAliveInterval 1h
+    ServerAliveCountMax 5
+    ServerAliveInterval 1m
 
     GSSAPIAuthentication no
     StrictHostKeyChecking no
