@@ -25,7 +25,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
@@ -61,6 +61,7 @@ Plug 'KeitaNakamura/neodark.vim'
 Plug 'neutaaaaan/iosvkem'
 Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'drewtempelmeyer/palenight.vim'
 
 " Linting
 Plug 'benekastah/neomake'
@@ -81,7 +82,6 @@ Plug 'whiteinge/diffconflicts'
 Plug 'junegunn/vim-peekaboo' " shows register contents
 Plug 'nelstrom/vim-visual-star-search' " search visual selected contents with '*' and '#'
 Plug 'mg979/vim-visual-multi' " multiple cursors
-Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 
 " Jsonnet
 Plug 'google/vim-jsonnet'
@@ -105,6 +105,8 @@ if has("nvim")
 
     " Snippets
     Plug 'SirVer/ultisnips'
+
+    Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 endif
 
 " Initialize plugin system
@@ -112,6 +114,14 @@ call plug#end()
 
 filetype plugin indent on
 syntax enable
+
+" fzf-preview config
+"
+" disable MRU tracking inside fzf-preview by clearing the fzf_preview_mru
+" group.  since it's slow and I don't use it. This can only be done until
+" after the fzf_preview has been initialized, which is signaled by a User
+" event.
+let g:fzf_preview_disable_mru = 1
 
 " colorscheme overrides. has to be before any colorscheme lines
 augroup colorscheme_overrides
@@ -196,8 +206,8 @@ if has("nvim")
     "set background=dark
     "colorscheme kalisi
 
-    colorscheme Tomorrow-Night
-    set background=dark
+    "colorscheme Tomorrow-Night
+    "set background=dark
 
     "let g:gruvbox_italic=1
     "let g:gruvbox_contrast_dark="medium"
@@ -231,6 +241,11 @@ if has("nvim")
     "let ayucolor="dark"
     "let ayucolor="mirage"
     "colorscheme ayu
+
+    set background=dark
+    colorscheme palenight
+    let g:lightline = { 'colorscheme': 'palenight' }
+    let g:palenight_terminal_italics=1
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -390,6 +405,7 @@ if has("nvim")
         " NOTE: this key binding has to be defined after
         " ncm2#enable_for_buffer() for it to actually trigger the expansion
         imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<c-r>=Lsp_snippet_expand()\<cr>", 'm')
+        "imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("", 'm')
     endfunction
 
     augroup ncm2_completion
