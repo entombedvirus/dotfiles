@@ -101,7 +101,8 @@ Plug 'ncm2/ncm2-ultisnips'
 "Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
-    Plug 'neovim/nvim-lsp'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-lua/diagnostic-nvim'
 
     " Snippets
     Plug 'SirVer/ultisnips'
@@ -224,8 +225,8 @@ if has("nvim")
     "colorscheme onedark
     "set background=dark
 
-    "colorscheme neodark
-    "set background=dark
+    colorscheme neodark
+    set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
 
     "colorscheme Iosvkem
@@ -242,10 +243,10 @@ if has("nvim")
     "let ayucolor="mirage"
     "colorscheme ayu
 
-    set background=dark
-    colorscheme palenight
-    let g:lightline = { 'colorscheme': 'palenight' }
-    let g:palenight_terminal_italics=1
+    "set background=dark
+    "colorscheme palenight
+    "let g:lightline = { 'colorscheme': 'palenight' }
+    "let g:palenight_terminal_italics=1
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
@@ -354,6 +355,10 @@ endif
 " Toggle background with <leader>bg
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
+" diagnostic-nvim config
+let g:diagnostic_enable_virtual_text = 1
+let g:diagnostic_insert_delay = 1
+
 " gutentags config
 let g:gutentags_define_advanced_commands = 1
 " keep the lock and temp files outside of git workspace
@@ -386,6 +391,10 @@ set shortmess+=c
 if has("nvim")
     " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
     inoremap <silent> <c-c> <ESC>
+
+    " use CTRL-j and CTRL-k for moving up and down complete options
+    inoremap <silent> <c-j> <c-r>=pumvisible() ? "\<lt>Down>" : "\<lt>c-j>"<CR>
+    inoremap <silent> <c-k> <c-r>=pumvisible() ? "\<lt>Up>" : "\<lt>c-k>"<CR>
 
     function! Lsp_snippet_expand() abort
         try
@@ -464,12 +473,12 @@ let g:go_fmt_command = 'goimports'
 let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_format_strings = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_functions = 1
+let g:go_highlight_types = 0
+let g:go_highlight_fields = 0
+let g:go_highlight_format_strings = 0
+let g:go_highlight_methods = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_functions = 0
 "let g:go_highlight_build_constraints = 1
 "let g:go_highlight_generate_tags = 1
 let g:go_diagnostics_enabled = 0

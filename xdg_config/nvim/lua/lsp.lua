@@ -1,7 +1,8 @@
 local nvim_lsp = require('nvim_lsp')
 local ncm2 = require('ncm2')
 local util = require('vim.lsp.util')
-local configs = require "nvim_lsp/configs"
+local configs = require('nvim_lsp/configs')
+local diagnostic = require('diagnostic')
 
 --[[ Go ]]--
 nvim_lsp.gopls.setup{
@@ -18,6 +19,7 @@ nvim_lsp.gopls.setup{
         --"-rpc.trace",
     },
     on_init = ncm2.register_lsp_source,
+    on_attach=diagnostic.on_attach,
     settings = {
         gopls = {
             usePlaceholders    = true,
@@ -31,6 +33,7 @@ nvim_lsp.gopls.setup{
 --[[ Python ]]--
 nvim_lsp.pyls.setup{
     --on_init = ncm2.register_lsp_source
+    on_attach=diagnostic.on_attach,
 }
 
 --[[ vimscript ]]--
