@@ -1,7 +1,7 @@
 require'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,                    -- false will disable the whole extension
-        disable = {  },                   -- list of language that will be disabled
+        disable = { 'python' },                   -- list of language that will be disabled
         --disable = { 'go' },               -- list of language that will be disabled
     },
     incremental_selection = {

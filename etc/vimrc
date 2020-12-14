@@ -25,7 +25,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
+Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
@@ -43,7 +43,7 @@ Plug 'mxw/vim-jsx'
 
 " Appearance
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
-Plug 'flazz/vim-colorschemes'
+"Plug 'flazz/vim-colorschemes'
 Plug 'justinmk/molokai'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -56,12 +56,13 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'mhartington/oceanic-next'
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
-Plug 'joshdick/onedark.vim'
+"Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'neutaaaaan/iosvkem'
 Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'NieTiger/halcyon-neovim'
 
 " Linting
 Plug 'benekastah/neomake'
@@ -102,12 +103,15 @@ Plug 'ncm2/ncm2-ultisnips'
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
-    Plug 'nvim-lua/diagnostic-nvim'
 
     " Snippets
     Plug 'SirVer/ultisnips'
 
     Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
+
+    " colorschemes that use treesitter
+    Plug 'christianchiarulli/nvcode.vim'
+    Plug 'glepnir/zephyr-nvim'
 endif
 
 " Initialize plugin system
@@ -225,9 +229,20 @@ if has("nvim")
     "colorscheme onedark
     "set background=dark
 
-    colorscheme neodark
-    set background=dark
+    "colorscheme neodark
+    "set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
+
+    "hi Comment cterm=italic
+    "let g:nvcode_hide_endofbuffer=1
+    "let g:nvcode_terminal_italics=1
+    "let g:nvcode_termcolors=256
+    "colorscheme nvcode
+    "set background=dark
+    "hi LineNr ctermbg=NONE guibg=NONE
+
+    "colorscheme zephyr
+    "set background=dark
 
     "colorscheme Iosvkem
     "set background=dark
@@ -235,18 +250,24 @@ if has("nvim")
     "colorscheme base16-gruvbox-dark-medium
     "set background=dark
 
-    "colorscheme base16-eighties
-    "set background=dark
+    colorscheme base16-eighties
+    set background=dark
 
     "let ayucolor="light"
     "let ayucolor="dark"
-    "let ayucolor="mirage"
+    ""let ayucolor="mirage"
     "colorscheme ayu
 
     "set background=dark
     "colorscheme palenight
     "let g:lightline = { 'colorscheme': 'palenight' }
     "let g:palenight_terminal_italics=1
+
+    "set background=dark
+    "colorscheme kuroi
+
+    "colorscheme halcyon
+    "set background=dark
 
     " built-in terminal navigation
     tnoremap <A-h> <C-\><C-n><C-w>h

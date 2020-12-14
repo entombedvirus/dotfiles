@@ -1,8 +1,11 @@
-local nvim_lsp = require('nvim_lsp')
+local nvim_lsp = require('lspconfig')
 local ncm2 = require('ncm2')
 local util = require('vim.lsp.util')
-local configs = require('nvim_lsp/configs')
-local diagnostic = require('diagnostic')
+local configs = require('lspconfig/configs')
+
+-- advertise that we have a snippet plugin installed to the default lsp client
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 --[[ Go ]]--
 nvim_lsp.gopls.setup{
@@ -19,22 +22,25 @@ nvim_lsp.gopls.setup{
         --"-rpc.trace",
     },
     on_init = ncm2.register_lsp_source,
-    on_attach=diagnostic.on_attach,
+    capabilities = capabilities,
     settings = {
         gopls = {
             usePlaceholders    = true,
             completeUnimported = true,
             matcher            = "fuzzy",
             symbolMatcher      = "fuzzy",
+            codelens           = {
+                generate   = false,   -- Don't run `go generate`.
+                gc_details = true,    -- Show a code lens toggling the display of gc's choices.
+            },
         },
     },
 }
 
 --[[ Python ]]--
-nvim_lsp.pyls.setup{
+--nvim_lsp.pyls.setup{
     --on_init = ncm2.register_lsp_source
-    on_attach=diagnostic.on_attach,
-}
+--}
 
 --[[ vimscript ]]--
 nvim_lsp.vimls.setup{
@@ -111,7 +117,7 @@ lsp.callbacks["textDocument/references"]     = open_fzf_preview_qf
 lsp.callbacks["textDocument/implementation"] = open_fzf_preview_qf
 
 
-local file_types = "go,python,vim,sh,javascript,html,css,c,cpp,typescript"
+local file_types = "go,vim,sh,javascript,html,css,c,cpp,typescript"
 
 vim.api.nvim_command [[augroup nvim_lsp_autos]]
 vim.api.nvim_command [[autocmd!]]
