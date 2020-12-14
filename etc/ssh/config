@@ -10,11 +10,25 @@ Host bastion
     ControlMaster auto
     ControlPersist yes
 
+Host oslogin-bastion
+    ForwardAgent yes
+    HostName west-oslogin-dev-bastion.mixpanel.org
+    Port 22
+    ServerAliveInterval 5
+    ServerAliveCountMax 2
+    User rohith_ravi_mixpanel_com
+    ControlPath ~/.ssh/controlmasters/%h
+    ControlMaster auto
+    ControlPersist yes
+
 Host rravi-?
     ProxyCommand ssh -A bastion -W %h:%p
 
 Host rravi-?-2fa
     ProxyCommand ssh -A -p 1883 bastion -W %h:%p
+
+Host rravi-?-oslogin
+    ProxyCommand ssh -A oslogin-bastion -W %h:%p
 
 Host rravi-*
     User rravi
