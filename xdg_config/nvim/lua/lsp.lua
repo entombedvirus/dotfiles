@@ -29,9 +29,13 @@ nvim_lsp.gopls.setup{
             completeUnimported = true,
             matcher            = "fuzzy",
             symbolMatcher      = "fuzzy",
-            codelens           = {
+            codelenses         = {
                 generate   = false,   -- Don't run `go generate`.
                 gc_details = true,    -- Show a code lens toggling the display of gc's choices.
+            },
+            buildFlags = {
+                -- enable completion is avo files
+                "-tags=avo",
             },
         },
     },
@@ -46,57 +50,57 @@ nvim_lsp.gopls.setup{
 nvim_lsp.vimls.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.vimls.install_info().is_installed then
-    configs.vimls.install()
-end
+--if not configs.vimls.install_info().is_installed then
+--    configs.vimls.install()
+--end
 
 --[[ Bash ]]--
 nvim_lsp.bashls.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.bashls.install_info().is_installed then
-    configs.bashls.install()
-end
+--if not configs.bashls.install_info().is_installed then
+--    configs.bashls.install()
+--end
 
 --[[ HTML ]]--
 nvim_lsp.html.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.html.install_info().is_installed then
-    configs.html.install()
-end
+--if not configs.html.install_info().is_installed then
+--    configs.html.install()
+--end
 
 --[[ JSON ]]--
 nvim_lsp.jsonls.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.jsonls.install_info().is_installed then
-    configs.jsonls.install()
-end
+--if not configs.jsonls.install_info().is_installed then
+--    configs.jsonls.install()
+--end
 
 --[[ yaml ]]--
 nvim_lsp.yamlls.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.yamlls.install_info().is_installed then
-    configs.yamlls.install()
-end
+--if not configs.yamlls.install_info().is_installed then
+--    configs.yamlls.install()
+--end
 
 --[[ CSS ]]--
 nvim_lsp.cssls.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.cssls.install_info().is_installed then
-    configs.cssls.install()
-end
+--if not configs.cssls.install_info().is_installed then
+--    configs.cssls.install()
+--end
 
 --[[ typescript ]]--
 nvim_lsp.tsserver.setup{
     --on_init = ncm2.register_lsp_source
 }
-if not configs.tsserver.install_info().is_installed then
-    configs.tsserver.install()
-end
+--if not configs.tsserver.install_info().is_installed then
+--    configs.tsserver.install()
+--end
 
 --[[ C / C++ ]]--
 nvim_lsp.clangd.setup{
