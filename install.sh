@@ -34,9 +34,9 @@ in
         # do nothing, it's there
     ;;
     *)
-        echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.profile
-        echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.profile
-        echo 'export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"' >>~/.profile
+        echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.zshenv
+        echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.zshenv
+        echo 'export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"' >>~/.zshenv
     ;;
 esac
 
@@ -63,8 +63,10 @@ fi
 
 #brew install python3
 pip3 install neovim python-language-server pyls-black
-# needed for typescript language server
-npm install --global typescript
+# needed for various language servers
+npm install --global typescript typescript-language-server vim-language-server \
+    bash-language-server vscode-html-languageserver-bin vscode-json-languageserver \
+    vls vscode-css-languageserver-bin
 
 # unlink gcc and friends so that they don't interfere with bazel builds
 #brew unlink gcc 2>/dev/null || true
