@@ -50,49 +50,31 @@ nvim_lsp.gopls.setup{
 nvim_lsp.vimls.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.vimls.install_info().is_installed then
---    configs.vimls.install()
---end
 
 --[[ Bash ]]--
 nvim_lsp.bashls.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.bashls.install_info().is_installed then
---    configs.bashls.install()
---end
 
 --[[ HTML ]]--
 nvim_lsp.html.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.html.install_info().is_installed then
---    configs.html.install()
---end
 
 --[[ JSON ]]--
 nvim_lsp.jsonls.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.jsonls.install_info().is_installed then
---    configs.jsonls.install()
---end
 
 --[[ yaml ]]--
 nvim_lsp.yamlls.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.yamlls.install_info().is_installed then
---    configs.yamlls.install()
---end
 
 --[[ CSS ]]--
 nvim_lsp.cssls.setup{
     --on_init = ncm2.register_lsp_source
 }
---if not configs.cssls.install_info().is_installed then
---    configs.cssls.install()
---end
 
 --[[ typescript ]]--
 nvim_lsp.tsserver.setup{
@@ -122,15 +104,16 @@ lsp.callbacks["textDocument/implementation"] = open_fzf_preview_qf
 
 
 local file_types = "go,vim,sh,javascript,html,css,c,cpp,typescript"
+local cursor_types = "go,javascript,vim,typescript"
 
 vim.api.nvim_command [[augroup nvim_lsp_autos]]
 vim.api.nvim_command [[autocmd!]]
 
 
 --[[ highlight current identifier ]]--
-vim.api.nvim_command([[autocmd FileType ]] .. file_types .. [[ autocmd nvim_lsp_autos CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]])
-vim.api.nvim_command([[autocmd FileType ]] .. file_types .. [[ autocmd nvim_lsp_autos CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]])
-vim.api.nvim_command([[autocmd FileType ]] .. file_types .. [[ autocmd nvim_lsp_autos CursorMoved <buffer> lua vim.lsp.buf.clear_references()]])
+vim.api.nvim_command([[autocmd FileType ]] .. cursor_types .. [[ autocmd nvim_lsp_autos CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]])
+vim.api.nvim_command([[autocmd FileType ]] .. cursor_types .. [[ autocmd nvim_lsp_autos CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]])
+vim.api.nvim_command([[autocmd FileType ]] .. cursor_types .. [[ autocmd nvim_lsp_autos CursorMoved <buffer> lua vim.lsp.buf.clear_references()]])
 
 --[[ mappings that are shared across all supported langs ]]--
 vim.api.nvim_command([[autocmd FileType ]] .. file_types .. [[ nnoremap <silent> gr        <cmd>lua vim.lsp.buf.references()<CR>]])
