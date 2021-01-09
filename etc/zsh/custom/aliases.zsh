@@ -18,5 +18,6 @@ function gcb {
     # desc sort on branches
     git branch --sort=-committerdate --color \
         | fzf --query "$search" --select-1 --ansi \
+        | sed 's/^\* //' \
         | xargs -I {} git checkout {}
 }
