@@ -25,7 +25,9 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
+"Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
+Plug 'ojroques/nvim-lspfuzzy'
+Plug 'fszymanski/fzf-quickfix'
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
@@ -723,8 +725,8 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 "
 " yank selection to the 'q' register, then grep, then open preview window
 "xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
-xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
-nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFix<CR>
+xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:Quickfix<CR>
+nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:Quickfix<CR>
 
 " For vim-workspace
 nnoremap <leader>s :mksession! /tmp/sess.vim<CR>:qa<CR>
