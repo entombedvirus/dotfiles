@@ -1,3 +1,6 @@
+# BEGIN flag as new block
+source ~/.gcpdevbox
+# END flag as new block
 # Setup some colors to use later in interactive shell or scripts
 export COLOR_NC='\033[0m' # No Color
 export COLOR_WHITE='\033[1;37m'
@@ -120,3 +123,6 @@ ssh() {
 
 # For tmuxinator
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+source $HOME/analytics/.shellenv
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

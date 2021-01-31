@@ -1,3 +1,13 @@
+# BEGIN flag as new block
+source ~/.gcpdevbox
+# END flag as new block
+
+function source_if_exists {
+    file=$1
+    [ -f "$file" ] && source "$file"
+}
+source_if_exists "$HOME/analytics/.shellenv"
+
 source ${HOME}/.antigen/antigen.zsh
 
 # Load the oh-my-zsh's library.
@@ -34,3 +44,5 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 
 # Tell antigen that you're done.
 antigen apply
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
