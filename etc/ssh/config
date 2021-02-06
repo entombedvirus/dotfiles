@@ -30,9 +30,11 @@ Host rravi-?-2fa
 Host rravi-?-oslogin
     ProxyCommand ssh -A oslogin-bastion -W %h:%p
 
+Host rravi-2-oslogin
+    Hostname rravi-2
+
 Host rravi-*
     User rravi
-    Hostname devbox-956
     ForwardAgent yes
 
     # by setting max count to zero, we can force a disconnect if the client has
