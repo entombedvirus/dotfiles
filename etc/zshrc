@@ -1,11 +1,8 @@
-# BEGIN flag as new block
-source ~/.gcpdevbox
-# END flag as new block
-
 function source_if_exists {
     file=$1
     [ -f "$file" ] && source "$file"
 }
+source_if_exists "$HOME/.gcpdevbox"
 source_if_exists "$HOME/analytics/.shellenv"
 
 source ${HOME}/.antigen/antigen.zsh
