@@ -58,7 +58,7 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'mhartington/oceanic-next'
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
-"Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'neutaaaaan/iosvkem'
 Plug 'chriskempson/base16-vim'
@@ -93,17 +93,21 @@ Plug 'google/vim-jsonnet'
 Plug 'bazelbuild/vim-ft-bzl'
 
 " auto complete
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-tmux'
-Plug 'ncm2/ncm2-ultisnips'
+"Plug 'ncm2/ncm2'
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2-bufword'
+"Plug 'ncm2/ncm2-tmux'
+"Plug 'ncm2/ncm2-ultisnips'
 
 " disabled to give pyls + nvim-lsp a chance
 "Plug 'ncm2/ncm2-jedi'
 "Plug 'entombedvirus/ncm2-vim-go'
 
 if has("nvim")
+    " autocomplete
+    Plug 'hrsh7th/nvim-compe'
+    Plug 'hrsh7th/vim-vsnip'
+
     Plug 'neovim/nvim-lspconfig'
 
     " Snippets
@@ -231,8 +235,8 @@ if has("nvim")
     "colorscheme onedark
     "set background=dark
 
-    "colorscheme neodark
-    "set background=dark
+    colorscheme neodark
+    set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
 
     "hi Comment cterm=italic
@@ -252,8 +256,8 @@ if has("nvim")
     "colorscheme base16-gruvbox-dark-medium
     "set background=dark
 
-    colorscheme base16-eighties
-    set background=dark
+    "colorscheme base16-eighties
+    "set background=dark
 
     "let ayucolor="light"
     "let ayucolor="dark"
@@ -409,9 +413,10 @@ let g:gutentags_ctags_exclude = [
             \]
 
 " ncm2 completion config
-set completeopt=noinsert,noselect,menuone
+"set completeopt=noinsert,noselect,menuone
+
 set shortmess+=c
-if has("nvim")
+if v:false && has("nvim")
     " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
     inoremap <silent> <c-c> <ESC>
 
@@ -483,6 +488,8 @@ endif
 
 " vim-go
 let g:go_fmt_command = 'goimports'
+let g:go_gopls_enabled = 0
+let g:go_gopls_options = ['-remote=auto', '-logfile=/tmp/gopls.vim-go.log', '-rpc.trace']
 "let g:go_debug = ["lsp"]
 
 if executable('gopls')
@@ -581,6 +588,7 @@ let g:lightline.tab.inactive       = ['tabnum']
 let g:lightline.tab.active         = ['tabnum']
 
 function! LightlineGitBranch()
+    return '<disabled>'
     let name = fugitive#head()
     return name ==# '' ? '' : ' ' . name
 endfunction
