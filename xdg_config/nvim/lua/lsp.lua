@@ -67,13 +67,13 @@ nvim_lsp.gopls.setup{
         -- share the gopls instance if there is one already
         "-remote=auto",
 
-    --    --[[ debug options ]]--
+       --[[ debug options ]]--
        --"-profile.trace=/tmp/gopls.trace.out",
-       --"-logfile=/tmp/gopls.nvim-lsp.log",
-       --"-remote.logfile=/tmp/gopls.server.log",
+       "-logfile=/tmp/gopls.nvim-lsp.log",
+       "-remote.logfile=/tmp/gopls.server.log",
        --"-debug=:0",
-       --"-remote.debug=:0",
-       --"-rpc.trace",
+       "-remote.debug=:0",
+       "-rpc.trace",
     },
     --on_init = ncm2.register_lsp_source,
     on_attach = on_attach,

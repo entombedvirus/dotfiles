@@ -65,9 +65,12 @@ Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'NieTiger/halcyon-neovim'
+Plug 'vimpostor/vim-tpipeline'
+Plug 'embark-theme/vim', { 'as': 'embark' }
 
 " Linting
-Plug 'benekastah/neomake'
+" using built-in based lsp
+"Plug 'benekastah/neomake'
 
 " Editing
 Plug 'ntpeters/vim-better-whitespace'
@@ -133,6 +136,9 @@ syntax enable
 " after the fzf_preview has been initialized, which is signaled by a User
 " event.
 let g:fzf_preview_disable_mru = 1
+
+" vimpostor/vim-tpipeline config
+let g:tpipeline_split = 1
 
 " colorscheme overrides. has to be before any colorscheme lines
 augroup colorscheme_overrides
@@ -235,9 +241,13 @@ if has("nvim")
     "colorscheme onedark
     "set background=dark
 
-    colorscheme neodark
-    set background=dark
+    "colorscheme neodark
+    "set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
+    colorscheme embark
+    let g:lightline = {
+      \ 'colorscheme': 'embark',
+      \ }
 
     "hi Comment cterm=italic
     "let g:nvcode_hide_endofbuffer=1
@@ -568,18 +578,15 @@ let g:jsx_ext_required = 0
 set showtabline=2
 let g:lightline#bufferline#unnamed         = '[No Name]'
 let g:lightline#bufferline#filename_modifier = ':t'
-let g:lightline                    = {}
-if has("nvim")
-    " this breaks in vanilla vim for some reason
-    let g:lightline.colorscheme        = 'neodark'
-endif
+let g:lightline                    = get(g:, 'lightline', {})
 let g:lightline.active             = {
 \                                      'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']],
 \                                      'right': [['lineinfo'], ['percent'], ['gutentags', 'fileformat', 'fileencoding', 'filetype']]
 \                                    }
 let g:lightline.inactive           = {'left': [ [ 'relativepath' ] ], 'right': [ [ 'lineinfo' ],[ 'percent' ] ] }
 let g:lightline.component          = {'sep': '-> '}
-let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch', 'gutentags': 'gutentags#statusline'}
+let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
+"let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch', 'gutentags': 'gutentags#statusline'}
 let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type     = {'buffers': 'tabsel'}
 let g:lightline.tabline            = {'left': [['tabs'], ['sep'], ['buffers']]}
@@ -754,6 +761,9 @@ let g:indent_guides_start_level = 2
 " disable fmt on save
 let g:jsonnet_fmt_on_save = 0
 
+" disable match paren functionality that causes scrolling to be slow
+let g:loaded_matchparen = 1
+
 " disable the built-in showing of mode in the command bar since airline will
 " take care of that
 set noshowmode
@@ -815,11 +825,11 @@ set scrolljump=5
 if has("autocmd")
     " Automatically lint files on save
     "autocmd! BufWritePost * Neomake
-    augroup auto_neomake
-        autocmd!
-        autocmd BufWritePost *.py if exists(":Neomake") | exe "Neomake" | endif
-        "autocmd BufWritePost *.go if exists(":Neomake") | exe "Neomake" | endif
-    augroup END
+    "augroup auto_neomake
+    "    autocmd!
+    "    autocmd BufWritePost *.py if exists(":Neomake") | exe "Neomake" | endif
+    "    "autocmd BufWritePost *.go if exists(":Neomake") | exe "Neomake" | endif
+    "augroup END
 
     " Automatically strip trailing whitespace
     augroup strip_whitespace
