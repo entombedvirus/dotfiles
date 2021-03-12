@@ -109,12 +109,13 @@ Plug 'bazelbuild/vim-ft-bzl'
 if has("nvim")
     " autocomplete
     Plug 'hrsh7th/nvim-compe'
-    Plug 'hrsh7th/vim-vsnip'
 
     Plug 'neovim/nvim-lspconfig'
 
     " Snippets
-    Plug 'SirVer/ultisnips'
+    "Plug 'SirVer/ultisnips'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
 
     Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 
@@ -464,6 +465,8 @@ endif
 " fzf config
 if has("nvim")
     let $FZF_DEFAULT_OPTS='--layout=reverse --border --margin=0,2'
+    " theme for fzf previews
+    let $BAT_THEME='1337'
     "highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
 
     function! FloatingFZF()

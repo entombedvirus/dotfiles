@@ -5,7 +5,7 @@ require'compe'.setup {
   autocomplete = true;
   debug = false;
   min_length = 1;
-  preselect = 'enable';
+  preselect = 'disable';
   throttle_time = 80;
   source_timeout = 200;
   incomplete_delay = 400;
@@ -16,15 +16,15 @@ require'compe'.setup {
 
   source = {
     path = true;
-    buffer = true;
+    buffer = false;
     calc = true;
-    vsnip = true;
     nvim_lsp = true;
     nvim_lua = true;
-    spell = true;
-    tags = true;
-    snippets_nvim = true;
     treesitter = true;
+    vsnip = true;
+    spell = false;
+    tags = false;
+    snippets_nvim = false;
   };
 }
 
@@ -71,7 +71,7 @@ vim.api.nvim_set_keymap("s", "<C-j>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<C-k>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<C-k>", "v:lua.s_tab_complete()", {expr = true})
 
-vim.api.nvim_set_keymap("i", "<C-n>", "compe#complete()", {expr = true, silent = true})
+--vim.api.nvim_set_keymap("i", "<C-n>", "compe#complete()", {expr = true, silent = true})
 vim.api.nvim_set_keymap("i", "<C-u>", "compe#confirm()", {expr = true, silent = true})
 --
 -- Mappings
