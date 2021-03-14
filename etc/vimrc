@@ -26,7 +26,6 @@ Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
-Plug 'ojroques/nvim-lspfuzzy'
 Plug 'fszymanski/fzf-quickfix'
 Plug 'rbtnn/vim-jumptoline'
 
@@ -111,6 +110,9 @@ if has("nvim")
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'neovim/nvim-lspconfig'
+    "Plug 'RishabhRD/popfix'
+    "Plug 'RishabhRD/nvim-lsputils'
+    Plug 'ojroques/nvim-lspfuzzy'
 
     " Snippets
     "Plug 'SirVer/ultisnips'
@@ -245,6 +247,7 @@ if has("nvim")
     "colorscheme neodark
     "set background=dark
     "let g:neodark#terminal_transparent = 1 " default: 0
+    let g:embark_terminal_italics = 1
     colorscheme embark
     let g:lightline = {
       \ 'colorscheme': 'embark',

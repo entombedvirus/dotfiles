@@ -1,5 +1,6 @@
+require('lspfuzzy').setup {}
+
 local nvim_lsp = require('lspconfig')
---local ncm2 = require('ncm2')
 local util = require('vim.lsp.util')
 local configs = require('lspconfig/configs')
 
@@ -97,7 +98,7 @@ nvim_lsp.gopls.setup{
     },
     handlers = {
         --["textDocument/publishDiagnostics"] = noop,
-        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
             -- delay update diagnostics
             update_in_insert = false,
         }),
