@@ -25,8 +25,9 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 "Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
-Plug 'fszymanski/fzf-quickfix'
+"Plug 'fszymanski/fzf-quickfix'
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
@@ -470,6 +471,7 @@ if has("nvim")
     let $FZF_DEFAULT_OPTS='--layout=reverse --border --margin=0,2'
     " theme for fzf previews
     let $BAT_THEME='1337'
+    let $FZF_PREVIEW_PREVIEW_BAT_THEME='1337'
     "highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
 
     function! FloatingFZF()
@@ -745,9 +747,10 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 "nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "
 " yank selection to the 'q' register, then grep, then open preview window
-"xnoremap <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFix<CR>
-xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:Quickfix<CR>
-nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:Quickfix<CR>
+"xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:Quickfix<CR>
+"nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:Quickfix<CR>
+xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFixRpc<CR>
+nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFixRpc<CR>
 
 " For vim-workspace
 nnoremap <leader>s :mksession! /tmp/sess.vim<CR>:qa<CR>
