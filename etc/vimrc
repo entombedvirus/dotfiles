@@ -31,7 +31,9 @@ Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
@@ -65,7 +67,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'NieTiger/halcyon-neovim'
-Plug 'vimpostor/vim-tpipeline'
+"Plug 'vimpostor/vim-tpipeline'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 
 " Linting
@@ -78,6 +80,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -85,7 +88,7 @@ Plug 'wellle/targets.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'FooSoft/vim-argwrap'
 Plug 'whiteinge/diffconflicts'
-Plug 'junegunn/vim-peekaboo' " shows register contents
+"Plug 'junegunn/vim-peekaboo' " shows register contents
 Plug 'nelstrom/vim-visual-star-search' " search visual selected contents with '*' and '#'
 Plug 'mg979/vim-visual-multi' " multiple cursors
 
@@ -603,8 +606,8 @@ let g:lightline.tab.inactive       = ['tabnum']
 let g:lightline.tab.active         = ['tabnum']
 
 function! LightlineGitBranch()
-    return '<disabled>'
-    let name = fugitive#head()
+    let name = get(b:, 'gitsigns_head', '<unavailable>')
+    "let name = fugitive#head()
     return name ==# '' ? '' : ' ' . name
 endfunction
 
