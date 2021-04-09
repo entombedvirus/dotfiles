@@ -6,10 +6,9 @@
     <string>com.mixpanel.dev.lemonade</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/rohithravi/.bin/lemonade</string>
-        <string>server</string>
-        <string>--allow=127.0.0.1/32,::1</string>
-        <string>--port=2489</string>
+	<string>/bin/sh</string>
+	<string>-c</string>
+        <string>exec $HOME/.bin/lemonade server --allow=127.0.0.1/32,::1 --port=2489</string>
     </array>
     <key>KeepAlive</key>
     <true/>
