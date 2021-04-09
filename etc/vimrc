@@ -169,7 +169,8 @@ if has("gui")
 endif
 
 if has("gui_macvim")
-    set guifont=Knack\ Nerd\ Font:h13
+    "set guifont=Knack\ Nerd\ Font:h13
+    set guifont="Iosevka Term Slab Light:h13"
 
     colorscheme one
     set background=light
