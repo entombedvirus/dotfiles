@@ -1,4 +1,3 @@
-#	Reconstructed via infocmp from file: /Applications/kitty.app/Contents/Resources/kitty/terminfo/78/xterm-kitty
 xterm-kitty|KovIdTTY,
 	am, ccc, hs, km, mc5i, mir, msgr, npc, xenl,
 	colors#256, cols#80, it#8, lines#24, pairs#32767,
