@@ -2,13 +2,15 @@ vim.api.nvim_set_option("completeopt", "noinsert,noselect,menuone")
 
 require'compe'.setup {
   enabled = true;
-  autocomplete = true;
+  -- autocomplete forces flush of buffer contents to gopls too often causing lag.
+  -- disable this and manually trigger completion with a keybinding for now.
+  autocomplete = false;
   debug = false;
   min_length = 1;
   preselect = 'disable';
   throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
+  source_timeout = 400;
+  incomplete_delay = 800;
   max_abbr_width = 100;
   max_kind_width = 100;
   max_menu_width = 100;
@@ -16,7 +18,7 @@ require'compe'.setup {
 
   source = {
     path = true;
-    buffer = false;
+    buffer = true;
     calc = true;
     nvim_lsp = true;
     nvim_lua = true;
@@ -66,6 +68,7 @@ _G.s_tab_complete = function()
 end
 
 
+vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", {expr = true, silent = true})
 vim.api.nvim_set_keymap("i", "<C-j>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<C-j>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<C-k>", "v:lua.s_tab_complete()", {expr = true})
@@ -81,3 +84,11 @@ vim.api.nvim_set_keymap("i", "<C-u>", "compe#confirm()", {expr = true, silent = 
 -- inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 -- inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
+-- attempt at a better auto-trigger, which is based on cursor idling.
+-- issues: flicker right when insert mode is activated
+-- vim.api.nvim_exec([[
+--     augroup rravi_compe_nvim_lsp
+--         autocmd!
+--         autocmd CursorHoldI * call compe#complete()
+--     augroup END
+-- ]], false)

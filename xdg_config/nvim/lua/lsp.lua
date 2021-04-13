@@ -4,12 +4,17 @@ local nvim_lsp = require('lspconfig')
 local util = require('vim.lsp.util')
 local configs = require('lspconfig/configs')
 
-local on_attach = function(client, bufnr)
-    -- Disabled since we're debouncing updates to the server
-    --if client.config.flags then
-    --    client.config.flags.allow_incremental_sync = true
-    --end
+local on_init = function(client)
+    -- Running custom neovim build from
+    -- https://github.com/neovim/neovim/pull/14119. Once it is merged, switch
+    -- to following neovim master again.
+    if client.config.flags then
+        client.config.flags.allow_incremental_sync = true
+        client.config.flags.debounce_text_changes = 250
+    end
+end
 
+local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -76,7 +81,7 @@ nvim_lsp.gopls.setup{
        "-remote.debug=:0",
        "-rpc.trace",
     },
-    --on_init = ncm2.register_lsp_source,
+    on_init = on_init,
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
@@ -122,6 +127,7 @@ local servers = {
 
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
+    on_init = on_init,
     on_attach = on_attach,
     capabilities = capabilities,
   }
