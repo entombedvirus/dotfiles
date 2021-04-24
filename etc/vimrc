@@ -5,7 +5,7 @@ endif
 " Bootstrap Plug
 try
     let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
-catch E117
+catch /E117/
     let autoload_plug_path = expand('~/.vim/autoload/plug.vim')
 endtry
 
@@ -387,8 +387,8 @@ endif
 
 " plain old vim
 if !has("nvim") && !has("gui_macvim")
-    colorscheme Tomorrow-Night
-    set background=dark
+    colorscheme PaperColor
+    set background=light
 
     " change cursor shape
     " Ps = 0  -> blinking block.
