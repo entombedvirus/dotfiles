@@ -67,8 +67,8 @@ Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'NieTiger/halcyon-neovim'
-"Plug 'vimpostor/vim-tpipeline'
 Plug 'embark-theme/vim', { 'as': 'embark' }
+Plug 'tiagovla/tokyodark.nvim'
 
 " Linting
 " using built-in based lsp
@@ -126,8 +126,11 @@ if has("nvim")
     Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 
     " colorschemes that use treesitter
-    Plug 'christianchiarulli/nvcode.vim'
     Plug 'glepnir/zephyr-nvim'
+
+    " diagnostics
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'folke/lsp-trouble.nvim'
 endif
 
 " Initialize plugin system
@@ -152,7 +155,7 @@ augroup colorscheme_overrides
     autocmd!
     "autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=16 gui=underline guifg=#f0a0c0 guibg=#302028
     autocmd ColorScheme * highlight Search cterm=underline ctermfg=217 ctermbg=NONE gui=italic guifg=#f0a0c0 guibg=NONE
-    " comments should be italic
+    " comments should be ialic
     autocmd ColorScheme * highlight Comment cterm=italic gui=italic
     autocmd ColorScheme * highlight default link LspReferenceText Search
 augroup END
@@ -250,13 +253,20 @@ if has("nvim")
     "set background=dark
 
     "colorscheme neodark
-    "set background=dark
-    "let g:neodark#terminal_transparent = 1 " default: 0
-    let g:embark_terminal_italics = 1
-    colorscheme embark
-    let g:lightline = {
-      \ 'colorscheme': 'embark',
-      \ }
+    " set background=dark
+    " let g:neodark#terminal_transparent = 1 " default: 0
+    "  let g:embark_terminal_italics = 1
+    "  colorscheme embark
+    "  let g:lightline = {
+    "    \ 'colorscheme': 'embark',
+    "    \ }
+
+    let g:tokyodark_transparent_background = 0
+    let g:tokyodark_enable_italic_comment = 1
+    let g:tokyodark_enable_italic = 1
+    let g:tokyodark_color_gamma = "1.5"
+    set background=dark
+    colorscheme tokyodark
 
     "hi Comment cterm=italic
     "let g:nvcode_hide_endofbuffer=1
