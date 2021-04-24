@@ -98,17 +98,6 @@ Plug 'google/vim-jsonnet'
 " Bazel
 Plug 'bazelbuild/vim-ft-bzl'
 
-" auto complete
-"Plug 'ncm2/ncm2'
-"Plug 'roxma/nvim-yarp'
-"Plug 'ncm2/ncm2-bufword'
-"Plug 'ncm2/ncm2-tmux'
-"Plug 'ncm2/ncm2-ultisnips'
-
-" disabled to give pyls + nvim-lsp a chance
-"Plug 'ncm2/ncm2-jedi'
-"Plug 'entombedvirus/ncm2-vim-go'
-
 if has("nvim")
     " autocomplete
     Plug 'hrsh7th/nvim-compe'
@@ -261,11 +250,10 @@ if has("nvim")
     "    \ 'colorscheme': 'embark',
     "    \ }
 
-    let g:tokyodark_transparent_background = 0
+    let g:tokyodark_transparent_background = 1
     let g:tokyodark_enable_italic_comment = 1
     let g:tokyodark_enable_italic = 1
     let g:tokyodark_color_gamma = "1.5"
-    set background=dark
     colorscheme tokyodark
 
     "hi Comment cterm=italic

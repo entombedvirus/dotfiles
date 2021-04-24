@@ -6,9 +6,6 @@ local util = require('vim.lsp.util')
 local configs = require('lspconfig/configs')
 
 local on_init = function(client)
-    -- Running custom neovim build from
-    -- https://github.com/neovim/neovim/pull/14119. Once it is merged, switch
-    -- to following neovim master again.
     if client.config.flags then
         client.config.flags.allow_incremental_sync = true
         client.config.flags.debounce_text_changes = 250
