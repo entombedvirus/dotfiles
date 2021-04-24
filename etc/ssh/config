@@ -44,7 +44,7 @@ Host rravi-*
     # logout
     # ServerAliveCountMax 0
     # ServerAliveInterval 1h
-    ServerAliveCountMax 5
+    ServerAliveCountMax 0
     ServerAliveInterval 1m
 
     GSSAPIAuthentication no
