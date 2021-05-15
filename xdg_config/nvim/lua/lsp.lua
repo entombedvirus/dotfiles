@@ -1,7 +1,7 @@
 require('lspfuzzy').setup {}
 require('trouble').setup {}
 
-local nvim_lsp = require('lspconfig')
+local lspconfig = require('lspconfig')
 local util = require('vim.lsp.util')
 local configs = require('lspconfig/configs')
 
@@ -65,7 +65,7 @@ local noop = function(...)
 end
 
 --[[ Go ]]--
-nvim_lsp.gopls.setup{
+lspconfig.gopls.setup{
     cmd = {
         "gopls",
 
@@ -123,11 +123,55 @@ local servers = {
     "tsserver",
     "clangd",
 }
-
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+for _, lang in ipairs(servers) do
+  lspconfig[lang].setup {
     on_init = on_init,
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
+
+lspconfig.pyright.setup{
+    on_init = on_init,
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        python = {
+            analysis = {
+                extraPaths = {os.getenv('HOME')},
+            },
+        },
+    },
+}
+
+lspconfig.efm.setup {
+    on_init = function(client)
+        on_init(client)
+        vim.api.nvim_exec([[
+          augroup lsp_efm_autos
+            autocmd!
+            autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 10000)
+          augroup END
+        ]], false)
+    end,
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+        documentFormatting = true,
+    },
+    filetypes = {"python"},
+    settings = {
+        rootMarkers = {".git/"},
+        languages = {
+            python = {
+                {
+                    formatCommand = './tools/black --quiet -',
+                    formatStdin = true,
+                    lintCommand = './tools/flake8 --stdin-display-name ${INPUT} -',
+                    lintStdin = true,
+                    lintFormats = {'%f:%l:%c: %m'},
+                },
+            },
+        }
+    }
+}
