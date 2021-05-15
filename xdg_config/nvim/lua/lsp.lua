@@ -41,6 +41,12 @@ local on_attach = function(client, bufnr)
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+        vim.api.nvim_exec([[
+          augroup lsp_fmt_autos
+            autocmd!
+            autocmd BufWritePre *.py,*.go lua vim.lsp.buf.formatting_sync(nil, 10000)
+          augroup END
+        ]], false)
     elseif client.resolved_capabilities.document_range_formatting then
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
@@ -145,15 +151,7 @@ lspconfig.pyright.setup{
 }
 
 lspconfig.efm.setup {
-    on_init = function(client)
-        on_init(client)
-        vim.api.nvim_exec([[
-          augroup lsp_efm_autos
-            autocmd!
-            autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 10000)
-          augroup END
-        ]], false)
-    end,
+    on_init = on_init,
     on_attach = on_attach,
     capabilities = capabilities,
     init_options = {
@@ -170,6 +168,7 @@ lspconfig.efm.setup {
                     lintCommand = './tools/flake8 --stdin-display-name ${INPUT} -',
                     lintStdin = true,
                     lintFormats = {'%f:%l:%c: %m'},
+                    lintIgnoreExitCode = true,
                 },
             },
         }

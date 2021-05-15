@@ -507,7 +507,8 @@ if has("nvim")
 endif
 
 " vim-go
-let g:go_fmt_command = 'goimports'
+let g:go_fmt_autosave = 0 " let nvim-lsp handle formatting
+let g:go_imports_autosave = 0
 let g:go_gopls_enabled = 0
 let g:go_gopls_options = ['-remote=auto', '-logfile=/tmp/gopls.vim-go.log', '-rpc.trace']
 "let g:go_debug = ["lsp"]
@@ -519,8 +520,6 @@ if executable('gopls')
     let g:go_referrers_mode = 'gopls'
 endif
 
-let g:go_fmt_command = 'goimports'
-let g:go_fmt_fail_silently = 1 " let neomake / ale show syntax errors
 let g:go_snippet_engine = 'ultisnips'
 let g:go_decls_mode = 'fzf'
 let g:go_highlight_types = 0
