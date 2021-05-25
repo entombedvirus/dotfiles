@@ -44,7 +44,8 @@ local on_attach = function(client, bufnr)
         vim.api.nvim_exec([[
           augroup lsp_fmt_autos
             autocmd!
-            autocmd BufWritePre *.py,*.go lua vim.lsp.buf.formatting_sync(nil, 10000)
+            autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 10000)
+            autocmd BufWritePre *.go lua goimports(1000)
           augroup END
         ]], false)
     elseif client.resolved_capabilities.document_range_formatting then
@@ -71,6 +72,47 @@ local noop = function(...)
 end
 
 --[[ Go ]]--
+function goimports(timeout_ms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    vim.lsp.buf.formatting_sync(nil, 10000)
+
+    -- See the implementation of the textDocument/codeAction callback
+    -- (lua/vim/lsp/handler.lua) for how to do this properly.
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+    if not result then return end
+
+    local applyAction = function(action)
+        -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
+        -- is a CodeAction, it can have either an edit, a command or both. Edits
+        -- should be executed first.
+        if action.edit or type(action.command) == "table" then
+            if action.edit then
+                vim.lsp.util.apply_workspace_edit(action.edit)
+            end
+            if type(action.command) == "table" then
+                vim.lsp.buf.execute_command(action.command)
+            end
+        else
+            vim.lsp.buf.execute_command(action)
+        end
+    end
+
+    for _, actions in pairs(result) do
+        if actions and actions.result and type(actions.result) == "table" then
+            for _, action in ipairs(actions.result) do
+                if action.kind == "source.organizeImports" then
+                    applyAction(action)
+                end
+            end
+        end
+    end
+end
+
 lspconfig.gopls.setup{
     cmd = {
         "gopls",
