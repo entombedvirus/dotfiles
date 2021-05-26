@@ -14,7 +14,8 @@ Host oslogin-bastion
     ForwardAgent yes
     #HostName west-oslogin-dev-bastion.mixpanel.org
     #HostName beta-oslogin-bastion.mixpanel.org
-    HostName=34.94.183.138
+    # HostName=34.94.183.138
+    HostName=west-oslogin-v2-bastion.mixpanel.org
     Port 22
     ServerAliveInterval 5
     ServerAliveCountMax 2
