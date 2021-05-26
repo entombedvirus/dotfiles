@@ -1,4 +1,4 @@
-require('lspfuzzy').setup {}
+-- require('lspfuzzy').setup {}
 require('trouble').setup {}
 
 local lspconfig = require('lspconfig')
@@ -27,6 +27,8 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', '<localleader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', '<localleader>gd', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
 
     buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
     buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
@@ -79,7 +81,7 @@ function goimports(timeout_ms)
     local params = vim.lsp.util.make_range_params()
     params.context = context
 
-    vim.lsp.buf.formatting_sync(nil, 10000)
+    vim.lsp.buf.formatting_sync(nil, timeout_ms)
 
     -- See the implementation of the textDocument/codeAction callback
     -- (lua/vim/lsp/handler.lua) for how to do this properly.

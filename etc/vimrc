@@ -22,7 +22,7 @@ call plug#begin('~/.nvim/plugged')
 Plug 'mileszs/ack.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'tweekmonster/fzf-filemru'
+" Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
@@ -32,7 +32,6 @@ Plug 'rbtnn/vim-jumptoline'
 
 " Git
 "Plug 'airblade/vim-gitgutter'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
@@ -99,13 +98,21 @@ Plug 'google/vim-jsonnet'
 Plug 'bazelbuild/vim-ft-bzl'
 
 if has("nvim")
+    " fuzzy finding
+    Plug 'nvim-lua/popup.nvim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
+    Plug 'tami5/sql.nvim'
+    Plug 'nvim-telescope/telescope-frecency.nvim'
+
     " autocomplete
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'neovim/nvim-lspconfig'
-    "Plug 'RishabhRD/popfix'
-    "Plug 'RishabhRD/nvim-lsputils'
-    Plug 'ojroques/nvim-lspfuzzy'
+    " Plug 'ojroques/nvim-lspfuzzy'
 
     " Snippets
     "Plug 'SirVer/ultisnips'
@@ -563,7 +570,7 @@ augroup filetype_go
     autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
+    " autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
     autocmd FileType go nnoremap <buffer> <localleader>ge :GoIfErr<CR>
     "autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
 
@@ -611,8 +618,8 @@ endfunction
 
 " fugitive shortcuts
 " copy Github url to clipboard
-nnoremap <leader>u :Gbrowse!<cr>
-xnoremap <leader>u :Gbrowse!<cr>
+nnoremap <leader>u :GBrowse!<cr>
+xnoremap <leader>u :GBrowse!<cr>
 
 " vim-sneak
 " 2-character Sneak (don't let vim-sneak take s)
@@ -630,19 +637,19 @@ let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
 
 " ctrl-p style MRU
-nnoremap <c-p> :FilesMru --tiebreak=end<cr>
+" nnoremap <c-p> :FilesMru --tiebreak=end<cr>
 
 " search contents of files
-nnoremap <leader>r :Rg<cr>
+" nnoremap <leader>r :Rg<cr>
 
 " search tags
-nnoremap <leader>t :Tags<cr>
+" nnoremap <leader>t :Tags<cr>
 
 " update MRU when opening buffers through any means, not just from FZF
-augroup custom_filemru
-  autocmd!
-  autocmd BufWinEnter * UpdateMru
-augroup END
+" augroup custom_filemru
+"   autocmd!
+"   autocmd BufWinEnter * UpdateMru
+" augroup END
 
 "set wildignore+=*.pyc,*.o,*.a,*.clj,*.css,*.html,*.js
 set wildignore+=*.pyc,*.o,*.a,*.clj
