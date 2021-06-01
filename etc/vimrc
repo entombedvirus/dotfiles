@@ -25,7 +25,7 @@ Plug 'ludovicchabant/vim-gutentags'
 " Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+"Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 "Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
 "Plug 'fszymanski/fzf-quickfix'
 Plug 'rbtnn/vim-jumptoline'

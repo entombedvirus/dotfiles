@@ -172,6 +172,7 @@ local servers = {
     "cssls",
     "tsserver",
     "clangd",
+    "rust_analyzer",
 }
 for _, lang in ipairs(servers) do
   lspconfig[lang].setup {

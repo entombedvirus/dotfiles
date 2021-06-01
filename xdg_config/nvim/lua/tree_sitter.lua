@@ -25,6 +25,7 @@ require'nvim-treesitter.configs'.setup {
         'json',
         'lua',
         'python',
+        'rust',
         'typescript',
         'yaml',
     } -- one of 'all', 'language', or a list of languages
