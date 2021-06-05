@@ -19,3 +19,4 @@ function source_if_exists {
 
 source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
 export PATH=~/analytics/go/bin:$PATH
+. "$HOME/.cargo/env"

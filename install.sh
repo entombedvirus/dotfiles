@@ -95,4 +95,7 @@ fi
 # custom TERMs
 for src in etc/terminfo/*.src; do tic -x -o etc/terminfo $src; done
 
+# install rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 echo "logout and log back in and run linkify"

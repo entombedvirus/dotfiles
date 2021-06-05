@@ -125,3 +125,4 @@ ssh() {
 source $HOME/analytics/.shellenv
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+. "$HOME/.cargo/env"

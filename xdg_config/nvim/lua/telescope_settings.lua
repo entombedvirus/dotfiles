@@ -12,6 +12,7 @@ telescope.setup{
         ["<esc>"] = actions.close,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
+        ["<cr>"] = actions.select_default + actions.center,
       },
     },
   },
@@ -28,25 +29,41 @@ telescope.setup{
           case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
           -- the default case_mode is "smart_case"
       },
-      frecency = {
-          -- show_scores = false,
-          -- show_unindexed = true,
-          -- ignore_patterns = {"*.git/*", "*/tmp/*"},
-          workspaces = {
-              ["analytics"]    = os.getenv('HOME') .. "/analytics",
-          },
-      },
+      -- frecency = {
+      --     -- show_scores = false,
+      --     -- show_unindexed = true,
+      --     -- ignore_patterns = {"*.git/*", "*/tmp/*"},
+      --     workspaces = {
+      --         ["analytics"]    = os.getenv('HOME') .. "/analytics",
+      --     },
+      -- },
   },
 }
 telescope.load_extension('lsp_handlers')
 telescope.load_extension('fzf')
-telescope.load_extension('frecency')
+-- telescope.load_extension('frecency')
 
 local keymap = vim.api.nvim_set_keymap
 
 local opts = { noremap=true, silent=true }
-keymap("n", "<c-p>", "<cmd>lua require('telescope.builtin').find_files()<cr>", opts)
+keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", opts)
 keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts)
 keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", opts)
 keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
-keymap("n", "<leader>ff", "<cmd>lua require('telescope').extensions.frecency.frecency()<cr>", opts)
+
+keymap("n", "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
+keymap("v", "<M-g>", "<esc><cmd>lua require('telescope_settings').grep_selection()<cr>", opts)
+
+return {
+    grep_selection = function()
+        local _, srow, scol, _ = unpack(vim.fn.getpos("'<"))
+        local _, erow, ecol, _ = unpack(vim.fn.getpos("'>"))
+        if srow ~= erow then
+            print("cannot search multi line strings")
+            return
+        end
+        local selection = vim.fn.getline("."):sub(scol, ecol)
+        print(selection)
+        require('telescope.builtin').grep_string({search = selection})
+    end
+}

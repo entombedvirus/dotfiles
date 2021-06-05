@@ -22,7 +22,7 @@ call plug#begin('~/.nvim/plugged')
 Plug 'mileszs/ack.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'ludovicchabant/vim-gutentags'
-" Plug 'tweekmonster/fzf-filemru'
+Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
@@ -637,13 +637,13 @@ let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
 
 " ctrl-p style MRU
-" nnoremap <c-p> :FilesMru --tiebreak=end<cr>
+nnoremap <c-p> :FilesMru --tiebreak=end<cr>
 
 " search contents of files
 " nnoremap <leader>r :Rg<cr>
 
 " search tags
-" nnoremap <leader>t :Tags<cr>
+nnoremap <leader>t :Tags<cr>
 
 " update MRU when opening buffers through any means, not just from FZF
 " augroup custom_filemru
@@ -755,10 +755,11 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 "nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "
 " yank selection to the 'q' register, then grep, then open preview window
+" NOTE: managed by telescope.nvim now
 "xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:Quickfix<CR>
 "nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:Quickfix<CR>
-xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFixRpc<CR>
-nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFixRpc<CR>
+" xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFixRpc<CR>
+" nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFixRpc<CR>
 
 " For vim-workspace
 nnoremap <leader>s :mksession! /tmp/sess.vim<CR>:qa<CR>

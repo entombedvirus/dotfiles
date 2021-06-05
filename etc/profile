@@ -120,3 +120,4 @@ export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 CURRENTSHELL="$(echo $SHELL | grep -oP '/bin/\K\w+')" source ~/.fzf."${CURRENTSHELL}"
 source ~/analytics/google-cloud/scripts/kube.sh
 # END ANSIBLE MANAGED BLOCK
+. "$HOME/.cargo/env"
