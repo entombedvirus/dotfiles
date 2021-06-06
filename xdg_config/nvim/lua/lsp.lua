@@ -254,6 +254,15 @@ for _, lang in pairs(langs) do
             },
         })
         lspconfig.lua.setup(luadev)
+    elseif lang == "rust" then
+        -- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
+        require('rust-tools').setup({
+            server = {
+                on_init = on_init,
+                on_attach = on_attach,
+                capabilities = capabilities,
+            },
+        })
     else
         lspconfig[lang].setup{
             on_init = on_init,

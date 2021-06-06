@@ -131,6 +131,9 @@ if has("nvim")
 
     " lua plugin dev
     Plug 'folke/lua-dev.nvim'
+
+    " rust specific
+    Plug 'simrat39/rust-tools.nvim'
 endif
 
 " Initialize plugin system
