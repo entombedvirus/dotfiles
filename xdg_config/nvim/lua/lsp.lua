@@ -2,8 +2,6 @@
 require('trouble').setup {}
 
 local lspconfig = require('lspconfig')
-local util = require('vim.lsp.util')
-local configs = require('lspconfig/configs')
 
 local on_init = function(client)
     if client.config.flags then
@@ -47,7 +45,7 @@ local on_attach = function(client, bufnr)
           augroup lsp_fmt_autos
             autocmd!
             autocmd BufWritePre *.py,*.rs lua vim.lsp.buf.formatting_sync(nil, 10000)
-            autocmd BufWritePre *.go lua goimports(1000)
+            autocmd BufWritePre *.go lua Goimports(1000)
           augroup END
         ]], false)
     elseif client.resolved_capabilities.document_range_formatting then
@@ -70,11 +68,8 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local noop = function(...)
-end
-
 --[[ Go ]]--
-function goimports(timeout_ms)
+function Goimports(timeout_ms)
     local context = { source = { organizeImports = true } }
     vim.validate { context = { context, "t", true } }
 
@@ -161,27 +156,6 @@ lspconfig.gopls.setup{
 
 -- vim.lsp.set_log_level("info")
 
--- Use a loop to conveniently both setup defined servers
--- and map buffer local keybindings when the language server attaches
-local servers = {
-    "vimls",
-    "bashls",
-    "html",
-    "jsonls",
-    "yamlls",
-    "cssls",
-    "tsserver",
-    "clangd",
-    "rust_analyzer",
-}
-for _, lang in ipairs(servers) do
-  lspconfig[lang].setup {
-    on_init = on_init,
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
 lspconfig.pyright.setup{
     on_init = on_init,
     on_attach = on_attach,
@@ -219,3 +193,72 @@ lspconfig.efm.setup {
         }
     }
 }
+
+local function set_diff(a, b)
+    local ret = {}
+    local bi = {}
+    for _,v in pairs(b) do bi[v]=true end
+    for _,v in pairs(a) do
+        if bi[v] ~= true then
+            table.insert(ret, v)
+        end
+    end
+    return ret
+end
+
+local function setup_servers(langs)
+  local install = require('lspinstall')
+
+  local missing_langs = set_diff(langs, install.installed_servers())
+  if next(missing_langs) ~= nil then
+      if vim.fn.confirm("Some LSP servers are missing. Install them now?", "&Yes\n&No") == 1 then
+          for _, lang in pairs(missing_langs) do
+              install.install_server(lang)
+          end
+      end
+  end
+
+  install.setup()
+  return set_diff(langs, missing_langs)
+end
+
+local langs = setup_servers{
+    'bash',
+    'cpp',
+    'css',
+    'dockerfile',
+    'html',
+    'json',
+    'lua',
+    'rust',
+    'typescript',
+    'vim',
+    'yaml',
+}
+
+for _, lang in pairs(langs) do
+    if lang == "lua" then
+        local luadev = require("lua-dev").setup({
+            library = {
+                vimruntime = true, -- runtime path
+                types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+                plugins = true, -- installed opt or start plugins in packpath
+                -- you can also specify the list of plugins to make available as a workspace library
+                -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+            },
+            -- add any options here, or leave empty to use the default settings
+            lspconfig = {
+                on_init = on_init,
+                on_attach = on_attach,
+                capabilities = capabilities,
+            },
+        })
+        lspconfig.lua.setup(luadev)
+    else
+        lspconfig[lang].setup{
+            on_init = on_init,
+            on_attach = on_attach,
+            capabilities = capabilities,
+        }
+    end
+end

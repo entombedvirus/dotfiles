@@ -112,6 +112,7 @@ if has("nvim")
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'neovim/nvim-lspconfig'
+    Plug 'kabouzeid/nvim-lspinstall'
     " Plug 'ojroques/nvim-lspfuzzy'
 
     " Snippets
@@ -127,6 +128,9 @@ if has("nvim")
     " diagnostics
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'folke/lsp-trouble.nvim'
+
+    " lua plugin dev
+    Plug 'folke/lua-dev.nvim'
 endif
 
 " Initialize plugin system
