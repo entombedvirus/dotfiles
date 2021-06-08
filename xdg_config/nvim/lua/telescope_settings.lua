@@ -21,6 +21,20 @@ telescope.setup{
           code_action = {
               telescope = require('telescope.themes').get_dropdown({}),
           },
+          symbol = {
+              telescope = require('telescope.themes').get_dropdown {
+                  hide_filename = true,
+                  -- tail_path = false,
+                  -- shorten_path = false,
+              },
+          },
+          location = {
+              telescope = {
+                  shorten_path = false,
+                  tail_path = false,
+                  hide_filename = false,
+              },
+          },
       },
       fzf = {
           fuzzy = false,                   -- false will only do exact matching
@@ -46,9 +60,9 @@ telescope.load_extension('fzf')
 local keymap = vim.api.nvim_set_keymap
 
 local opts = { noremap=true, silent=true }
-keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", opts)
+keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts)
-keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", opts)
+keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
 
 keymap("n", "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
