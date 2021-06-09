@@ -643,9 +643,6 @@ omap F <Plug>Sneak_S
 let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
 
-" ctrl-p style MRU
-nnoremap <c-p> :FilesMru --tiebreak=end<cr>
-
 " search contents of files
 " nnoremap <leader>r :Rg<cr>
 
