@@ -68,6 +68,7 @@ Plug 'drewtempelmeyer/palenight.vim'
 Plug 'NieTiger/halcyon-neovim'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'tiagovla/tokyodark.nvim'
+Plug 'folke/tokyonight.nvim'
 
 " Linting
 " using built-in based lsp
@@ -264,11 +265,16 @@ if has("nvim")
     "    \ 'colorscheme': 'embark',
     "    \ }
 
-    let g:tokyodark_transparent_background = 1
-    let g:tokyodark_enable_italic_comment = 1
-    let g:tokyodark_enable_italic = 1
-    let g:tokyodark_color_gamma = "1.5"
-    colorscheme tokyodark
+    " let g:tokyodark_transparent_background = 1
+    " let g:tokyodark_enable_italic_comment = 1
+    " let g:tokyodark_enable_italic = 1
+    " let g:tokyodark_color_gamma = "1.5"
+    " colorscheme tokyodark
+
+    let g:lightline = {'colorscheme': 'tokyonight'}
+    let g:tokyonight_style = "night"
+    let g:tokyonight_day_brightness = 0.1
+    colorscheme tokyonight
 
     "hi Comment cterm=italic
     "let g:nvcode_hide_endofbuffer=1
