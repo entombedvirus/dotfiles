@@ -52,6 +52,16 @@ local on_attach = function(client, bufnr)
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
 
+    if client.resolved_capabilities.code_lens then
+        vim.api.nvim_exec([[
+          augroup lsp_code_lens
+            autocmd!
+            autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+          augroup END
+        ]], false)
+        buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.codelens.run()<CR>', opts)
+    end
+
     -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
@@ -110,6 +120,9 @@ function Goimports(timeout_ms)
     end
 end
 
+local noop = function()
+end
+
 lspconfig.gopls.setup{
     cmd = {
         "gopls",
@@ -132,13 +145,15 @@ lspconfig.gopls.setup{
         gopls = {
             usePlaceholders    = true,
             completeUnimported = true,
-            matcher            = "fuzzy",
-            symbolMatcher      = "fuzzy",
-            experimentalDiagnosticsDelay = "0ms",
-            --codelenses         = {
-            --    generate   = false,   -- Don't run `go generate`.
-            --    gc_details = true,    -- Show a code lens toggling the display of gc's choices.
-            --},
+            -- experimentalDiagnosticsDelay = "0ms",
+            codelenses         = {
+                generate           = true,
+                gc_details         = true,
+                test               = true,
+                tidy               = true,
+                vendor             = true,
+                upgrade_dependency = true,
+            },
             --buildFlags = {
             --    -- enable completion is avo files
             --    "-tags=avo",
@@ -146,10 +161,12 @@ lspconfig.gopls.setup{
         },
     },
     handlers = {
-        --["textDocument/publishDiagnostics"] = noop,
+        -- ["textDocument/publishDiagnostics"] = noop,
         ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
             -- delay update diagnostics
             update_in_insert = false,
+            virtual_text     = true,
+            underline        = false,
         }),
     },
 }
