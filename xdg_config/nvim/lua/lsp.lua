@@ -4,10 +4,10 @@ require('trouble').setup {}
 local lspconfig = require('lspconfig')
 
 local on_init = function(client)
-    if client.config.flags then
-        client.config.flags.allow_incremental_sync = true
-        client.config.flags.debounce_text_changes = 250
-    end
+    -- if client.config.flags then
+    --     client.config.flags.allow_incremental_sync = true
+    --     client.config.flags.debounce_text_changes = 150
+    -- end
 end
 
 local on_attach = function(client, bufnr)
@@ -123,6 +123,10 @@ end
 local noop = function()
 end
 
+local flags = {
+    debounce_text_changes = 150,
+}
+
 lspconfig.gopls.setup{
     cmd = {
         "gopls",
@@ -140,6 +144,7 @@ lspconfig.gopls.setup{
     },
     on_init = on_init,
     on_attach = on_attach,
+    flags = flags,
     capabilities = capabilities,
     settings = {
         gopls = {
@@ -177,6 +182,7 @@ lspconfig.pyright.setup{
     on_init = on_init,
     on_attach = on_attach,
     capabilities = capabilities,
+    flags = flags,
     settings = {
         python = {
             analysis = {
@@ -189,6 +195,7 @@ lspconfig.pyright.setup{
 lspconfig.efm.setup {
     on_init = on_init,
     on_attach = on_attach,
+    flags = flags,
     capabilities = capabilities,
     init_options = {
         documentFormatting = true,

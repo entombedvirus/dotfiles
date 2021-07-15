@@ -34,9 +34,9 @@ telescope.setup{
           },
           symbol = {
               telescope = require('telescope.themes').get_dropdown {
-                  hide_filename = true,
-                  -- tail_path = false,
-                  -- shorten_path = false,
+                  path_display = {
+                      "hidden",
+                  },
               },
           },
           location = {
@@ -144,7 +144,9 @@ return {
                  return true
             end,
         }, themes.get_dropdown({
-            width = 0.3,
+            layout_config = {
+                width = 0.3,
+            },
         }))
         picker:find()
     end,

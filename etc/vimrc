@@ -69,6 +69,7 @@ Plug 'NieTiger/halcyon-neovim'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'tiagovla/tokyodark.nvim'
 Plug 'folke/tokyonight.nvim'
+Plug 'yashguptaz/calvera-dark.nvim'
 
 " Linting
 " using built-in based lsp
@@ -271,10 +272,16 @@ if has("nvim")
     " let g:tokyodark_color_gamma = "1.5"
     " colorscheme tokyodark
 
-    let g:lightline = {'colorscheme': 'tokyonight'}
-    let g:tokyonight_style = "night"
-    let g:tokyonight_day_brightness = 0.1
-    colorscheme tokyonight
+    " let g:lightline = {'colorscheme': 'tokyonight'}
+    " let g:tokyonight_style = "night"
+    " let g:tokyonight_day_brightness = 0.1
+    " colorscheme tokyonight
+
+    let g:calvera_italic_comments = 1
+    let g:calvera_italic_keywords = 1
+    let g:calvera_italic_functions = 1
+    let g:calvera_contrast = 1
+    colorscheme calvera
 
     "hi Comment cterm=italic
     "let g:nvcode_hide_endofbuffer=1
@@ -453,40 +460,9 @@ let g:gutentags_ctags_exclude = [
 "set completeopt=noinsert,noselect,menuone
 
 set shortmess+=c
-if v:false && has("nvim")
-    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-    inoremap <silent> <c-c> <ESC>
 
-    " use CTRL-j and CTRL-k for moving up and down complete options
-    inoremap <silent> <c-j> <c-r>=pumvisible() ? "\<lt>Down>" : "\<lt>c-j>"<CR>
-    inoremap <silent> <c-k> <c-r>=pumvisible() ? "\<lt>Up>" : "\<lt>c-k>"<CR>
-
-    function! Lsp_snippet_expand() abort
-        try
-            let l:ud = json_decode(v:completed_item.user_data)
-            let l:snippet = l:ud.nvim.lsp.completion_item.textEdit.newText
-            let l:snippet = substitute(l:snippet, '{\\}', '\{}', 'g')
-            call UltiSnips#Anon(l:snippet, v:completed_item.word, '', 'i')
-        catch /E716/ " key does not exist
-            "noop
-        finally
-            return ''
-        endtry
-    endfunction
-
-    function! RRAVI_ncm2_expand()
-        call ncm2#enable_for_buffer()
-        " NOTE: this key binding has to be defined after
-        " ncm2#enable_for_buffer() for it to actually trigger the expansion
-        imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("\<c-r>=Lsp_snippet_expand()\<cr>", 'm')
-        "imap <silent> <expr> <c-u> ncm2_ultisnips#expand_or("", 'm')
-    endfunction
-
-    augroup ncm2_completion
-        autocmd!
-        autocmd BufEnter * call RRAVI_ncm2_expand()
-    augroup END
-endif
+" CTRL-C doesn't trigger the InsertLeave autocmd. map to <ESC> instead.
+inoremap <silent> <c-c> <ESC>
 
 " fzf config
 if has("nvim")
