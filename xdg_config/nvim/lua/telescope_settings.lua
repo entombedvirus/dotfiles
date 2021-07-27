@@ -4,7 +4,7 @@ local actions = require('telescope.actions')
 local config = require('telescope.config')
 local finders = require('telescope.finders')
 local make_entry = require('telescope.make_entry')
-local path = require('telescope.path')
+local Path = require('plenary.path')
 local pickers = require('telescope.pickers')
 local themes = require('telescope.themes')
 local utils = require('telescope.utils')
@@ -112,7 +112,7 @@ return {
                     filename = filename,
                     display = function(_)
                         local hl_group
-                        local display = path.make_relative(filename, cwd)
+                        local display = Path:new(filename):make_relative(cwd)
                         display = string.sub(line, 1, #prefix) .. display
                         display, hl_group = utils.transform_devicons(filename, display, false)
 
