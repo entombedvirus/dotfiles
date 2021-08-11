@@ -631,6 +631,9 @@ nnoremap <silent> <leader>w :ArgWrap<CR>
 " search tags
 nnoremap <leader>t :Tags<cr>
 
+" quick save
+noremap <leader>s :update<cr>
+
 " update MRU when opening buffers through any means, not just from FZF
 " augroup custom_filemru
 "   autocmd!
@@ -748,7 +751,7 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 " nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFixRpc<CR>
 
 " For vim-workspace
-nnoremap <leader>s :mksession! /tmp/sess.vim<CR>:qa<CR>
+nnoremap <leader>S :mksession! /tmp/sess.vim<CR>:qa<CR>
 
 " For vim-airline
 let g:airline#extensions#tabline#enabled = 1

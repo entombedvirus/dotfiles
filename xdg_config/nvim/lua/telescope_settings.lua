@@ -145,7 +145,7 @@ return {
             end,
         }, themes.get_dropdown({
             layout_config = {
-                width = 0.3,
+                width = 0.6,
             },
         }))
         picker:find()
