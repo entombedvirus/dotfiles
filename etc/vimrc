@@ -110,22 +110,24 @@ if has("nvim")
     Plug 'tami5/sql.nvim'
     " Plug 'nvim-telescope/telescope-frecency.nvim'
 
+    " Snippets
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'rafamadriz/friendly-snippets'
+
     " autocomplete
-    Plug 'hrsh7th/nvim-compe'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-vsnip'
+    Plug 'hrsh7th/nvim-cmp'
 
     Plug 'neovim/nvim-lspconfig'
     Plug 'kabouzeid/nvim-lspinstall'
-    " Plug 'ojroques/nvim-lspfuzzy'
-
-    " Snippets
-    "Plug 'SirVer/ultisnips'
-    Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/vim-vsnip-integ'
 
     Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
 
     " colorschemes that use treesitter
     Plug 'glepnir/zephyr-nvim'
+    Plug 'EdenEast/nightfox.nvim'
 
     " diagnostics
     Plug 'kyazdani42/nvim-web-devicons'
@@ -143,6 +145,13 @@ call plug#end()
 
 filetype plugin indent on
 syntax enable
+
+" vsnip config
+" Jump forward or backward
+imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+imap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+smap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
 " fzf-preview config
 "
@@ -266,6 +275,25 @@ if has("nvim")
     "    \ 'colorscheme': 'embark',
     "    \ }
 
+    lua << EOF
+    local nightfox = require('nightfox')
+    nightfox.setup({
+    fox = "nightfox", -- change the colorscheme to use nordfox
+    transparent = true,
+    styles = {
+        comments = "italic", -- change style of comments to be italic
+        keywords = "bold,italic", -- change style of keywords to be bold
+        functions = "italic", -- styles can be a comma separated list
+        strings = "italic", -- styles can be a comma separated list
+    },
+    inverse = {
+        match_paren = true, -- inverse the highlighting of match_parens
+    },
+    })
+
+    -- Load the configuration set above and apply the colorscheme
+    nightfox.load()
+EOF
     " let g:tokyodark_transparent_background = 1
     " let g:tokyodark_enable_italic_comment = 1
     " let g:tokyodark_enable_italic = 1
@@ -277,11 +305,11 @@ if has("nvim")
     " let g:tokyonight_day_brightness = 0.1
     " colorscheme tokyonight
 
-    let g:calvera_italic_comments = 1
-    let g:calvera_italic_keywords = 1
-    let g:calvera_italic_functions = 1
-    let g:calvera_contrast = 1
-    colorscheme calvera
+    " let g:calvera_italic_comments = 1
+    " let g:calvera_italic_keywords = 1
+    " let g:calvera_italic_functions = 1
+    " let g:calvera_contrast = 1
+    " colorscheme calvera
 
     "hi Comment cterm=italic
     "let g:nvcode_hide_endofbuffer=1
@@ -621,6 +649,10 @@ xmap F <Plug>Sneak_S
 omap f <Plug>Sneak_s
 omap F <Plug>Sneak_S
 
+" jump to start and end of line in insert mode
+imap <C-a> <C-o>I
+imap <C-e> <C-o>A
+
 " FooSoft/vim-argwrap config
 let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
@@ -632,7 +664,7 @@ nnoremap <silent> <leader>w :ArgWrap<CR>
 nnoremap <leader>t :Tags<cr>
 
 " quick save
-noremap <leader>s :update<cr>
+noremap <leader>s :write<cr>
 
 " update MRU when opening buffers through any means, not just from FZF
 " augroup custom_filemru
@@ -668,7 +700,7 @@ endif
 
 " chapter 07
 " edit my vimrv in a vsplit
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+"nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " source my vimrv in a vsplit
 nnoremap <leader>sv :source $MYVIMRC<cr>
 

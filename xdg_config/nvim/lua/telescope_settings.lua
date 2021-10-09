@@ -83,71 +83,90 @@ keymap("v", "<M-g>", "<esc><cmd>lua require('telescope_settings').grep_selection
 keymap("n", "<leader>fp", "<cmd>FilesMru --tiebreak=end<cr>", opts)
 keymap("n", "<c-p>", "<cmd>lua require('telescope_settings').custom_mru()<cr>", opts)
 
-return {
-    grep_selection = function()
-        local _, srow, scol, _ = unpack(vim.fn.getpos("'<"))
-        local _, erow, ecol, _ = unpack(vim.fn.getpos("'>"))
-        if srow ~= erow then
-            print("cannot search multi line strings")
-            return
+keymap("n", "<leader>ev", "<cmd>lua require('telescope_settings').find_vim_config()<cr>", opts)
+
+local M = {}
+
+function M.grep_selection()
+    local _, srow, scol, _ = unpack(vim.fn.getpos("'<"))
+    local _, erow, ecol, _ = unpack(vim.fn.getpos("'>"))
+    if srow ~= erow then
+        print("cannot search multi line strings")
+        return
+    end
+    local selection = vim.fn.getline("."):sub(scol, ecol)
+    require('telescope.builtin').grep_string({search = selection})
+end
+
+function M.custom_mru()
+    -- TODO: stop relying on this bin file in another random plugin
+    local bin_file = os.getenv('HOME') ..'/.nvim/plugged/fzf-filemru/bin/filemru.sh'
+
+    local extract_fn_entry_maker = function()
+        local cwd = vim.fn.expand(opts.cwd or vim.fn.getcwd())
+        local prefix = "mru "
+
+        -- line sample: "mru go/src/mixpanel.com/discovery/discovery.go"
+        return function(line)
+            local filename = string.sub(line, #prefix + 1)
+            return {
+                value = filename,
+                ordinal = filename,
+                filename = filename,
+                display = function(_)
+                    local hl_group
+                    local display = Path:new(filename):make_relative(cwd)
+                    display = string.sub(line, 1, #prefix) .. display
+                    display, hl_group = utils.transform_devicons(filename, display, false)
+
+                    if hl_group then
+                        return display, { { {1, 3}, hl_group } }
+                    else
+                        return display
+                    end
+                end,
+            }
         end
-        local selection = vim.fn.getline("."):sub(scol, ecol)
-        require('telescope.builtin').grep_string({search = selection})
-    end,
+    end
 
-    custom_mru = function()
-        -- TODO: stop relying on this bin file in another random plugin
-        local bin_file = os.getenv('HOME') ..'/.nvim/plugged/fzf-filemru/bin/filemru.sh'
+    local picker = pickers.new({
+        results_title = 'Files',
+        -- Run an external command and show the results in the finder window
+        finder = finders.new_oneshot_job({bin_file, '--files'}, {
+            entry_maker = extract_fn_entry_maker(),
+        }),
+        sorter = config.values.file_sorter(),
+        attach_mappings = function()
+            action_set.select:enhance({
+                post = function()
+                    -- Will run after actions.select_default
+                    local entry = action_state.get_selected_entry()
+                    utils.get_os_command_output({bin_file, '--update', entry.filename})
+                end,
+            })
+            return true
+        end,
+    }, themes.get_dropdown({
+        layout_config = {
+            width = 0.6,
+        },
+    }))
+    picker:find()
+end
 
-        local extract_fn_entry_maker = function()
-            local cwd = vim.fn.expand(opts.cwd or vim.fn.getcwd())
-            local prefix = "mru "
+function M.find_vim_config()
+    local config_dir = "~/.config/nvim"
+    require("telescope.builtin").find_files {
+        prompt_title = "Config",
+        results_title = "Config Files Results",
+        path_display = { "shorten" },
+        search_dirs = {
+            config_dir,
+        },
+        cwd = config_dir,
+        -- layout_strategy = "horizontal",
+        -- layout_config = { preview_width = 0.65, width = 0.75 },
+    }
+end
 
-            -- line sample: "mru go/src/mixpanel.com/discovery/discovery.go"
-            return function(line)
-                local filename = string.sub(line, #prefix + 1)
-                return {
-                    value = filename,
-                    ordinal = filename,
-                    filename = filename,
-                    display = function(_)
-                        local hl_group
-                        local display = Path:new(filename):make_relative(cwd)
-                        display = string.sub(line, 1, #prefix) .. display
-                        display, hl_group = utils.transform_devicons(filename, display, false)
-
-                        if hl_group then
-                            return display, { { {1, 3}, hl_group } }
-                        else
-                            return display
-                        end
-                    end,
-                }
-            end
-        end
-
-        local picker = pickers.new({
-            results_title = 'Files',
-            -- Run an external command and show the results in the finder window
-            finder = finders.new_oneshot_job({bin_file, '--files'}, {
-                entry_maker = extract_fn_entry_maker(),
-            }),
-            sorter = config.values.file_sorter(),
-            attach_mappings = function()
-                 action_set.select:enhance({
-                     post = function()
-                         -- Will run after actions.select_default
-                         local entry = action_state.get_selected_entry()
-                         utils.get_os_command_output({bin_file, '--update', entry.filename})
-                     end,
-                 })
-                 return true
-            end,
-        }, themes.get_dropdown({
-            layout_config = {
-                width = 0.6,
-            },
-        }))
-        picker:find()
-    end,
-}
+return M
