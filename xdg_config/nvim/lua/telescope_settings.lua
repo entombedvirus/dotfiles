@@ -41,9 +41,9 @@ telescope.setup{
           },
           location = {
               telescope = {
-                  shorten_path = false,
-                  tail_path = false,
-                  hide_filename = false,
+                  path_display = {
+                      "shorten",
+                  },
               },
           },
       },

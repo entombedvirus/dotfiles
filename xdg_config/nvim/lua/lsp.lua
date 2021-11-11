@@ -179,19 +179,19 @@ lspconfig.gopls.setup{
 
 -- vim.lsp.set_log_level("info")
 
-lspconfig.pyright.setup{
-    on_init = on_init,
-    on_attach = on_attach,
-    capabilities = capabilities,
-    flags = flags,
-    settings = {
-        python = {
-            analysis = {
-                extraPaths = {os.getenv('HOME')},
-            },
-        },
-    },
-}
+-- lspconfig.pyright.setup{
+--     on_init = on_init,
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     flags = flags,
+--     settings = {
+--         python = {
+--             analysis = {
+--                 extraPaths = {os.getenv('HOME')},
+--             },
+--         },
+--     },
+-- }
 
 lspconfig.efm.setup {
     on_init = on_init,
@@ -254,7 +254,7 @@ local langs = setup_servers{
     'dockerfile',
     'html',
     'json',
-    'lua',
+    -- 'lua',
     'rust',
     'typescript',
     'vim',
@@ -266,15 +266,15 @@ for _, lang in pairs(langs) do
         local luadev = require("lua-dev").setup({
             library = {
                 vimruntime = true, -- runtime path
-                types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-                plugins = true, -- installed opt or start plugins in packpath
+                types      = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+                plugins    = true, -- installed opt or start plugins in packpath
                 -- you can also specify the list of plugins to make available as a workspace library
                 -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
             },
             -- add any options here, or leave empty to use the default settings
             lspconfig = {
-                on_init = on_init,
-                on_attach = on_attach,
+                on_init      = on_init,
+                on_attach    = on_attach,
                 capabilities = capabilities,
             },
         })
@@ -283,15 +283,15 @@ for _, lang in pairs(langs) do
         -- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
         require('rust-tools').setup({
             server = {
-                on_init = on_init,
-                on_attach = on_attach,
+                on_init      = on_init,
+                on_attach    = on_attach,
                 capabilities = capabilities,
             },
         })
     else
         lspconfig[lang].setup{
-            on_init = on_init,
-            on_attach = on_attach,
+            on_init      = on_init,
+            on_attach    = on_attach,
             capabilities = capabilities,
         }
     end
