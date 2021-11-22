@@ -23,6 +23,8 @@ telescope.setup{
         ["<esc>"] = actions.close,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
+        ["<C-q>"] = actions.send_selected_to_qflist,
+        ["<C-Q>"] = actions.send_to_qflist,
         ["<cr>"] = actions.select_default + actions.center,
       },
     },

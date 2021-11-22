@@ -8,9 +8,11 @@ end
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 
+-- Disabling this for now since enabling spell leads to underlines everywhere and
+-- it is super distracting. Actual LSP diagnostic errors gets buried.
 -- Setting spell (and spelllang) is mandatory to use spellsuggest.
-vim.opt.spell = true
-vim.opt.spelllang = { 'en_us' }
+-- vim.opt.spell = true
+-- vim.opt.spelllang = { 'en_us' }
 
 -- gives pretty icons in the autocomplete popup
 local lspkind = require('lspkind')
