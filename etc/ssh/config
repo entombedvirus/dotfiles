@@ -2,11 +2,9 @@
 
 Host bastion
     ForwardAgent yes
-    #HostName west-oslogin-dev-bastion.mixpanel.org
-    #HostName beta-oslogin-bastion.mixpanel.org
     # HostName=34.94.183.138
-    # HostName=west-oslogin-v2-bastion.mixpanel.org
-    HostName=east-oslogin-v2-bastion.mixpanel.org
+    HostName=west-oslogin-v2-bastion.mixpanel.org
+    # HostName=east-oslogin-v2-bastion.mixpanel.org
     Port 22
     ServerAliveInterval 5
     ServerAliveCountMax 2
@@ -31,7 +29,7 @@ Host rravi-*
     # ServerAliveCountMax 0
     # ServerAliveInterval 1h
     ServerAliveCountMax 0
-    ServerAliveInterval 1m
+    ServerAliveInterval 10m
 
     GSSAPIAuthentication no
     StrictHostKeyChecking no
