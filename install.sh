@@ -40,7 +40,7 @@ in
     ;;
 esac
 
-brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat nodejs llvm efm-langserver
+brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat nodejs llvm efm-langserver stow pure
 
 # source code tagging
 # brew tap universal-ctags/universal-ctags
