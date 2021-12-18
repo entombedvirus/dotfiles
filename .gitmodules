@@ -1,5 +1,5 @@
 [submodule "etc/antigen"]
-	path = etc/antigen
+	path = zsh/antigen
 	url = git@github.com:zsh-users/antigen.git
 [submodule "etc/tmux/plugins/tpm"]
 	path = etc/tmux/plugins/tpm
