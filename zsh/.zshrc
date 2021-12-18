@@ -18,13 +18,9 @@ antigen bundles <<EOBUNDLE
     history
 EOBUNDLE
 
-# Load the theme.
-#antigen theme amuse
-
 # can't use antigen theme for these
-# order matters for the zsh-async & pure lines
-antigen bundle mafredri/zsh-async
-antigen bundle sindresorhus/pure
+autoload -U promptinit; promptinit
+prompt pure
 
 # Bundles from Github
 antigen bundles <<EOBUNDLE
@@ -34,7 +30,7 @@ antigen bundles <<EOBUNDLE
 EOBUNDLE
 
 # custom stuff
-antigen bundle $HOME/cl/etc/zsh/custom
+antigen bundle $HOME/.zsh/custom
 
 # Syntax highlighting bundle. should be last
 antigen bundle zsh-users/zsh-syntax-highlighting
