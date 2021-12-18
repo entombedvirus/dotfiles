@@ -123,7 +123,7 @@ if has("nvim")
     Plug 'hrsh7th/nvim-cmp'
 
     Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
+    Plug 'williamboman/nvim-lsp-installer'
     Plug 'onsails/lspkind-nvim'
 
     Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting

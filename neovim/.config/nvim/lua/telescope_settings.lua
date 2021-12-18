@@ -166,6 +166,8 @@ function M.find_vim_config()
             config_dir,
         },
         cwd = config_dir,
+        hidden = true,
+        follow = true,
         -- layout_strategy = "horizontal",
         -- layout_config = { preview_width = 0.65, width = 0.75 },
     }

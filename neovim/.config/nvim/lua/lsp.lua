@@ -128,171 +128,142 @@ local flags = {
     debounce_text_changes = 150,
 }
 
-lspconfig.gopls.setup{
-    cmd = {
-        "gopls",
-
-        -- share the gopls instance if there is one already
-        "-remote=auto",
-
-       --[[ debug options ]]--
-       --"-profile.trace=/tmp/gopls.trace.out",
-       "-logfile=/tmp/gopls.nvim-lsp.log",
-       "-remote.logfile=/tmp/gopls.server.log",
-       --"-debug=:0",
-       "-remote.debug=:0",
-       "-rpc.trace",
-    },
-    on_init = on_init,
-    on_attach = on_attach,
-    flags = flags,
-    capabilities = capabilities,
-    settings = {
-        gopls = {
-            usePlaceholders    = true,
-            completeUnimported = true,
-            -- experimentalDiagnosticsDelay = "0ms",
-            codelenses         = {
-                generate           = true,
-                gc_details         = true,
-                test               = true,
-                tidy               = true,
-                vendor             = true,
-                upgrade_dependency = true,
-            },
-            --buildFlags = {
-            --    -- enable completion is avo files
-            --    "-tags=avo",
-            --},
-        },
-    },
-    handlers = {
-        -- ["textDocument/publishDiagnostics"] = noop,
-        ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-            -- delay update diagnostics
-            update_in_insert = false,
-            virtual_text     = true,
-            underline        = false,
-        }),
-    },
-}
-
--- vim.lsp.set_log_level("info")
-
--- lspconfig.pyright.setup{
---     on_init = on_init,
---     on_attach = on_attach,
---     capabilities = capabilities,
---     flags = flags,
---     settings = {
---         python = {
---             analysis = {
---                 extraPaths = {os.getenv('HOME')},
---             },
---         },
---     },
--- }
-
-lspconfig.efm.setup {
-    on_init = on_init,
-    on_attach = on_attach,
-    flags = flags,
-    capabilities = capabilities,
-    init_options = {
-        documentFormatting = true,
-    },
-    filetypes = {"python"},
-    settings = {
-        rootMarkers = {".git/"},
-        languages = {
-            python = {
-                {
-                    formatCommand = './tools/black --quiet -',
-                    formatStdin = true,
-                    lintCommand = './tools/flake8 --stdin-display-name ${INPUT} -',
-                    lintStdin = true,
-                    lintFormats = {'%f:%l:%c: %m'},
-                    lintIgnoreExitCode = true,
-                },
-            },
-        }
+function setup_server(lang)
+    local lsp_installer = require'nvim-lsp-installer'
+    local opts = {
+        on_init      = on_init,
+        on_attach    = on_attach,
+        capabilities = capabilities,
     }
-}
-
-local function set_diff(a, b)
-    local ret = {}
-    local bi = {}
-    for _,v in pairs(b) do bi[v]=true end
-    for _,v in pairs(a) do
-        if bi[v] ~= true then
-            table.insert(ret, v)
-        end
+    if lang == "efm" then
+        opts = {
+            on_init      = on_init,
+            on_attach    = on_attach,
+            flags        = flags,
+            capabilities = capabilities,
+            init_options = {
+                documentFormatting = true,
+            },
+            filetypes = {"python"},
+            settings = {
+                rootMarkers = {".git/"},
+                languages = {
+                    python = {
+                        {
+                            formatCommand      = './tools/black --quiet -',
+                            formatStdin        = true,
+                            lintCommand        = './tools/flake8 --stdin-display-name ${INPUT} -',
+                            lintStdin          = true,
+                            lintFormats        = {'%f:%l:%c: %m'},
+                            lintIgnoreExitCode = true,
+                        },
+                    },
+                }
+            }
+        }
+    elseif lang == "gopls" then
+        opts = {
+            on_init      = on_init,
+            on_attach    = on_attach,
+            flags        = flags,
+            capabilities = capabilities,
+            settings     = {
+                gopls = {
+                    usePlaceholders    = true,
+                    completeUnimported = true,
+                    -- experimentalDiagnosticsDelay = "0ms",
+                    codelenses         = {
+                        generate           = true,
+                        gc_details         = true,
+                        test               = true,
+                        tidy               = true,
+                        vendor             = true,
+                        upgrade_dependency = true,
+                    },
+                    --buildFlags = {
+                        --    -- enable completion is avo files
+                        --    "-tags=avo",
+                        --},
+                    },
+                },
+                handlers = {
+                    -- ["textDocument/publishDiagnostics"] = noop,
+                    ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+                        -- delay update diagnostics
+                        update_in_insert = false,
+                        virtual_text     = true,
+                        underline        = false,
+                    }),
+                },
+        }
     end
-    return ret
+
+    local ok, server = lsp_installer.get_server(lang)
+    if not ok then
+        print(lang, "is not a known language server")
+        return
+    end
+
+    if lang == "rust_analyzer" then
+        server:on_ready(function ()
+            -- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
+            -- See: https://github.com/williamboman/nvim-lsp-installer/wiki/Rust
+            -- Initialize the LSP via rust-tools instead
+            require("rust-tools").setup {
+                -- The "server" property provided in rust-tools setup function are the
+                -- settings rust-tools will provide to lspconfig during init.            --
+                -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
+                -- with the user's own settings (opts).
+                server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
+            }
+            server:attach_buffers()
+        end)
+    elseif lang == "sumneko_lua" then
+        server:on_ready(function()
+            local luadev = require("lua-dev").setup({
+                library = {
+                    vimruntime = true, -- runtime path
+                    types      = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+                    plugins    = true, -- installed opt or start plugins in packpath
+                    -- you can also specify the list of plugins to make available as a workspace library
+                    -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+                },
+                -- add any options here, or leave empty to use the default settings
+                lspconfig = vim.tbl_deep_extend("force", server:get_default_options(), opts),
+            })
+            lspconfig.sumneko_lua.setup(luadev)
+            server:attach_buffers()
+        end)
+    else
+        server:on_ready(function()
+            server:setup(opts)
+        end)
+    end
+
+    if not server:is_installed() then
+        -- Queue the server to be installed
+        server:install()
+    end
 end
 
-local function setup_servers(langs)
-  local install = require('lspinstall')
-
-  local missing_langs = set_diff(langs, install.installed_servers())
-  if next(missing_langs) ~= nil then
-      if vim.fn.confirm("Some LSP servers are missing. Install them now?", "&Yes\n&No") == 1 then
-          for _, lang in pairs(missing_langs) do
-              install.install_server(lang)
-          end
-      end
-  end
-
-  install.setup()
-  return set_diff(langs, missing_langs)
-end
-
-local langs = setup_servers{
-    'bash',
-    'cpp',
-    'css',
-    'dockerfile',
+local langs = {
+    'bashls',
+    'efm',
+    'vimls',
+    'gopls',
+    'clangd',
+    'cssls',
+    'dockerls',
     'html',
-    'json',
-    -- 'lua',
-    'rust',
-    'typescript',
-    'vim',
-    'yaml',
+    'jsonls',
+    'jsonnet_ls',
+    'sumneko_lua',
+    'rust_analyzer',
+    'tsserver',
+    'yamlls',
 }
 
 for _, lang in pairs(langs) do
-    if lang == "lua" then
-        local luadev = require("lua-dev").setup({
-            library = {
-                vimruntime = true, -- runtime path
-                types      = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-                plugins    = true, -- installed opt or start plugins in packpath
-                -- you can also specify the list of plugins to make available as a workspace library
-                -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-            },
-            -- add any options here, or leave empty to use the default settings
-            lspconfig = {
-                on_init      = on_init,
-                on_attach    = on_attach,
-                capabilities = capabilities,
-            },
-        })
-        lspconfig.lua.setup(luadev)
-    elseif lang == "rust" then
-        -- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
-        require('rust-tools').setup({
-            server = {
-                on_init      = on_init,
-                on_attach    = on_attach,
-                capabilities = capabilities,
-            },
-        })
-    else
-        lspconfig[lang].setup{
-            on_init      = on_init,
-            on_attach    = on_attach,
-            capabilities = capabilities,
-        }
-    end
+    setup_server(lang)
 end
+
