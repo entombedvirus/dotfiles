@@ -1,35 +1,11 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-require 'fileutils'
+cd "$(dirname "$0")"
+stow --adopt */
 
-backup_dir = "/tmp/dotfiles.#{Time.now.to_i}.bak"
-FileUtils.mkdir_p(backup_dir)
-
-Dir["#{File.dirname(__FILE__)}/etc/*"].each do |target|
-  target_path = File.expand_path(target)
-  dest_path = File.expand_path("~/.#{File.basename(target)}")
-
-  if File.exists?(dest_path)
-    FileUtils.mv dest_path, backup_dir
-  end
-
-  cmd = "ln -nsf %s %s" % [target_path, dest_path]
-  system(cmd)
-end
-
-# copy back .ssh/authorized_keys file to prevent getting locked out
-system("cp %s %s" % [File.join(backup_dir, ".ssh", "authorized_keys"), File.join("~/.ssh", "authorized_keys")])
-system("mkdir -p %s" % [File.join("~", ".ssh", "controlmasters")])
-
-# create
-Dir["#{File.dirname(__FILE__)}/xdg_config/*"].each do |target|
-  target_path = File.expand_path(target)
-  dest_path = File.expand_path("~/.config/#{File.basename(target)}")
-
-  if File.exists?(dest_path)
-    FileUtils.mv dest_path, backup_dir
-  end
-
-  cmd = "ln -nsf %s %s" % [target_path, dest_path]
-  system(cmd)
-end
+# --adopt will cause any conflicting files to modify the versions of the dot
+# files in the dotfiles checkout.  This is most likely something we care about,
+# so stash them away to get back to the state that was checked in.
+if [[ -n $(git status -s) ]]; then
+    git stash
+fi
