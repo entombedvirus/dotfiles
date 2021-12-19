@@ -1,16 +1,4 @@
-etc/tmp/
-etc/ssh/
-!etc/ssh/config
-.netrwhist
-etc/vim/**/command-t*
-etc/vim/**/commandt*
+ssh/.ssh/known_hosts
 *.log
 *.o
-etc/vim/sessions/
-etc/vim/ruby/
-etc/vim/.VimballRecord
-etc/vim/doc/tags
-etc/nvim/bundle/
-etc/tmux/plugins/
-etc/vim/autoload/plug.vim
 .DS_Store
