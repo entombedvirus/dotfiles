@@ -218,6 +218,10 @@ local setup_server = function(lang)
             }
             server:attach_buffers()
         end)
+    elseif lang == "gopls" then
+        opts  = vim.tbl_deep_extend("force", server:get_default_options(), opts)
+        table.insert(opts.cmd, "-remote=auto")
+        server:setup(opts)
     elseif lang == "sumneko_lua" then
         server:on_ready(function()
             local luadev = require("lua-dev").setup({
