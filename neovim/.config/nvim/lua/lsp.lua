@@ -128,7 +128,7 @@ local flags = {
     debounce_text_changes = 150,
 }
 
-function setup_server(lang)
+local setup_server = function(lang)
     local lsp_installer = require'nvim-lsp-installer'
     local opts = {
         on_init      = on_init,
