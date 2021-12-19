@@ -8,6 +8,8 @@ set -o nounset
 
 # install linux brew deps
 sudo apt-get install build-essential file git python3-pip
+# packages that are not available via brew
+sudo apt-get install xdg-utils
 
 git config --global user.email 'rohith.ravi@mixpanel.com'
 git config --global user.name 'Rohith Ravi'
