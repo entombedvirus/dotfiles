@@ -99,6 +99,12 @@ Plug 'google/vim-jsonnet'
 " Bazel
 Plug 'bazelbuild/vim-ft-bzl'
 
+" terminal
+Plug 'voldikss/vim-floaterm'
+
+" testing
+Plug 'vim-test/vim-test'
+
 if has("nvim")
     " fuzzy finding
     Plug 'nvim-lua/popup.nvim'
@@ -126,7 +132,8 @@ if has("nvim")
     Plug 'williamboman/nvim-lsp-installer'
     Plug 'onsails/lspkind-nvim'
 
-    Plug 'nvim-treesitter/nvim-treesitter' " fast syntax (non-regex based) highlighting
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
     " colorschemes that use treesitter
     Plug 'glepnir/zephyr-nvim'
@@ -149,6 +156,11 @@ call plug#end()
 filetype plugin indent on
 syntax enable
 
+" vim-test config
+nmap <silent> <leader>gtf :TestNearest<CR>
+nmap <silent> <leader>gt :TestSuite<CR>
+" make test commands execute using dispatch.vim
+let test#strategy = "floaterm"
 " vsnip config
 " Jump forward or backward
 imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
@@ -585,8 +597,8 @@ augroup filetype_go
     autocmd!
     autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall -i<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gtf :GoTestFunc<CR>
+    " autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
+    " autocmd FileType go nnoremap <buffer> <localleader>gtf :GoTestFunc<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
     autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>

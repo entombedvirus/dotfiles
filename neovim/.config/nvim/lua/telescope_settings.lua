@@ -164,6 +164,7 @@ function M.find_vim_config()
         path_display = { "shorten" },
         search_dirs = {
             config_dir,
+            "~/.vimrc",
         },
         cwd = config_dir,
         hidden = true,
