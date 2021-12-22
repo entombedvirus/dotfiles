@@ -158,9 +158,13 @@ syntax enable
 
 " vim-test config
 nmap <silent> <leader>gtf :TestNearest<CR>
-nmap <silent> <leader>gt :TestSuite<CR>
+nmap <silent> <leader>gtl :TestLast<CR>
+nmap <silent> <leader>gt :TestFile<CR>
 " make test commands execute using dispatch.vim
-let test#strategy = "floaterm"
+let g:test#strategy = "floaterm"
+" execute tests from package dir
+let g:test#project_root = "%:h"
+
 " vsnip config
 " Jump forward or backward
 imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
