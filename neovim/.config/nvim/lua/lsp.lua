@@ -1,7 +1,14 @@
 -- require('lspfuzzy').setup {}
-require('trouble').setup {}
+-- require('trouble').setup {}
+local trouble_installed, trouble = pcall(require, 'trouble')
+if trouble_installed then
+    trouble.setup()
+end
 
-local lspconfig = require('lspconfig')
+local lspconfig_installed, lspconfig = pcall(require, 'lspconfig')
+if not lspconfig_installed then
+    return
+end
 
 local on_init = function(client)
     -- if client.config.flags then

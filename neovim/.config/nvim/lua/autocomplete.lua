@@ -6,7 +6,10 @@ local t = function(str)
 end
 
 -- Setup nvim-cmp.
-local cmp = require'cmp'
+local installed, cmp = pcall(require, 'cmp')
+if not installed then
+    return
+end
 
 -- Disabling this for now since enabling spell leads to underlines everywhere and
 -- it is super distracting. Actual LSP diagnostic errors gets buried.

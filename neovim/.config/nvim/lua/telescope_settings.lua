@@ -1,3 +1,8 @@
+local installed, telescope = pcall(require,'telescope')
+if not installed then
+    return
+end
+
 local action_set = require('telescope.actions.set')
 local action_state = require('telescope.actions.state')
 local actions = require('telescope.actions')
@@ -11,7 +16,6 @@ local utils = require('telescope.utils')
 
 
 
-local telescope = require('telescope')
 telescope.setup{
   defaults = {
     mappings = {
