@@ -635,7 +635,7 @@ let g:lightline.active             = {
 \                                      'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']],
 \                                      'right': [['lineinfo'], ['percent'], ['gutentags', 'fileformat', 'fileencoding', 'filetype']]
 \                                    }
-let g:lightline.inactive           = {'left': [ [ 'relativepath' ] ], 'right': [ [ 'lineinfo' ],[ 'percent' ] ] }
+let g:lightline.inactive           = {'left': [ [ 'relativepath', 'modified' ] ], 'right': [ [ 'lineinfo' ],[ 'percent' ] ] }
 let g:lightline.component          = {'sep': '-> '}
 let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
 "let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch', 'gutentags': 'gutentags#statusline'}
