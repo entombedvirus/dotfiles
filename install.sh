@@ -63,12 +63,7 @@ if [ ! -L "$NVIM_INIT_PATH" ]; then
     ln -snf $HOME/.vimrc $NVIM_INIT_PATH
 fi
 
-#brew install python3
-pip3 install neovim python-language-server pyls-black
-# needed for various language servers
-npm install --global typescript typescript-language-server vim-language-server \
-    bash-language-server vscode-html-languageserver-bin vscode-json-languageserver \
-    vls vscode-css-languageserver-bin
+pip3 install neovim
 
 # unlink gcc and friends so that they don't interfere with bazel builds
 #brew unlink gcc 2>/dev/null || true
