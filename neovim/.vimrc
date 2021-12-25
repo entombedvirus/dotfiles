@@ -138,6 +138,7 @@ if has("nvim")
     " colorschemes that use treesitter
     Plug 'glepnir/zephyr-nvim'
     Plug 'EdenEast/nightfox.nvim'
+    Plug 'rebelot/kanagawa.nvim'
 
     " diagnostics
     Plug 'kyazdani42/nvim-web-devicons'
@@ -294,25 +295,45 @@ if has("nvim")
     "    \ 'colorscheme': 'embark',
     "    \ }
 
+    " lua << EOF
+    " local nightfox = require('nightfox')
+    " nightfox.setup({
+    " fox = "nightfox", -- change the colorscheme to use nordfox
+    " transparent = true,
+    " styles = {
+    "     comments = "italic", -- change style of comments to be italic
+    "     keywords = "bold,italic", -- change style of keywords to be bold
+    "     functions = "italic", -- styles can be a comma separated list
+    "     strings = "italic", -- styles can be a comma separated list
+    " },
+    " inverse = {
+    "     match_paren = true, -- inverse the highlighting of match_parens
+    " },
+    " })
+
+    " -- Load the configuration set above and apply the colorscheme
+    " nightfox.load()
+" EOF
     lua << EOF
-    local nightfox = require('nightfox')
-    nightfox.setup({
-    fox = "nightfox", -- change the colorscheme to use nordfox
-    transparent = true,
-    styles = {
-        comments = "italic", -- change style of comments to be italic
-        keywords = "bold,italic", -- change style of keywords to be bold
-        functions = "italic", -- styles can be a comma separated list
-        strings = "italic", -- styles can be a comma separated list
-    },
-    inverse = {
-        match_paren = true, -- inverse the highlighting of match_parens
-    },
+    require('kanagawa').setup({
+        undercurl            = true,           -- enable undercurls
+        commentStyle         = "italic",
+        functionStyle        = "NONE",
+        keywordStyle         = "italic",
+        statementStyle       = "bold",
+        typeStyle            = "italic",
+        variablebuiltinStyle = "italic",
+        specialReturn        = true,       -- special highlight for the return keyword
+        specialException     = true,    -- special highlight for exception handling keywords
+        transparent          = false,        -- do not set background color
+        colors               = {},
+        overrides            = {},
     })
 
-    -- Load the configuration set above and apply the colorscheme
-    nightfox.load()
+    -- setup must be called before loading
+    vim.cmd("colorscheme kanagawa")
 EOF
+    let g:lightline = {'colorscheme': 'nightfox'}
     " let g:tokyodark_transparent_background = 1
     " let g:tokyodark_enable_italic_comment = 1
     " let g:tokyodark_enable_italic = 1
