@@ -95,7 +95,7 @@ if [ -n "$zsh_path" ]; then
 fi
 
 # custom TERMs
-for src in etc/terminfo/*.src; do tic -x -o etc/terminfo $src; done
+for src in zsh/.terminfo/*.src; do tic -x -o zsh/.terminfo $src; done
 
 # install rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
