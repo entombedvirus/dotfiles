@@ -3,18 +3,7 @@ if not installed then
     return
 end
 
-local action_set = require('telescope.actions.set')
-local action_state = require('telescope.actions.state')
 local actions = require('telescope.actions')
-local config = require('telescope.config')
-local finders = require('telescope.finders')
-local make_entry = require('telescope.make_entry')
-local Path = require('plenary.path')
-local pickers = require('telescope.pickers')
-local themes = require('telescope.themes')
-local utils = require('telescope.utils')
-
-
 
 telescope.setup{
   defaults = {
@@ -87,7 +76,7 @@ keymap("v", "<M-g>", "<esc><cmd>lua require('telescope_settings').grep_selection
 
 -- ctrl-p style MRU
 keymap("n", "<leader>fp", "<cmd>FilesMru --tiebreak=end<cr>", opts)
-keymap("n", "<c-p>", "<cmd>lua require('telescope_settings').custom_mru()<cr>", opts)
+keymap("n", "<c-p>", "<cmd>lua require('custom_mru').find()<cr>", opts)
 
 keymap("n", "<leader>ev", "<cmd>lua require('telescope_settings').find_vim_config()<cr>", opts)
 
@@ -102,62 +91,6 @@ function M.grep_selection()
     end
     local selection = vim.fn.getline("."):sub(scol, ecol)
     require('telescope.builtin').grep_string({search = selection})
-end
-
-function M.custom_mru()
-    -- TODO: stop relying on this bin file in another random plugin
-    local bin_file = os.getenv('HOME') ..'/.nvim/plugged/fzf-filemru/bin/filemru.sh'
-
-    local extract_fn_entry_maker = function()
-        local cwd = vim.fn.expand(opts.cwd or vim.fn.getcwd())
-        local prefix = "mru "
-
-        -- line sample: "mru go/src/mixpanel.com/discovery/discovery.go"
-        return function(line)
-            local filename = string.sub(line, #prefix + 1)
-            return {
-                value = filename,
-                ordinal = filename,
-                filename = filename,
-                display = function(_)
-                    local hl_group
-                    local display = Path:new(filename):make_relative(cwd)
-                    display = string.sub(line, 1, #prefix) .. display
-                    display, hl_group = utils.transform_devicons(filename, display, false)
-
-                    if hl_group then
-                        return display, { { {1, 3}, hl_group } }
-                    else
-                        return display
-                    end
-                end,
-            }
-        end
-    end
-
-    local picker = pickers.new({
-        results_title = 'Files',
-        -- Run an external command and show the results in the finder window
-        finder = finders.new_oneshot_job({bin_file, '--files'}, {
-            entry_maker = extract_fn_entry_maker(),
-        }),
-        sorter = config.values.file_sorter(),
-        attach_mappings = function()
-            action_set.select:enhance({
-                post = function()
-                    -- Will run after actions.select_default
-                    local entry = action_state.get_selected_entry()
-                    utils.get_os_command_output({bin_file, '--update', entry.filename})
-                end,
-            })
-            return true
-        end,
-    }, themes.get_dropdown({
-        layout_config = {
-            width = 0.6,
-        },
-    }))
-    picker:find()
 end
 
 function M.find_vim_config()
