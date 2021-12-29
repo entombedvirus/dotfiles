@@ -16,18 +16,14 @@ if !filereadable(autoload_plug_path)
 endif
 unlet autoload_plug_path
 
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.vim/plugins/plugged')
 
 " Navigation
 Plug 'mileszs/ack.vim'
 Plug 'justinmk/vim-dirvish'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-"Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
-"Plug 'yuki-ycino/fzf-preview.vim', { 'commit': '1eab3f0', 'do': ':UpdateRemotePlugins' }
-"Plug 'fszymanski/fzf-quickfix'
 Plug 'rbtnn/vim-jumptoline'
 
 " Git
@@ -35,10 +31,6 @@ Plug 'rbtnn/vim-jumptoline'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-
-" Go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'majutsushi/tagbar'
 
 " react / js
 Plug 'pangloss/vim-javascript'
@@ -105,52 +97,6 @@ Plug 'voldikss/vim-floaterm'
 " testing
 Plug 'vim-test/vim-test'
 
-if has("nvim")
-    " fuzzy finding
-    Plug 'nvim-lua/popup.nvim'
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
-    Plug 'tami5/sql.nvim'
-    " Plug 'nvim-telescope/telescope-frecency.nvim'
-
-    " Snippets
-    Plug 'hrsh7th/vim-vsnip'
-    Plug 'rafamadriz/friendly-snippets'
-
-    " autocomplete
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/cmp-vsnip'
-    Plug 'hrsh7th/cmp-nvim-lua'
-    Plug 'f3fora/cmp-spell'
-    Plug 'hrsh7th/nvim-cmp'
-
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'williamboman/nvim-lsp-installer'
-    Plug 'onsails/lspkind-nvim'
-
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-
-    " colorschemes that use treesitter
-    Plug 'glepnir/zephyr-nvim'
-    Plug 'EdenEast/nightfox.nvim'
-    Plug 'rebelot/kanagawa.nvim'
-
-    " diagnostics
-    Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'folke/lsp-trouble.nvim'
-
-    " lua plugin dev
-    Plug 'folke/lua-dev.nvim'
-
-    " rust specific
-    Plug 'simrat39/rust-tools.nvim'
-endif
-
 " Initialize plugin system
 call plug#end()
 
@@ -181,9 +127,6 @@ smap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k
 " event.
 let g:fzf_preview_disable_mru = 1
 
-" vimpostor/vim-tpipeline config
-let g:tpipeline_split = 1
-
 " colorscheme overrides. has to be before any colorscheme lines
 augroup colorscheme_overrides
     autocmd!
@@ -193,6 +136,13 @@ augroup colorscheme_overrides
     autocmd ColorScheme * highlight Comment cterm=italic gui=italic
     autocmd ColorScheme * highlight default link LspReferenceText Search
 augroup END
+
+" needed to make true colors work in TMUX and outside
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
+colorscheme gruvbox
+set background=dark
 
 if has("gui")
     " Start without the toolbar
@@ -208,9 +158,6 @@ endif
 if has("gui_macvim")
     "set guifont=Knack\ Nerd\ Font:h13
     set guifont="Iosevka Term Slab Light:h13"
-
-    colorscheme one
-    set background=light
 
     " Fullscreen takes up entire screen
     set fuoptions=maxhorz,maxvert
@@ -238,241 +185,26 @@ if has("gui_macvim")
     imap <D-9> <Esc>9gt
 endif
 
+" remove the delay when pressing esc
+set noesckeys
 
-" makes neovim use gui colors in themes instead of cterm colors, usually this
-" is only useful with a tmux and iterm2 / kitty both capable of displaying
-" 24bit "True" color
-"
-" NOTE: setting this in vim8 causes colors to not work at all, so limiting
-" this to neovim only for now
-if has("nvim") && has("termguicolors")
-    set termguicolors
-endif
-
-if has("nvim")
-    " let g:two_firewatch_italics=1
-    "colorscheme two-firewatch
-    "set background=dark
-
-    "colorscheme PaperColor
-    "set background=dark
-
-    "let g:rehash256 = 1
-    "let g:molokai_original = 1
-    "colorscheme molokai
-    "set background=dark
-
-    " colorscheme jelleybeans
-    " set background=light
-
-    "set background=dark
-    "colorscheme kalisi
-
-    "colorscheme Tomorrow-Night
-    "set background=dark
-
-    "let g:gruvbox_italic=1
-    "let g:gruvbox_contrast_dark="medium"
-    "set background=dark
-    "colorscheme gruvbox
-
-    "colorscheme OceanicNext
-    "set background=dark
-    "let g:airline_theme='oceanicnext'
-
-    "colorscheme one
-    "set background=dark
-
-    "colorscheme onedark
-    "set background=dark
-
-    "colorscheme neodark
-    " set background=dark
-    " let g:neodark#terminal_transparent = 1 " default: 0
-    "  let g:embark_terminal_italics = 1
-    "  colorscheme embark
-    "  let g:lightline = {
-    "    \ 'colorscheme': 'embark',
-    "    \ }
-
-    " lua << EOF
-    " local nightfox = require('nightfox')
-    " nightfox.setup({
-    " fox = "nightfox", -- change the colorscheme to use nordfox
-    " transparent = true,
-    " styles = {
-    "     comments = "italic", -- change style of comments to be italic
-    "     keywords = "bold,italic", -- change style of keywords to be bold
-    "     functions = "italic", -- styles can be a comma separated list
-    "     strings = "italic", -- styles can be a comma separated list
-    " },
-    " inverse = {
-    "     match_paren = true, -- inverse the highlighting of match_parens
-    " },
-    " })
-
-    " -- Load the configuration set above and apply the colorscheme
-    " nightfox.load()
-" EOF
-    lua << EOF
-    require('kanagawa').setup({
-        undercurl            = true,           -- enable undercurls
-        commentStyle         = "italic",
-        functionStyle        = "NONE",
-        keywordStyle         = "italic",
-        statementStyle       = "bold",
-        typeStyle            = "italic",
-        variablebuiltinStyle = "italic",
-        specialReturn        = true,       -- special highlight for the return keyword
-        specialException     = true,    -- special highlight for exception handling keywords
-        transparent          = false,        -- do not set background color
-        colors               = {},
-        overrides            = {},
-    })
-
-    -- setup must be called before loading
-    vim.cmd("colorscheme kanagawa")
-EOF
-    let g:lightline = {'colorscheme': 'nightfox'}
-    " let g:tokyodark_transparent_background = 1
-    " let g:tokyodark_enable_italic_comment = 1
-    " let g:tokyodark_enable_italic = 1
-    " let g:tokyodark_color_gamma = "1.5"
-    " colorscheme tokyodark
-
-    " let g:lightline = {'colorscheme': 'tokyonight'}
-    " let g:tokyonight_style = "night"
-    " let g:tokyonight_day_brightness = 0.1
-    " colorscheme tokyonight
-
-    " let g:calvera_italic_comments = 1
-    " let g:calvera_italic_keywords = 1
-    " let g:calvera_italic_functions = 1
-    " let g:calvera_contrast = 1
-    " colorscheme calvera
-
-    "hi Comment cterm=italic
-    "let g:nvcode_hide_endofbuffer=1
-    "let g:nvcode_terminal_italics=1
-    "let g:nvcode_termcolors=256
-    "colorscheme nvcode
-    "set background=dark
-    "hi LineNr ctermbg=NONE guibg=NONE
-
-    "colorscheme zephyr
-    "set background=dark
-
-    "colorscheme Iosvkem
-    "set background=dark
-
-    "colorscheme base16-gruvbox-dark-medium
-    "set background=dark
-
-    "colorscheme base16-eighties
-    "set background=dark
-
-    "let ayucolor="light"
-    "let ayucolor="dark"
-    ""let ayucolor="mirage"
-    "colorscheme ayu
-
-    "set background=dark
-    "colorscheme palenight
-    "let g:lightline = { 'colorscheme': 'palenight' }
-    "let g:palenight_terminal_italics=1
-
-    "set background=dark
-    "colorscheme kuroi
-
-    "colorscheme halcyon
-    "set background=dark
-
-    " built-in terminal navigation
-    tnoremap <A-h> <C-\><C-n><C-w>h
-    tnoremap <A-j> <C-\><C-n><C-w>j
-    tnoremap <A-k> <C-\><C-n><C-w>k
-    tnoremap <A-l> <C-\><C-n><C-w>l
-    nnoremap <A-h> <C-w>h
-    nnoremap <A-j> <C-w>j
-    nnoremap <A-k> <C-w>k
-    nnoremap <A-l> <C-w>l
-
-    " Neomake configuration
-    let g:neomake_python_flake8_maker = {
-        \ 'args': ['--format=default', '--ignore=E261,E302,E402,E501,E731'],
-        \ 'errorformat':
-            \ '%E%f:%l: could not compile,%-Z%p^,' .
-            \ '%A%f:%l:%c: %t%n %m,' .
-            \ '%A%f:%l: %t%n %m,' .
-            \ '%-G%.%#',
-        \ 'postprocess': function('neomake#makers#ft#python#Flake8EntryProcess')
-        \ }
-    let g:neomake_javascript_enabled_makers = ['eslint']
-    let g:neomake_python_enabled_makers = ['flake8']
-    "let g:neomake_go_enabled_makers = ['go', 'golangci_lint']
-    "let g:neomake_go_golangci_lint_args = ['run', '--no-config']
-
-    " don't use fancy unicode symbols since terminals seem to have trouble
-    " rendering them correctly.
-    let g:neomake_error_sign = {
-        \   'text': '>>',
-        \   'texthl': 'NeomakeErrorSign',
-        \ }
-    let g:neomake_warning_sign = {
-        \   'text': 'W',
-        \   'texthl': 'NeomakeWarningSign',
-        \ }
-    let g:neomake_message_sign = {
-        \   'text': 'M',
-        \   'texthl': 'NeomakeMessageSign',
-        \ }
-    let g:neomake_info_sign = {
-        \   'text': 'I',
-        \   'texthl': 'NeomakeInfoSign',
-        \ }
-
-    " For conceal markers.
-    if has('conceal')
-        " hide concealed chars, except in insert, visual and command modes
-        set conceallevel=2 concealcursor=n
-    endif
-
-    " sebdah/vim-delve config
-    nnoremap <leader>db :DlvToggleBreakpoint<cr>
-    nnoremap <leader>dr :DlvToggleTracepoint<cr>
-    nnoremap <leader>dc :DlvClearAll<cr>
-    nnoremap <leader>dt :DlvTest<cr>
-    nnoremap <leader>dd :DlvDebug<cr>
-
-    " entry point to all of lua config
-    lua require'init'
-endif
-
-if !has("nvim")
-    " remove the delay when pressing esc
-    set noesckeys
-
-    " cargo cult nvim defaults
-    set autoindent
-    set autoread
-    set backspace="indent,eol,start"
-    set display="lastline"
-    set formatoptions="tcqj"
-    set history=10000
-    set nrformats="bin,hex"
-    set showcmd
-    set smarttab
-    set tabpagemax=50
-    set tags="./tags;,tags"
-    set ttyfast
-    set wildmenu
-endif
+" cargo cult nvim defaults
+set autoindent
+set autoread
+set backspace="indent,eol,start"
+set display="lastline"
+set formatoptions="tcqj"
+set history=10000
+set nrformats="bin,hex"
+set showcmd
+set smarttab
+set tabpagemax=50
+set tags="./tags;,tags"
+set ttyfast
+set wildmenu
 
 " plain old vim
-if !has("nvim") && !has("gui_macvim")
-    colorscheme PaperColor
-    set background=light
-
+if !has("gui_macvim")
     " change cursor shape
     " Ps = 0  -> blinking block.
     " Ps = 1  -> blinking block (default).
@@ -494,148 +226,14 @@ endif
 " Toggle background with <leader>bg
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 
-" diagnostic-nvim config
-let g:diagnostic_enable_virtual_text = 1
-let g:diagnostic_insert_delay = 1
-
-" gutentags config
-let g:gutentags_define_advanced_commands = 1
-" keep the lock and temp files outside of git workspace
-let g:gutentags_cache_dir = expand('~/.cache/gutentags')
-let g:gutentags_ctags_extra_args = ['--links=no']
-let g:gutentags_ctags_auto_set_tags = 1
-" NOTE: since we're using a cache_dir, exclude patterns cannot be relative to
-" project root.
-let g:gutentags_ctags_exclude = [
-            \    '*/third_party/*',
-            \    '*/external/*',
-            \    '*/eventlet/*',
-            \    '*/go/src*/vendor/*',
-            \    '*/go/src/wavefront/*',
-            \    '*/go/.build/*',
-            \    '*clj/*',
-            \    '*node_modules/*',
-            \    '*media/*',
-            \    '*/analytics/servers/*',
-            \    '*.json',
-            \    '*.js',
-            \    '*.html',
-            \    '*.css',
-            \    '*bindata.go',
-            \]
-
-" ncm2 completion config
-"set completeopt=noinsert,noselect,menuone
-
 set shortmess+=c
 
 " CTRL-C doesn't trigger the InsertLeave autocmd. map to <ESC> instead.
 inoremap <silent> <c-c> <ESC>
 
-" fzf config
-if has("nvim")
-    let $FZF_DEFAULT_OPTS='--layout=reverse --border --margin=0,2'
-    " theme for fzf previews
-    let $BAT_THEME='1337'
-    let $FZF_PREVIEW_PREVIEW_BAT_THEME='1337'
-    "highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
-
-    function! FloatingFZF()
-        let buf = nvim_create_buf(v:false, v:true)
-        let height = &lines - 30
-        let width = float2nr(&columns - (&columns * 2 / 5))
-        let col = float2nr((&columns - width) / 2)
-
-        let opts = {
-                \ 'relative': 'editor',
-                \ 'row': height * 0.3,
-                \ 'col': col,
-                \ 'width': width,
-                \ 'height': height
-                \ }
-
-        let win = nvim_open_win(buf, v:true, opts)
-
-        "Set Floating Window Highlighting
-        call setwinvar(win, '&winhl', 'Normal:Pmenu')
-
-        setlocal
-                \ buftype=nofile
-                \ nobuflisted
-                \ bufhidden=hide
-                \ nonumber
-                \ norelativenumber
-                \ signcolumn=no
-    endfunction
-    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-endif
-
-" vim-go
-let g:go_fmt_autosave = 0 " let nvim-lsp handle formatting
-let g:go_imports_autosave = 0
-let g:go_gopls_enabled = 0
-let g:go_gopls_options = ['-remote=auto', '-logfile=/tmp/gopls.vim-go.log', '-rpc.trace']
-"let g:go_debug = ["lsp"]
-
-if executable('gopls')
-    " register gopls for go-to-def and auto-info
-    let g:go_def_mode = 'gopls'
-    let g:go_info_mode = 'gopls'
-    let g:go_referrers_mode = 'gopls'
-endif
-
-let g:go_snippet_engine = 'ultisnips'
-let g:go_decls_mode = 'fzf'
-let g:go_highlight_types = 0
-let g:go_highlight_fields = 0
-let g:go_highlight_format_strings = 0
-let g:go_highlight_methods = 0
-let g:go_highlight_extra_types = 0
-let g:go_highlight_functions = 0
-"let g:go_highlight_build_constraints = 1
-"let g:go_highlight_generate_tags = 1
-let g:go_diagnostics_enabled = 0
-let g:go_doc_popup_window = 0
-let g:go_doc_keywordprg_enabled = 0
-let g:go_def_mapping_enabled = 0
-
-" seems to lead to weird artifacts. vim-go uncoditionally calls UltiSnips#Anon
-" if this is turned on and that does not interact well with ncm2_ultisnips.
-let g:go_gopls_use_placeholders = 0
-
-" suppress "Completion SUCCESS" messages
-let g:go_echo_go_info = 0
-
-" reduce the delay before auto_sameids and auto_type_info activates
-let g:go_updatetime = 300
-let g:go_auto_sameids = 0
-let g:go_auto_type_info = 0
-
-" Add the failing test name to the output of :GoTest
-let g:go_test_show_name = 1
-
 " prevent "Press enter to continue" message on auto type info
 set cmdheight=2
 
-" go specific keybindings
-augroup filetype_go
-    autocmd!
-    autocmd FileType go nnoremap <buffer> <localleader>gb :GoBuild<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gi :GoInstall -i<CR>
-    " autocmd FileType go nnoremap <buffer> <localleader>gt :GoTest<CR>
-    " autocmd FileType go nnoremap <buffer> <localleader>gtf :GoTestFunc<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gc :GoCoverageToggle<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gf :GoImports<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>gm :GoMetaLinter<CR>
-    " autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
-    autocmd FileType go nnoremap <buffer> <localleader>ge :GoIfErr<CR>
-    "autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
-
-    " tagbar
-    autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<CR>
-augroup END
-
-"
 " js specific keybindings
 augroup filetype_js
     autocmd!
@@ -646,32 +244,6 @@ augroup END
 
 " vim-jsx config
 let g:jsx_ext_required = 0
-
-" lightline config
-set showtabline=2
-let g:lightline#bufferline#unnamed         = '[No Name]'
-let g:lightline#bufferline#filename_modifier = ':t'
-let g:lightline                    = get(g:, 'lightline', {})
-let g:lightline.active             = {
-\                                      'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'relativepath', 'modified']],
-\                                      'right': [['lineinfo'], ['percent'], ['gutentags', 'fileformat', 'fileencoding', 'filetype']]
-\                                    }
-let g:lightline.inactive           = {'left': [ [ 'relativepath', 'modified' ] ], 'right': [ [ 'lineinfo' ],[ 'percent' ] ] }
-let g:lightline.component          = {'sep': '-> '}
-let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch'}
-"let g:lightline.component_function = {'gitbranch': 'LightlineGitBranch', 'gutentags': 'gutentags#statusline'}
-let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
-let g:lightline.component_type     = {'buffers': 'tabsel'}
-let g:lightline.tabline            = {'left': [['tabs'], ['sep'], ['buffers']]}
-let g:lightline.tab                = {}
-let g:lightline.tab.inactive       = ['tabnum']
-let g:lightline.tab.active         = ['tabnum']
-
-function! LightlineGitBranch()
-    let name = get(b:, 'gitsigns_head', '<unavailable>')
-    "let name = fugitive#head()
-    return name ==# '' ? '' : ' ' . name
-endfunction
 
 " fugitive shortcuts
 " copy Github url to clipboard
@@ -696,12 +268,6 @@ imap <C-e> <C-o>A
 " FooSoft/vim-argwrap config
 let g:argwrap_tail_comma = 1
 nnoremap <silent> <leader>w :ArgWrap<CR>
-
-" search contents of files
-" nnoremap <leader>r :Rg<cr>
-
-" search tags
-nnoremap <leader>t :Tags<cr>
 
 " quick save
 noremap <leader>s :write<cr>
@@ -728,63 +294,14 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m
 endif
 
-" For fast scrolling
-"set nocursorline
-"set lazyredraw
-
-" Learn VimScript The Hard Way Excercises
-" chapter 04
-" turns current word to upper case
-"inoremap <C-u> <Esc>mzviwU`za
-"nnoremap <C-u> mzviwU`z
-
-" chapter 07
-" edit my vimrv in a vsplit
-"nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-" source my vimrv in a vsplit
 nnoremap <leader>rv :source $MYVIMRC<cr>
 
-" chapter 09
-" surround visually selected word in single quotes
-vnoremap <leader>' <esc>`<i'<Esc>`>la'<esc>
 " jump to beginning of line
 nnoremap H ^
 vnoremap H ^
 " jump to end of line
 nnoremap L $
 vnoremap L $
-" scroll faster
-" nnoremap <C-j> 5j
-" nnoremap <C-k> 5k
-
-" chapter 15
-" operator pending for inside-next-paren and inside-last-paren
-onoremap in( :<c-u>normal! f(vi(<cr>
-onoremap il( :<c-u>normal! F)vi(<cr>
-onoremap in{ :<c-u>normal! f{vi{<cr>
-onoremap il{ :<c-u>normal! F}vi{<cr>
-
-" chapter 32
-" operator for :grep
-nnoremap <leader>a :set operatorfunc=<sid>GrepOperator<cr>g@
-vnoremap <leader>a :<c-u>call <sid>GrepOperator(visualmode())<cr>
-
-function! s:GrepOperator(type)
-    let saved_unnamed_register = @@
-
-    if a:type ==# 'v'
-        normal! `<v`>y
-    elseif a:type ==# 'char'
-        normal! `[v`]y
-    else
-        return
-    endif
-
-    execute "silent grep! " . shellescape(@@) . " ."
-    copen
-
-    let @@ = saved_unnamed_register
-endfunction
 
 " destroy add buffers
 nnoremap <leader>bd :bufdo bd<cr>
@@ -813,25 +330,8 @@ xnoremap <silent> <c-j> :move'>+<CR>gv=gv
 " :Silent command to supress "Press Enter to continue" messages
 command! -nargs=+ Silent execute 'silent <args>' | redraw!
 
-" bind G to grep word under cursor
-" nnoremap <leader>g :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"nnoremap <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"
-" yank selection to the 'q' register, then grep, then open preview window
-" NOTE: managed by telescope.nvim now
-"xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:Quickfix<CR>
-"nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:Quickfix<CR>
-" xnoremap <silent> <M-g> "qy:Silent grep! "\b<C-R>q\b"<CR>:FzfPreviewQuickFixRpc<CR>
-" nnoremap <silent> <M-g> :Silent grep! "\b<C-R><C-W>\b"<CR>:FzfPreviewQuickFixRpc<CR>
-
 " For vim-workspace
 nnoremap <leader>S :mksession! /tmp/sess.vim<CR>:qa<CR>
-
-" For vim-airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-" only load what you want
-let g:airline_extensions = ['branch', 'tabline']
 
 " For vim-indent-guides
 let g:indent_guides_auto_colors = 0
@@ -978,11 +478,11 @@ set undofile
 " from the complete path to the file with all path separators substituted to
 " percent "%" sign. This will ensure file name uniqueness in the preserve
 " directory.
-set undodir=~/.tmp/.undo//
+set undodir=~/.tmp/vim/.undo//
 set backup
 set writebackup
-set backupdir=~/.tmp/.backup//
-set directory=~/.tmp/.swp//
+set backupdir=~/.tmp/vim/.backup//
+set directory=~/.tmp/vim/.swp//
 silent execute '!mkdir -p ' . &undodir . ' ' . &backupdir . ' ' &directory
 
 " folding settings
