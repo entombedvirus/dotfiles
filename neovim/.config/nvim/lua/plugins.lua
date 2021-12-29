@@ -20,13 +20,13 @@ return require('packer').startup(function(use)
   use 'mileszs/ack.vim'
   use 'justinmk/vim-dirvish'
   -- use 'ludovicchabant/vim-gutentags'
-  use 'tweekmonster/fzf-filemru'
-  use 'junegunn/fzf'
-  use 'junegunn/fzf.vim'
+  -- use 'tweekmonster/fzf-filemru'
+  -- use 'junegunn/fzf'
+  -- use 'junegunn/fzf.vim'
   use 'rbtnn/vim-jumptoline'
 
   -- Git
-  use 'lewis6991/gitsigns.nvim'
+  use { 'lewis6991/gitsigns.nvim', config = [[require('settings.gitsigns')]] }
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
 
@@ -38,11 +38,10 @@ return require('packer').startup(function(use)
   use 'pangloss/vim-javascript'
   use 'mxw/vim-jsx'
 
-  -- Appearance
+  -- colorschemes
   use 'frankier/neovim-colors-solarized-truecolor-only'
   use 'justinmk/molokai'
   use 'nanotech/jellybeans.vim'
-  -- use 'nathanaelkane/vim-indent-guides'
   use 'morhetz/gruvbox'
   use 'romainl/flattened'
   use 'whatyouhide/vim-gotham'
@@ -50,8 +49,6 @@ return require('packer').startup(function(use)
   use 'rakr/vim-one'
   use 'rakr/vim-two-firewatch'
   use 'mhartington/oceanic-next'
-  use 'itchyny/lightline.vim'
-  use 'mgee/lightline-bufferline'
   use 'joshdick/onedark.vim'
   use 'KeitaNakamura/neodark.vim'
   use 'neutaaaaan/iosvkem'
@@ -63,6 +60,13 @@ return require('packer').startup(function(use)
   use 'tiagovla/tokyodark.nvim'
   use 'folke/tokyonight.nvim'
   use 'yashguptaz/calvera-dark.nvim'
+  use 'glepnir/zephyr-nvim'
+  use 'EdenEast/nightfox.nvim'
+  use 'rebelot/kanagawa.nvim'
+
+  -- lightline
+  use 'itchyny/lightline.vim'
+  use 'mgee/lightline-bufferline'
 
   -- Editing
   use 'ntpeters/vim-better-whitespace'
@@ -96,11 +100,15 @@ return require('packer').startup(function(use)
   use 'vim-test/vim-test'
 
   -- fuzzy finding
-  use 'nvim-lua/popup.nvim'
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-telescope/telescope.nvim'
-  use 'gbrlsnchs/telescope-lsp-handlers.nvim'
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use {
+      'nvim-telescope/telescope.nvim',
+      requires = {
+          'nvim-lua/popup.nvim',
+          'nvim-lua/plenary.nvim',
+          { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+      },
+      config = [[require('settings.telescope')]]
+  }
 
   use 'tami5/sql.nvim'
 
@@ -109,28 +117,40 @@ return require('packer').startup(function(use)
   use 'rafamadriz/friendly-snippets'
 
   -- autocomplete
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/cmp-nvim-lua'
-  use 'f3fora/cmp-spell'
-  use 'hrsh7th/nvim-cmp'
+  use {
+      'hrsh7th/nvim-cmp',
+      requires = {
+          'hrsh7th/cmp-nvim-lsp',
+          'hrsh7th/cmp-buffer',
+          'hrsh7th/cmp-vsnip',
+          'hrsh7th/cmp-nvim-lua',
+          'f3fora/cmp-spell',
+      },
+      config = [[require('settings.nvim_cmp')]]
+  }
 
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
-  use 'onsails/lspkind-nvim'
+  use {
+      'neovim/nvim-lspconfig',
+      requires = {
+          'williamboman/nvim-lsp-installer',
+          'onsails/lspkind-nvim',
+          'folke/lsp-trouble.nvim',
+          'gbrlsnchs/telescope-lsp-handlers.nvim',
+      },
+      config = [[require('settings.lsp')]]
+  }
 
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-
-  -- colorschemes that use treesitter
-  use 'glepnir/zephyr-nvim'
-  use 'EdenEast/nightfox.nvim'
-  use 'rebelot/kanagawa.nvim'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    requires = {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+    run = ':TSUpdate',
+    config = [[require('settings.treesitter')]]
+  }
 
   -- diagnostics
   use 'kyazdani42/nvim-web-devicons'
-  use 'folke/lsp-trouble.nvim'
 
   -- lua plugin dev
   use 'folke/lua-dev.nvim'

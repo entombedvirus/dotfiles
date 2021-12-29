@@ -72,13 +72,13 @@ keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers(require
 keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
 
 keymap("n", "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
-keymap("v", "<M-g>", "<esc><cmd>lua require('telescope_settings').grep_selection()<cr>", opts)
+keymap("v", "<M-g>", "<esc><cmd>lua require('settings.telescope').grep_selection()<cr>", opts)
 
 -- ctrl-p style MRU
 keymap("n", "<leader>fp", "<cmd>FilesMru --tiebreak=end<cr>", opts)
 keymap("n", "<c-p>", "<cmd>lua require('custom_mru').find()<cr>", opts)
 
-keymap("n", "<leader>ev", "<cmd>lua require('telescope_settings').find_vim_config()<cr>", opts)
+keymap("n", "<leader>ev", "<cmd>lua require('settings.telescope').find_vim_config()<cr>", opts)
 
 local M = {}
 

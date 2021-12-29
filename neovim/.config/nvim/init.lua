@@ -1,11 +1,6 @@
 require('plugins')
+
+-- set colorscheme before editor settings since colorscheme-s can set global
+-- vars that are then used in editor_settings.
+require('settings.colorscheme')
 vim.cmd('source ~/cl/neovim/.config/nvim/editor_settings.vim')
-
-require('lsp')
-require('tree_sitter')
-require('autocomplete')
-require('gitsigns_settings')
-require('telescope_settings')
-require('lua_dev_settings')
-
-require('colorscheme_settings')

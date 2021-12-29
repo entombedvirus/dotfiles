@@ -1,5 +1,3 @@
--- require('lspfuzzy').setup {}
--- require('trouble').setup {}
 local trouble_installed, trouble = pcall(require, 'trouble')
 if trouble_installed then
     trouble.setup()
