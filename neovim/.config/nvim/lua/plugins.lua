@@ -26,17 +26,31 @@ return require('packer').startup(function(use)
   use 'rbtnn/vim-jumptoline'
 
   -- Git
-  use { 'lewis6991/gitsigns.nvim', config = [[require('settings.gitsigns')]] }
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-rhubarb'
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = [[require('settings.gitsigns')]],
+  }
+  use {
+    'tpope/vim-fugitive',
+    requries = {
+        {'tpope/vim-rhubarb', after = {'vim-fugitive'}},
+    },
+    config = [[vim.cmd("runtime lua/settings/vim-fugitive.vim")]]
+  }
 
   -- Go
-  use { 'fatih/vim-go', run = ':GoUpdateBinaries' }
-  use 'majutsushi/tagbar'
+  use {
+    'fatih/vim-go',
+    run = ':GoUpdateBinaries',
+    config = [[vim.cmd("runtime lua/settings/vim-go.vim")]]
+  }
 
   -- react / js
   use 'pangloss/vim-javascript'
-  use 'mxw/vim-jsx'
+  use {
+    'mxw/vim-jsx',
+    config = [[vim.cmd("runtime lua/settings/vim-jsx.vim")]]
+  }
 
   -- colorschemes
   use 'frankier/neovim-colors-solarized-truecolor-only'
@@ -64,9 +78,13 @@ return require('packer').startup(function(use)
   use 'EdenEast/nightfox.nvim'
   use 'rebelot/kanagawa.nvim'
 
-  -- lightline
-  use 'itchyny/lightline.vim'
-  use 'mgee/lightline-bufferline'
+  use {
+      'itchyny/lightline.vim',
+      requires = {
+          {'mgee/lightline-bufferline', after = 'lightline.vim'},
+      },
+      config = [[vim.cmd("runtime lua/settings/lightline.vim")]]
+  }
 
   -- Editing
   use 'ntpeters/vim-better-whitespace'
@@ -79,8 +97,14 @@ return require('packer').startup(function(use)
   use 'coderifous/textobj-word-column.vim'
   use 'AndrewRadev/splitjoin.vim'
   use 'wellle/targets.vim'
-  use 'justinmk/vim-sneak'
-  use 'FooSoft/vim-argwrap'
+  use {
+    'justinmk/vim-sneak',
+    config = [[vim.cmd("runtime lua/settings/vim-sneak.vim")]]
+  }
+  use {
+    'FooSoft/vim-argwrap',
+    config = [[vim.cmd("runtime lua/settings/vim-argwrap.vim")]]
+  }
   use 'whiteinge/diffconflicts'
   -- search visual selected contents with '*' and '#'
   use 'nelstrom/vim-visual-star-search'
@@ -116,8 +140,14 @@ return require('packer').startup(function(use)
   use 'tami5/sql.nvim'
 
   -- Snippets
-  use 'hrsh7th/vim-vsnip'
-  use 'rafamadriz/friendly-snippets'
+  use {
+      'hrsh7th/vim-vsnip',
+      requires = {
+          {'rafamadriz/friendly-snippets', after = 'vim-vsnip'},
+      },
+      config = [[vim.cmd("runtime lua/settings/vsnip.vim")]]
+  }
+
 
   -- autocomplete
   use {
