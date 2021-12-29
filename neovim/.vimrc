@@ -749,11 +749,13 @@ nnoremap <leader>rv :source $MYVIMRC<cr>
 vnoremap <leader>' <esc>`<i'<Esc>`>la'<esc>
 " jump to beginning of line
 nnoremap H ^
+vnoremap H ^
 " jump to end of line
 nnoremap L $
+vnoremap L $
 " scroll faster
-nnoremap <C-j> 5j
-nnoremap <C-k> 5k
+" nnoremap <C-j> 5j
+" nnoremap <C-k> 5k
 
 " chapter 15
 " operator pending for inside-next-paren and inside-last-paren
