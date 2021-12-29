@@ -97,7 +97,10 @@ return require('packer').startup(function(use)
   use 'voldikss/vim-floaterm'
 
   -- testing
-  use 'vim-test/vim-test'
+  use {
+      'vim-test/vim-test',
+      config = [[vim.cmd("runtime lua/settings/vim-test.vim")]]
+  }
 
   -- fuzzy finding
   use {
