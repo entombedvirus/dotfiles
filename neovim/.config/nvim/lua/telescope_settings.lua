@@ -94,14 +94,13 @@ function M.grep_selection()
 end
 
 function M.find_vim_config()
-    local config_dir = "~/.config/nvim"
+    local config_dir = "~/cl/neovim"
     require("telescope.builtin").find_files {
         prompt_title = "Config",
         results_title = "Config Files Results",
         path_display = { "shorten" },
         search_dirs = {
             config_dir,
-            "~/.vimrc",
         },
         cwd = config_dir,
         hidden = true,
