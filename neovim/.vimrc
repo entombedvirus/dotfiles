@@ -742,7 +742,7 @@ endif
 " edit my vimrv in a vsplit
 "nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " source my vimrv in a vsplit
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>rv :source $MYVIMRC<cr>
 
 " chapter 09
 " surround visually selected word in single quotes
