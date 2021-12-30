@@ -100,7 +100,7 @@ return require('packer').startup(function(use)
                  lualine_z = {},
               },
               tabline = {
-                 lualine_a = {'tabs', '"->"'},
+                 lualine_a = {'tabs', {'"->"', color = "Label"}},
                  lualine_b = {'buffers'},
                  lualine_c = {},
                  lualine_x = {},
