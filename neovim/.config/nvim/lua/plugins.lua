@@ -19,10 +19,6 @@ return require('packer').startup(function(use)
   -- Navigation
   use 'mileszs/ack.vim'
   use 'justinmk/vim-dirvish'
-  -- use 'ludovicchabant/vim-gutentags'
-  -- use 'tweekmonster/fzf-filemru'
-  -- use 'junegunn/fzf'
-  -- use 'junegunn/fzf.vim'
   use 'rbtnn/vim-jumptoline'
 
   -- Git
@@ -79,11 +75,40 @@ return require('packer').startup(function(use)
   use 'rebelot/kanagawa.nvim'
 
   use {
-      'itchyny/lightline.vim',
-      requires = {
-          {'mgee/lightline-bufferline', after = 'lightline.vim'},
-      },
-      config = [[vim.cmd("runtime lua/settings/lightline.vim")]]
+      'nvim-lualine/lualine.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', opt = true},
+      config = function()
+          require('lualine').setup {
+              options = {
+                  component_separators = '',
+                  section_separators = '',
+              },
+              sections = {
+                 lualine_a = {'mode'},
+                 lualine_b = {'branch'},
+                 lualine_c = {{'filename', path = 1}},
+                 lualine_x = {'encoding', 'fileformat', 'filetype'},
+                 lualine_y = {'progress'},
+                 lualine_z = {'location'},
+              },
+              inactive_sections = {
+                 lualine_a = {},
+                 lualine_b = {},
+                 lualine_c = {'filename'},
+                 lualine_x = {'location'},
+                 lualine_y = {},
+                 lualine_z = {},
+              },
+              tabline = {
+                 lualine_a = {'tabs', '"->"'},
+                 lualine_b = {'buffers'},
+                 lualine_c = {},
+                 lualine_x = {},
+                 lualine_y = {},
+                 lualine_z = {},
+              },
+          }
+      end
   }
 
   -- Editing
