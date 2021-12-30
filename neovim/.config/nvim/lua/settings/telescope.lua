@@ -49,19 +49,10 @@ telescope.setup{
           case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
           -- the default case_mode is "smart_case"
       },
-      -- frecency = {
-      --     -- show_scores = false,
-      --     -- show_unindexed = true,
-      --     -- ignore_patterns = {"*.git/*", "*/tmp/*"},
-      --     workspaces = {
-      --         ["analytics"]    = os.getenv('HOME') .. "/analytics",
-      --     },
-      -- },
   },
 }
 telescope.load_extension('lsp_handlers')
 telescope.load_extension('fzf')
--- telescope.load_extension('frecency')
 
 local keymap = vim.api.nvim_set_keymap
 
