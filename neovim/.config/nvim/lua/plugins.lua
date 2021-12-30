@@ -192,10 +192,23 @@ return require('packer').startup(function(use)
       requires = {
           'williamboman/nvim-lsp-installer',
           'onsails/lspkind-nvim',
-          'folke/lsp-trouble.nvim',
           'gbrlsnchs/telescope-lsp-handlers.nvim',
       },
       config = [[require('settings.lsp')]]
+  }
+
+  use {
+      'folke/lsp-trouble.nvim',
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+          require('trouble').setup()
+          vim.api.nvim_set_keymap(
+            'n',
+            '<space>d',
+            '<cmd>TroubleToggle document_diagnostics<cr>',
+            { noremap = true }
+          )
+      end
   }
 
   use {
