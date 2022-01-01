@@ -3,6 +3,8 @@ if not lspconfig_installed then
     return
 end
 
+vim.lsp.set_log_level(vim.log.levels.TRACE)
+
 local on_init = function(client)
     -- if client.config.flags then
     --     client.config.flags.allow_incremental_sync = true
@@ -51,15 +53,15 @@ local on_attach = function(client, bufnr)
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
 
-    if client.resolved_capabilities.code_lens then
-        vim.api.nvim_exec([[
-          augroup lsp_code_lens
-            autocmd!
-            autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-          augroup END
-        ]], false)
-        buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.codelens.run()<CR>', opts)
-    end
+    -- if client.resolved_capabilities.code_lens then
+    --     vim.api.nvim_exec([[
+    --       augroup lsp_code_lens
+    --         autocmd!
+    --         autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+    --       augroup END
+    --     ]], false)
+    --     buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.codelens.run()<CR>', opts)
+    -- end
 
     -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
@@ -124,7 +126,8 @@ local noop = function()
 end
 
 local flags = {
-    debounce_text_changes = 150,
+    debounce_text_changes = 250,
+    -- debounce_text_changes = 3000,
 }
 
 local setup_server = function(lang)
@@ -172,12 +175,12 @@ local setup_server = function(lang)
                     completeUnimported = true,
                     -- experimentalDiagnosticsDelay = "0ms",
                     codelenses         = {
-                        generate           = true,
-                        gc_details         = true,
-                        test               = true,
-                        tidy               = true,
-                        vendor             = true,
-                        upgrade_dependency = true,
+                        generate           = false,
+                        gc_details         = false,
+                        test               = false,
+                        tidy               = false,
+                        vendor             = false,
+                        upgrade_dependency = false,
                     },
                     --buildFlags = {
                         --    -- enable completion is avo files
