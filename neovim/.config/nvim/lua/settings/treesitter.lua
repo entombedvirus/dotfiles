@@ -46,8 +46,8 @@ ts.setup {
                 ["if"] = "@function.inner",
                 ["ac"] = "@class.outer",
                 ["ic"] = "@class.inner",
-                ["aa"] = "@parameter.inner",
-                ["ia"] = "@parameter.outer",
+                ["aa"] = "@parameter.outer",
+                ["ia"] = "@parameter.inner",
             },
         },
         move = {
