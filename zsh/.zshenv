@@ -1,6 +1,10 @@
 export CLICOLOR=yes
 export EDITOR="nvim"
 
+# affects GNU sort order
+export LC_ALL=en_US.UTF-8
+export LANG=en_US
+
 export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
