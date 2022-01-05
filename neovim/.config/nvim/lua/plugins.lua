@@ -28,9 +28,7 @@ return require('packer').startup(function(use)
   }
   use {
     'tpope/vim-fugitive',
-    requries = {
-        {'tpope/vim-rhubarb', after = {'vim-fugitive'}},
-    },
+    requires = {'tpope/vim-rhubarb'},
     config = [[vim.cmd("runtime lua/settings/vim-fugitive.vim")]]
   }
 
