@@ -231,6 +231,81 @@ return require('packer').startup(function(use)
   -- rust specific
   use 'simrat39/rust-tools.nvim'
 
+  -- debugging
+  use {
+    'mfussenegger/nvim-dap',
+    config = function()
+        local dap = require('dap')
+        dap.adapters.go = function(callback, config)
+            local stdout = vim.loop.new_pipe(false)
+            local handle
+            local pid_or_err
+            local port = 38697
+            local opts = {
+                cwd = config.cwd,
+                args = {
+                    "dap",
+                    -- "--log",
+                    -- "--log-output", "dap,rpc",
+                    -- "--log-dest", "/tmp/dlv.log",
+                    "-l", "127.0.0.1:" .. port,
+                },
+                stdio = {nil, stdout},
+                detached = true
+            }
+            handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
+                stdout:close()
+                handle:close()
+                if code ~= 0 then
+                    print('dlv exited with code', code)
+                end
+            end)
+            assert(handle, 'Error running dlv: ' .. tostring(pid_or_err))
+            stdout:read_start(function(err, chunk)
+                assert(not err, err)
+                if chunk then
+                    -- tell dap we successfully started the server
+                    vim.schedule(function()
+                        require('dap.repl').append(chunk)
+                    end)
+                end
+            end)
+            -- Wait for delve to start
+            vim.defer_fn(
+            function()
+                callback({type = "server", host = "127.0.0.1", port = port})
+            end,
+            100)
+        end
+        dap.configurations.go = {
+            {
+                type = "go",
+                name = "Debug test (go.mod)",
+                request = "launch",
+                mode = "test",
+                cwd = "${fileDirname}",
+                program = "./",
+            },
+            {
+                type = "go",
+                name = "Debug",
+                request = "launch",
+                cwd = "${fileDirname}",
+                program = "./",
+            },
+        }
+        local opts = {silent = true, noremap = true}
+        vim.api.nvim_set_keymap('n', '<leader>dd', "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dc', "<cmd>lua require'dap'.continue()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dn', "<cmd>lua require'dap'.step_over()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dN', "<cmd>lua require'dap'.step_into()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dr', "<cmd>lua require'dap'.run_to_cursor()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dk', "<cmd>lua require('dap.ui.widgets').hover()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dR', "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dq', "<cmd>lua require'dap'.terminate()<cr>", opts)
+    end,
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
