@@ -238,6 +238,7 @@ return require('packer').startup(function(use)
         local dap = require('dap')
         dap.adapters.go = function(callback, config)
             local stdout = vim.loop.new_pipe(false)
+            local stderr = vim.loop.new_pipe(false)
             local handle
             local pid_or_err
             local port = 38697
@@ -245,12 +246,12 @@ return require('packer').startup(function(use)
                 cwd = config.cwd,
                 args = {
                     "dap",
-                    -- "--log",
-                    -- "--log-output", "dap,rpc",
-                    -- "--log-dest", "/tmp/dlv.log",
+                    "--log",
+                    "--log-output", "dap,rpc",
+                    "--log-dest", "/tmp/dlv.log",
                     "-l", "127.0.0.1:" .. port,
                 },
-                stdio = {nil, stdout},
+                stdio = {nil, stdout, stderr},
                 detached = true
             }
             handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
@@ -261,7 +262,7 @@ return require('packer').startup(function(use)
                 end
             end)
             assert(handle, 'Error running dlv: ' .. tostring(pid_or_err))
-            stdout:read_start(function(err, chunk)
+            local append_to_repl = function(err, chunk)
                 assert(not err, err)
                 if chunk then
                     -- tell dap we successfully started the server
@@ -269,7 +270,9 @@ return require('packer').startup(function(use)
                         require('dap.repl').append(chunk)
                     end)
                 end
-            end)
+            end
+            stdout:read_start(append_to_repl)
+            stderr:read_start(append_to_repl)
             -- Wait for delve to start
             vim.defer_fn(
             function()
@@ -297,12 +300,14 @@ return require('packer').startup(function(use)
         local opts = {silent = true, noremap = true}
         vim.api.nvim_set_keymap('n', '<leader>dd', "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dc', "<cmd>lua require'dap'.continue()<cr>", opts)
+        vim.api.nvim_set_keymap('n', '<leader>dl', "<cmd>lua require'dap'.run_last()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dn', "<cmd>lua require'dap'.step_over()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dN', "<cmd>lua require'dap'.step_into()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dr', "<cmd>lua require'dap'.run_to_cursor()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dk', "<cmd>lua require('dap.ui.widgets').hover()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dR', "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dq', "<cmd>lua require'dap'.terminate()<cr>", opts)
+        -- :lua require"dap".run({type = 'go', request = 'launch', cwd = '${fileDirname}/..', program = './', args = {'groups', 'upload-dimension-table', '--data-group-id=1', '--csv-file=gs://some-bucket/some-object.csv'}})
     end,
   }
 
