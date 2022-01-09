@@ -3,14 +3,7 @@ if not lspconfig_installed then
     return
 end
 
-vim.lsp.set_log_level(vim.log.levels.TRACE)
-
-local on_init = function(client)
-    -- if client.config.flags then
-    --     client.config.flags.allow_incremental_sync = true
-    --     client.config.flags.debounce_text_changes = 150
-    -- end
-end
+-- vim.lsp.set_log_level(vim.log.levels.TRACE)
 
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -75,11 +68,6 @@ local on_attach = function(client, bufnr)
     end
 end
 
--- advertise that we have a snippet plugin installed to the default lsp client
-local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
 --[[ Go ]]--
 function Goimports(timeout_ms)
     local context = { source = { organizeImports = true } }
@@ -132,14 +120,22 @@ local flags = {
 
 local setup_server = function(lang)
     local lsp_installer = require'nvim-lsp-installer'
+
+    -- advertise that we have a snippet plugin installed to the default lsp client
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    do
+        local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+        if ok then
+            capabilities = cmp.update_capabilities(capabilities)
+        end
+    end
+
     local opts = {
-        on_init      = on_init,
         on_attach    = on_attach,
         capabilities = capabilities,
     }
     if lang == "efm" then
         opts = {
-            on_init      = on_init,
             on_attach    = on_attach,
             flags        = flags,
             capabilities = capabilities,
@@ -166,7 +162,6 @@ local setup_server = function(lang)
     elseif lang == "gopls" then
         opts = {
             cmd          = {'gopls', '-remote=auto'},
-            on_init      = on_init,
             on_attach    = on_attach,
             flags        = flags,
             capabilities = capabilities,
