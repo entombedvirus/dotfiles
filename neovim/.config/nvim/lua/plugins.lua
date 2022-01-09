@@ -278,27 +278,29 @@ return require('packer').startup(function(use)
                 port = port,
             }
         end
+        local last_user_input
         local dap = require('dap')
         dap.adapters.go_with_args = function(callback, config)
-            local on_confirm = function(pkg_and_args)
-                if not pkg_and_args then
+            local on_confirm = function(main_pkg_and_args)
+                if not main_pkg_and_args then
                     -- user canceled
                     return
                 end
-                local it = pkg_and_args:gmatch("%S+")
-                local cwd = it()
+                local it = main_pkg_and_args:gmatch("%S+")
+                local main_pkg_path = it()
                 local args = {}
                 for arg in it do
                     table.insert(args, arg)
                 end
                 config.args = args
-                local resolved_adapter = spawn_dlv({cwd = cwd})
+                local resolved_adapter = spawn_dlv({cwd = main_pkg_path})
                 vim.defer_fn(function() callback(resolved_adapter) end, 100)
+                last_user_input = main_pkg_and_args
             end
 
             vim.ui.input({
-                prompt = 'cwd and args: ',
-                default = vim.fn.expand('%:h'),
+                prompt = 'main package path and args: ',
+                default = last_user_input or vim.fn.expand('%:h'),
                 kind = 'dap_args',
             }, on_confirm)
         end
@@ -346,6 +348,7 @@ return require('packer').startup(function(use)
     config = function()
         require('dressing').setup({
             input = {
+                insert_only = false,
                 get_config = function(opts)
                     if opts.kind == 'dap_args' then
                         return vim.tbl_extend("keep", opts, {
