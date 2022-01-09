@@ -235,15 +235,13 @@ return require('packer').startup(function(use)
   use {
     'mfussenegger/nvim-dap',
     config = function()
-        local dap = require('dap')
-        dap.adapters.go = function(callback, config)
+        local spawn_dlv = function(spawn_opts)
             local stdout = vim.loop.new_pipe(false)
             local stderr = vim.loop.new_pipe(false)
             local handle
             local pid_or_err
             local port = 38697
-            local opts = {
-                cwd = config.cwd,
+            local opts = vim.tbl_deep_extend("keep", spawn_opts, {
                 args = {
                     "dap",
                     "--log",
@@ -253,9 +251,10 @@ return require('packer').startup(function(use)
                 },
                 stdio = {nil, stdout, stderr},
                 detached = true
-            }
+            })
             handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
                 stdout:close()
+                stderr:close()
                 handle:close()
                 if code ~= 0 then
                     print('dlv exited with code', code)
@@ -273,28 +272,59 @@ return require('packer').startup(function(use)
             end
             stdout:read_start(append_to_repl)
             stderr:read_start(append_to_repl)
-            -- Wait for delve to start
-            vim.defer_fn(
-            function()
-                callback({type = "server", host = "127.0.0.1", port = port})
-            end,
-            100)
+
+            return {
+                type = "server",
+                host = "127.0.0.1",
+                port = port,
+            }
         end
+        local dap = require('dap')
+        dap.adapters.go_with_args = function(callback, config)
+            local on_confirm = function(pkg_and_args)
+                if not pkg_and_args then
+                    -- user canceled
+                    return
+                end
+                local it = pkg_and_args:gmatch("%S+")
+                local cwd = it()
+                local args = {}
+                for arg in it do
+                    table.insert(args, arg)
+                end
+                config.args = args
+                local resolved_adapter = spawn_dlv({cwd = cwd})
+                vim.defer_fn(function() callback(resolved_adapter) end, 100)
+            end
+
+            vim.ui.input({
+                prompt = 'cwd and args: ',
+                default = vim.fn.expand('%:h'),
+            }, on_confirm)
+        end
+
+        dap.adapters.go_without_args = function(callback)
+            local cwd = vim.fn.expand('%:h')
+            local resolved_adapter = spawn_dlv({cwd = cwd})
+            -- Wait for delve to start
+            vim.defer_fn(function() callback(resolved_adapter) end, 100)
+        end
+
         dap.configurations.go = {
             {
-                type = "go",
-                name = "Debug test (go.mod)",
+                type = "go_without_args",
+                name = "Debug test",
                 request = "launch",
                 mode = "test",
                 cwd = "${fileDirname}",
                 program = "./",
             },
             {
-                type = "go",
-                name = "Debug",
+                type = "go_with_args",
+                name = "Debug w/ args",
                 request = "launch",
-                cwd = "${fileDirname}",
                 program = "./",
+                prompt_user_for_args = true,
             },
         }
         local opts = {silent = true, noremap = true}
@@ -307,9 +337,11 @@ return require('packer').startup(function(use)
         vim.api.nvim_set_keymap('n', '<leader>dk', "<cmd>lua require('dap.ui.widgets').hover()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dR', "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
         vim.api.nvim_set_keymap('n', '<leader>dq', "<cmd>lua require'dap'.terminate()<cr>", opts)
-        -- :lua require"dap".run({type = 'go', request = 'launch', cwd = '${fileDirname}/..', program = './', args = {'groups', 'upload-dimension-table', '--data-group-id=1', '--csv-file=gs://some-bucket/some-object.csv'}})
     end,
   }
+
+  -- vim.ui enhancements
+  use 'stevearc/dressing.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
