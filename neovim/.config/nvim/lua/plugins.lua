@@ -159,7 +159,6 @@ return require('packer').startup(function(use)
           'nvim-lua/popup.nvim',
           'nvim-lua/plenary.nvim',
           { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-          { 'nvim-telescope/telescope-ui-select.nvim' },
       },
       config = [[require('settings.telescope')]]
   }
@@ -300,6 +299,7 @@ return require('packer').startup(function(use)
             vim.ui.input({
                 prompt = 'cwd and args: ',
                 default = vim.fn.expand('%:h'),
+                kind = 'dap_args',
             }, on_confirm)
         end
 
@@ -341,7 +341,32 @@ return require('packer').startup(function(use)
   }
 
   -- vim.ui enhancements
-  use 'stevearc/dressing.nvim'
+  use {
+    'stevearc/dressing.nvim',
+    config = function()
+        require('dressing').setup({
+            input = {
+                get_config = function(opts)
+                    if opts.kind == 'dap_args' then
+                        return vim.tbl_extend("keep", opts, {
+                            min_width = 0.35,
+                        })
+                    end
+                end
+            },
+            select = {
+                -- Priority list of preferred vim.select implementations
+                backend = { "telescope", "builtin" },
+
+                -- Options for telescope selector
+                telescope = {
+                    -- can be 'dropdown', 'cursor', or 'ivy'
+                    theme = "dropdown",
+                },
+            },
+        })
+    end,
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
