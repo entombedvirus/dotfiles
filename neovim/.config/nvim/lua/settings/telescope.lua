@@ -64,6 +64,7 @@ keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files(requ
 keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts)
 keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
+keymap("n", "<leader>fm", "<cmd>lua require('telescope.builtin').marks()<cr>", opts)
 
 keymap("n", "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
 keymap("v", "<M-g>", "<esc><cmd>lua require('settings.telescope').grep_selection()<cr>", opts)
