@@ -216,6 +216,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     requires = {
         'nvim-treesitter/nvim-treesitter-textobjects',
+        'nvim-treesitter/playground',
     },
     run = ':TSUpdate',
     config = [[require('settings.treesitter')]]
@@ -312,10 +313,42 @@ return require('packer').startup(function(use)
             vim.defer_fn(function() callback(resolved_adapter) end, 100)
         end
 
+        local last_test_at_cursor_state
+        dap.adapters.go_test_at_cursor = function(callback, config)
+            local test_name, err = require('settings/treesitter').get_cursor_test_name()
+            if err and not last_test_at_cursor_state then
+                print('get_cursor_test_name failed: ' .. err)
+                return
+            end
+
+            local cwd = vim.fn.expand('%:h')
+            if not test_name then
+                test_name = last_test_at_cursor_state.test_name
+                cwd = last_test_at_cursor_state.cwd
+            end
+
+            config.args = {'-test.run=' .. test_name .. '$'}
+            local resolved_adapter = spawn_dlv({cwd = cwd})
+            -- Wait for delve to start
+            vim.defer_fn(function() callback(resolved_adapter) end, 100)
+            last_test_at_cursor_state = {
+                test_name = test_name,
+                cwd = cwd,
+            }
+        end
+
         dap.configurations.go = {
             {
+                type = "go_test_at_cursor",
+                name = "Debug cursor test",
+                request = "launch",
+                mode = "test",
+                cwd = "${fileDirname}",
+                program = "./",
+            },
+            {
                 type = "go_without_args",
-                name = "Debug test",
+                name = "Debug all tests",
                 request = "launch",
                 mode = "test",
                 cwd = "${fileDirname}",

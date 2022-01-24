@@ -2,6 +2,7 @@ local installed, ts = pcall(require, 'nvim-treesitter.configs')
 if not installed then
     return
 end
+
 ts.setup {
     highlight = {
         enable = true,                    -- false will disable the whole extension
@@ -64,3 +65,35 @@ ts.setup {
         },
     },
 }
+
+local M = {}
+function M.get_cursor_test_name()
+    local ok, ts_utils = pcall(require, 'nvim-treesitter.ts_utils')
+    if not ok then return nil, 'nvim-treesitter.ts_utils is not available' end
+
+    local current_node = ts_utils.get_node_at_cursor()
+    if not current_node then return nil, 'no current node' end
+
+    local expr = current_node
+    while expr do
+        if expr:type() == 'function_declaration' then
+            break
+        end
+        expr = expr:parent()
+    end
+    if not expr then return nil, 'no expr' end
+
+    local name_node = expr:field('name')
+    if not name_node then return nil, 'no field named name' end
+
+    local name_text = ts_utils.get_node_text(name_node[1])
+    if not name_text then return nil, 'get_node_text failed' end
+
+    name_text = name_text[1]
+    if not name_text then return nil, 'name_text get failed' end
+
+    if not name_text:find('^Test') then return nil, 'not a test function' end
+    return name_text
+end
+
+return M
