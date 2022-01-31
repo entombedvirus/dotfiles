@@ -6,52 +6,54 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-# install linux brew deps
-sudo apt-get install build-essential file git python3-pip
-# packages that are not available via brew
-sudo apt-get install xdg-utils
-
 git config --global user.email 'rohith.ravi@mixpanel.com'
 git config --global user.name 'Rohith Ravi'
-
 git submodule update --init
-
-# linuxbrew's use of curl fails if there is both a /usr/bin/curl and a /usr/local/bin/curl
-if [ -e /usr/bin/curl -a ! -L /usr/bin/curl -a -e /usr/local/bin/curl ]; then
-    sudo mv /usr/bin/curl /usr/bin/curl.bak
-    sudo ln -nsf /usr/local/bin/curl /usr/bin/curl
-fi
-
-export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
 if ! command -v brew >/dev/null 2>&1; then
     # Install linuxbrew
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# these changes will be blown away by linkify
-case :$PATH:
+case $(uname):
 in
-    *:/home/linuxbrew/.linuxbrew/bin:*)
-        # do nothing, it's there
+    Linux:)
+        # install linux brew deps
+        sudo apt-get install build-essential file git python3-pip
+        # packages that are not available via brew
+        sudo apt-get install xdg-utils
+
+        # linuxbrew's use of curl fails if there is both a /usr/bin/curl and a /usr/local/bin/curl
+        if [ -e /usr/bin/curl -a ! -L /usr/bin/curl -a -e /usr/local/bin/curl ]; then
+            sudo mv /usr/bin/curl /usr/bin/curl.bak
+            sudo ln -nsf /usr/local/bin/curl /usr/bin/curl
+        fi
+
+        export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+        LEMONADE_ARTIFACT=lemonade_linux_amd64.tar.gz
     ;;
-    *)
-        echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.zshenv
-        echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.zshenv
-        echo 'export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"' >>~/.zshenv
+
+    Darwin:)
+        export PATH="/usr/local/bin:$PATH"
+        LEMONADE_ARTIFACT=lemonade_darwin_amd64.tar.gz
+    ;;
+
+    *:)
+        echo "unrecognized uname: $(uname). exiting" 1>&2
+        exit 1
     ;;
 esac
 
-brew bundle install --file homebrew/.Brewfile
+brew bundle install --file homebrew/$(uname).Brewfile
 
 LEMONADE_PATH=${HOME}/.bin/lemonade
 if [ ! -e "$LEMONADE_PATH" ]; then
     mkdir -p $(dirname "$LEMONADE_PATH")
-    curl --silent -L https://github.com/entombedvirus/lemonade/releases/download/v1.1.1-7-g2cc49d8/lemonade_linux_amd64.tar.gz | tar -xz -C $(dirname $LEMONADE_PATH)
+    curl --silent -L https://github.com/entombedvirus/lemonade/releases/download/v1.1.1-7-g2cc49d8/$LEMONADE_ARTIFACT | tar -xz -C $(dirname $LEMONADE_PATH)
     chmod 755 "$LEMONADE_PATH"
 fi
 
-pip3 install neovim
+pip3 install --user neovim
 
 # unlink gcc and friends so that they don't interfere with bazel builds
 #brew unlink gcc 2>/dev/null || true
