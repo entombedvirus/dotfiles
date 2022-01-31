@@ -21,7 +21,3 @@ function source_if_exists {
 
 source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
 source_if_exists "$HOME/.cargo/env"
-
-export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"

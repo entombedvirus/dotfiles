@@ -1,1 +1,1 @@
-.host.rohith.zshenv
+.host.linux.zshenv

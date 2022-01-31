@@ -32,7 +32,7 @@ fi
 # these changes will be blown away by linkify
 case :$PATH:
 in
-    *:$HOME/linuxbrew/.linuxbrew/bin:*)
+    *:/home/linuxbrew/.linuxbrew/bin:*)
         # do nothing, it's there
     ;;
     *)
