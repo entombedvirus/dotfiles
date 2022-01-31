@@ -42,12 +42,7 @@ in
     ;;
 esac
 
-brew install zsh ctags-exuberant global ripgrep ruby neovim fzf tmux jq bat nodejs llvm efm-langserver stow pure
-
-# source code tagging
-# brew tap universal-ctags/universal-ctags
-# brew install --HEAD universal-ctags
-# brew install global
+brew bundle install --file homebrew/.Brewfile
 
 LEMONADE_PATH=${HOME}/.bin/lemonade
 if [ ! -e "$LEMONADE_PATH" ]; then
