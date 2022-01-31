@@ -51,13 +51,6 @@ if [ ! -e "$LEMONADE_PATH" ]; then
     chmod 755 "$LEMONADE_PATH"
 fi
 
-NVIM_INIT_PATH="${HOME}/.config/nvim/init.vim"
-if [ ! -L "$NVIM_INIT_PATH" ]; then
-    mkdir -p $(dirname $NVIM_INIT_PATH)
-    rm -f "$NVIM_INIT_PATH"
-    ln -snf $HOME/.vimrc $NVIM_INIT_PATH
-fi
-
 pip3 install neovim
 
 # unlink gcc and friends so that they don't interfere with bazel builds
@@ -88,6 +81,8 @@ fi
 for src in zsh/.terminfo/*.src; do tic -x -o zsh/.terminfo $src; done
 
 # install rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+if ! command -v cargo >/dev/null; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
 
 echo "logout and log back in and run linkify"
