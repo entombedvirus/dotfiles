@@ -19,5 +19,5 @@ function source_if_exists {
     [ -f "$file" ] && source "$file"
 }
 
-source_if_exists "$HOME/.host.$(hostname | xargs echo -n).zshenv"
+source_if_exists "$HOME/.host.$(uname).zshenv"
 source_if_exists "$HOME/.cargo/env"
