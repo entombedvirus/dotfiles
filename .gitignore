@@ -1,5 +1,6 @@
 ssh/.ssh/known_hosts
 ssh/.ssh/known_hosts.old
+ssh/.ssh/id_*
 *.log
 *.o
 .DS_Store
