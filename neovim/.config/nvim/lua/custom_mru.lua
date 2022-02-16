@@ -89,10 +89,9 @@ function MruPicker:update_mru_list(new_entry)
             table.remove(path_list, idx)
         end
     end
+    -- since we only read max_mru_entries from the file, the length
+    -- of path_list is only ever max max_mru_entries + 1
     table.insert(path_list, 1, new_entry)
-    if #path_list > max_mru_entries then
-        path_list = table.unpack(path_list, 1, max_mru_entries)
-    end
     vim.fn.writefile(path_list, self:cache_file())
 end
 
