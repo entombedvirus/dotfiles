@@ -169,7 +169,7 @@ return require('packer').startup(function(use)
   use {
       'hrsh7th/vim-vsnip',
       requires = {
-          {'rafamadriz/friendly-snippets', after = 'vim-vsnip'},
+          {'rafamadriz/friendly-snippets'},
       },
       config = [[vim.cmd("runtime lua/settings/vsnip.vim")]]
   }
