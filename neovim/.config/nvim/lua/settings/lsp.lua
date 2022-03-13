@@ -248,18 +248,19 @@ end
 
 local langs = {
     'bashls',
-    'efm',
-    'vimls',
-    'gopls',
     'clangd',
     'cssls',
     'dockerls',
+    'efm',
+    'gopls',
+    'grammarly',
     'html',
     'jsonls',
     'jsonnet_ls',
-    'sumneko_lua',
     'rust_analyzer',
+    'sumneko_lua',
     'tsserver',
+    'vimls',
     'yamlls',
 }
 
