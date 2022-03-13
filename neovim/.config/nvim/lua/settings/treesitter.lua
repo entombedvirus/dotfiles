@@ -6,7 +6,7 @@ end
 ts.setup {
     highlight = {
         enable = true,                    -- false will disable the whole extension
-        disable = { 'python' },                   -- list of language that will be disabled
+        disable = { 'python', 'lua' },                   -- list of language that will be disabled
         --disable = { 'go' },               -- list of language that will be disabled
     },
     incremental_selection = {
