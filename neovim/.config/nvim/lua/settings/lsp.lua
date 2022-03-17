@@ -252,10 +252,10 @@ local setup_server = function(lang)
         }
         local installers = require "nvim-lsp-installer.installers"
         local std = require "nvim-lsp-installer.installers.std"
-        server._installer = installers.pipe {
-            std.git_clone('https://github.com/entombedvirus/jsonnet-language-server.git'),
-            std.shell('cd jsonnet-language-server && go build .')
-        }
+        -- server._installer = installers.pipe {
+        --     std.git_clone('https://github.com/entombedvirus/jsonnet-language-server.git'),
+        --     std.shell('cd jsonnet-language-server && go build .')
+        -- }
         server:on_ready(function()
             server:setup(opts)
         end)
