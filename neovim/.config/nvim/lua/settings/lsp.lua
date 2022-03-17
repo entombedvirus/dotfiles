@@ -118,6 +118,68 @@ local flags = {
     -- debounce_text_changes = 3000,
 }
 
+local function build_custom_jsonnet_ls_server()
+    local server_name = 'my_jsonnet_ls'
+    local server = require "nvim-lsp-installer.server"
+    local root_dir = server.get_server_root_path(server_name)
+    local std = require "nvim-lsp-installer.installers.std"
+    local path = require "nvim-lsp-installer.path"
+    local process = require "nvim-lsp-installer.process"
+    local context = require "nvim-lsp-installer.installers.context"
+
+    local s = server.Server:new {
+        name = server_name,
+        root_dir = root_dir,
+        homepage = 'https://github.com/entombedvirus/jsonnet-language-server',
+        languages = { 'jsonnet', 'libsonnet' },
+        installer = {
+            std.git_clone('https://github.com/entombedvirus/jsonnet-language-server.git'),
+            function(_, callback, ctx)
+                process.spawn("go", {
+                    args = { "build", "." },
+                    cwd = ctx.install_dir,
+                    stdio_sink = ctx.stdio_sink,
+                }, callback)
+            end,
+            context.receipt(function(receipt)
+                receipt:with_primary_source(receipt.git_remote 'https://github.com/entombedvirus/jsonnet-language-server.git')
+            end),
+        },
+        default_options = {
+            cmd = { path.concat { root_dir, "jsonnet-language-server" } },
+            -- cmd_env = {
+            --     PATH = process.extend_path { root_dir },
+            -- },
+        },
+    }
+
+    local configs = require "lspconfig.configs"
+    configs[s.name] = {
+        default_config = {
+            filetypes = s.languages,
+            root_dir = function(fname)
+                local util = require 'lspconfig.util'
+                return util.root_pattern 'Makefile'(fname) or util.find_git_ancestor(fname)
+            end,
+            on_new_config = function(new_config, file_root_dir)
+                local util = require 'lspconfig.util'
+                -- common jsonnet library paths
+                local function jsonnet_path(parent_dir)
+                    local paths = {
+                        util.path.join(parent_dir, 'lib'),
+                        util.path.join(parent_dir, 'vendor'),
+                    }
+                    return table.concat(paths, ':')
+                end
+                new_config.cmd_env = {
+                    JSONNET_PATH = jsonnet_path(file_root_dir),
+                }
+            end,
+        },
+    }
+    return s
+end
+
 local setup_server = function(lang)
     local lsp_installer = require'nvim-lsp-installer'
 
@@ -134,6 +196,7 @@ local setup_server = function(lang)
         on_attach    = on_attach,
         capabilities = capabilities,
     }
+
     if lang == "efm" then
         opts = {
             on_attach    = on_attach,
@@ -159,6 +222,7 @@ local setup_server = function(lang)
                 }
             }
         }
+
     elseif lang == "gopls" then
         opts = {
             cmd          = {'gopls', '-remote=auto'},
@@ -193,6 +257,21 @@ local setup_server = function(lang)
                         underline        = false,
                     }),
                 },
+        }
+
+    elseif lang == "my_jsonnet_ls" then
+        local my_server = build_custom_jsonnet_ls_server()
+        local servers = require "nvim-lsp-installer.servers"
+        servers.register(my_server)
+        opts.settings = {
+            ext_vars = {
+                gcpProject = 'dummy_gcp_project',
+                arbCluster = 'dummy_arb_cluter',
+                kubeCluster = 'dummy_cluster',
+                namespace = 'dummy_namespace',
+                containerProject = 'dummy_container_project',
+                registry = 'us.gcr.io/dummy_registry',
+            }
         }
     end
 
@@ -234,31 +313,6 @@ local setup_server = function(lang)
             server:attach_buffers()
         end)
 
-    elseif lang == "jsonnet_ls" then
-        opts.cmd = {'/tmp/jsonnet-language-server'}
-        opts.root_dir = function(fname)
-            print(vim.inspect(fname))
-            return '/home/rravi/analytics/kube'
-        end
-        opts.settings = {
-            ext_vars = {
-                gcpProject = 'dummy_gcp_project',
-                arbCluster = 'dummy_arb_cluter',
-                kubeCluster = 'dummy_cluster',
-                namespace = 'dummy_namespace',
-                containerProject = 'dummy_container_project',
-                registry = 'us.gcr.io/dummy_registry',
-            }
-        }
-        local installers = require "nvim-lsp-installer.installers"
-        local std = require "nvim-lsp-installer.installers.std"
-        -- server._installer = installers.pipe {
-        --     std.git_clone('https://github.com/entombedvirus/jsonnet-language-server.git'),
-        --     std.shell('cd jsonnet-language-server && go build .')
-        -- }
-        server:on_ready(function()
-            server:setup(opts)
-        end)
     else
         server:on_ready(function()
             server:setup(opts)
@@ -281,7 +335,7 @@ local langs = {
     'grammarly',
     'html',
     'jsonls',
-    'jsonnet_ls',
+    'my_jsonnet_ls',
     'rust_analyzer',
     'sumneko_lua',
     'tsserver',
@@ -292,4 +346,5 @@ local langs = {
 for _, lang in pairs(langs) do
     setup_server(lang)
 end
+
 
