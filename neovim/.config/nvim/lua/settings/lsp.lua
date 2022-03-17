@@ -234,6 +234,31 @@ local setup_server = function(lang)
             server:attach_buffers()
         end)
 
+    elseif lang == "jsonnet_ls" then
+        opts.cmd = {'/tmp/jsonnet-language-server'}
+        opts.root_dir = function(fname)
+            print(vim.inspect(fname))
+            return '/home/rravi/analytics/kube'
+        end
+        opts.settings = {
+            ext_vars = {
+                gcpProject = 'dummy_gcp_project',
+                arbCluster = 'dummy_arb_cluter',
+                kubeCluster = 'dummy_cluster',
+                namespace = 'dummy_namespace',
+                containerProject = 'dummy_container_project',
+                registry = 'us.gcr.io/dummy_registry',
+            }
+        }
+        local installers = require "nvim-lsp-installer.installers"
+        local std = require "nvim-lsp-installer.installers.std"
+        server._installer = installers.pipe {
+            std.git_clone('https://github.com/entombedvirus/jsonnet-language-server.git'),
+            std.shell('cd jsonnet-language-server && go build .')
+        }
+        server:on_ready(function()
+            server:setup(opts)
+        end)
     else
         server:on_ready(function()
             server:setup(opts)
