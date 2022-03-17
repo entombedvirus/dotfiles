@@ -4,3 +4,5 @@ ssh/.ssh/id_*
 *.log
 *.o
 .DS_Store
+neovim/.config/nvim/plugin/packer_compiled.lua
+vim/.vim/plugins/
