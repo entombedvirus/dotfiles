@@ -11,6 +11,7 @@ brew "pure"
 brew "python@3.9", link: false
 brew "stow"
 brew "yarn"
+brew "ripgrep"
 cask "font-fira-code"
 cask "font-iosevka-nerd-font"
 cask "font-iosevka-slab"
