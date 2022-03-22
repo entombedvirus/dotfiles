@@ -383,10 +383,13 @@ return require('packer').startup(function(use)
   -- vim.ui enhancements
   use {
     'stevearc/dressing.nvim',
+    requires = {
+        'nvim-telescope/telescope.nvim',
+    },
     config = function()
         require('dressing').setup({
             input = {
-                insert_only = false,
+                insert_only = true,
                 get_config = function(opts)
                     if opts.kind == 'dap_args' then
                         return vim.tbl_extend("keep", opts, {
@@ -400,10 +403,7 @@ return require('packer').startup(function(use)
                 backend = { "telescope", "builtin" },
 
                 -- Options for telescope selector
-                telescope = {
-                    -- can be 'dropdown', 'cursor', or 'ivy'
-                    theme = "dropdown",
-                },
+                telescope = require('telescope.themes').get_dropdown(),
             },
         })
     end,
