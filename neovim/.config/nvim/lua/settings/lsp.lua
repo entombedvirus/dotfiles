@@ -70,26 +70,23 @@ end
 
 --[[ Go ]]--
 function Goimports(timeout_ms)
-    local context = { source = { organizeImports = true } }
-    vim.validate { context = { context, "t", true } }
+    local gopls_client = vim.tbl_filter(function(client)
+        return client.name == 'gopls'
+    end, vim.lsp.get_active_clients())
 
-    local params = vim.lsp.util.make_range_params()
-    params.context = context
+    if not gopls_client or not gopls_client[1] then
+      vim.notify('GoImports: gopls is not attached to buffer', vim.log.levels.WARN)
+      return
+    end
+    gopls_client = gopls_client[1]
 
-    vim.lsp.buf.formatting_sync(nil, timeout_ms)
-
-    -- See the implementation of the textDocument/codeAction callback
-    -- (lua/vim/lsp/handler.lua) for how to do this properly.
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-    if not result then return end
-
-    local applyAction = function(action)
+    local function apply_action(action)
         -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
         -- is a CodeAction, it can have either an edit, a command or both. Edits
         -- should be executed first.
         if action.edit or type(action.command) == "table" then
             if action.edit then
-                vim.lsp.util.apply_workspace_edit(action.edit)
+                vim.lsp.util.apply_workspace_edit(action.edit, gopls_client.offset_encoding)
             end
             if type(action.command) == "table" then
                 vim.lsp.buf.execute_command(action.command)
@@ -99,15 +96,28 @@ function Goimports(timeout_ms)
         end
     end
 
-    for _, actions in pairs(result) do
-        if actions and actions.result and type(actions.result) == "table" then
-            for _, action in ipairs(actions.result) do
+    -- See the implementation of the textDocument/codeAction callback
+    -- (lua/vim/lsp/handler.lua) for how to do this properly.
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local result, err = gopls_client.request_sync("textDocument/codeAction", params, timeout_ms)
+    if result then
+        for _, actions in pairs(result) do
+            for _, action in ipairs(actions) do
                 if action.kind == "source.organizeImports" then
-                    applyAction(action)
+                    apply_action(action)
                 end
             end
         end
+    elseif err then
+      vim.notify('GoImports: ' .. err, vim.log.levels.WARN)
     end
+
+    vim.lsp.buf.formatting_sync(nil, timeout_ms)
 end
 
 local noop = function()

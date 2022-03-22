@@ -19,6 +19,28 @@ end
 -- gives pretty icons in the autocomplete popup
 local lspkind = require('lspkind')
 
+local luasnip = require('luasnip')
+
+local function next_func(fallback)
+    if cmp.visible() then
+        cmp.select_next_item()
+    elseif luasnip.jumpable(1) then
+        luasnip.jump(1)
+    else
+        fallback()
+    end
+end
+
+local function prev_func(fallback)
+    if cmp.visible() then
+        cmp.select_prev_item()
+    elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+    else
+        fallback()
+    end
+end
+
 cmp.setup({
     completion = {
         autocomplete = false,
@@ -28,7 +50,7 @@ cmp.setup({
     },
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            require'luasnip'.lsp_expand(args.body)
         end,
     },
     experimental = {
@@ -41,7 +63,7 @@ cmp.setup({
             menu = {
                 nvim_lua = "[lua]",
                 nvim_lsp = "[lsp]",
-                vsnip    = "[snip]",
+                luasnip  = "[snip]",
                 buffer   = "[buf]",
                 spell    = "[spell]",
             },
@@ -56,30 +78,14 @@ cmp.setup({
             c = cmp.mapping.close(),
         }),
         ['<C-u>'] = cmp.mapping.confirm({ select = true }),
-        ['<C-j>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif vim.fn.call('vsnip#available', {1}) == 1 then
-                vim.fn.feedkeys(t '<plug>(vsnip-expand-or-jump)', '')
-            else
-                fallback()
-            end
-        end,
-        ['<C-k>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif vim.fn.call('vsnip#available', {1}) == 1 then
-                vim.fn.feedkeys(t '<plug>(vsnip-jump-prev)', '')
-            else
-                fallback()
-            end
-        end,
+        ['<C-j>'] = cmp.mapping(next_func, {'i', 's'}),
+        ['<C-k>'] = cmp.mapping(prev_func, {'i', 's'}),
     },
     sources = {
         -- order matters: completions show up in priority order
         { name = 'nvim_lua' },
         { name = 'nvim_lsp' },
-        { name = 'vsnip' },
+        { name = 'luasnip' },
         { name = 'buffer' },
         { name = 'spell' },
     }

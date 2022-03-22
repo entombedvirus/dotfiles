@@ -176,8 +176,7 @@ return require('packer').startup(function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    config = [[
-    ]],
+    config = [[require('settings.luasnip')]],
   }
 
   -- autocomplete
@@ -186,7 +185,7 @@ return require('packer').startup(function(use)
       requires = {
           'hrsh7th/cmp-nvim-lsp',
           'hrsh7th/cmp-buffer',
-          'hrsh7th/cmp-vsnip',
+          'saadparwaiz1/cmp_luasnip' ,
           'hrsh7th/cmp-nvim-lua',
           'f3fora/cmp-spell',
       },
