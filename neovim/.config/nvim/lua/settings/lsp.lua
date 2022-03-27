@@ -313,7 +313,7 @@ local setup_server = function(lang)
             opts.globals = {
                 'P', 'RELOAD'
             }
-            local lua_opts = vim.tbl_deep_extend("force", P(server):get_default_options(), opts)
+            local lua_opts = vim.tbl_deep_extend("force", server:get_default_options(), opts)
             local nlua = require('nlua.lsp.nvim')
             nlua.base_directory = util.path.join(server.root_dir, 'extension/server/bin')
             nlua.bin_location = util.path.join(nlua.base_directory, 'lua-language-server')
