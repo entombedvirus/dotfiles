@@ -121,6 +121,8 @@ function Goimports(timeout_ms)
     vim.lsp.buf.formatting_sync(nil, timeout_ms)
 end
 
+local util = require 'lspconfig.util'
+
 local noop = function()
 end
 
@@ -173,7 +175,6 @@ local function build_custom_jsonnet_ls_server()
                 return util.root_pattern 'Makefile'(fname) or util.find_git_ancestor(fname)
             end,
             on_new_config = function(new_config, file_root_dir)
-                local util = require 'lspconfig.util'
                 -- common jsonnet library paths
                 local function jsonnet_path(parent_dir)
                     local paths = {
@@ -309,10 +310,18 @@ local setup_server = function(lang)
 
     elseif lang == "sumneko_lua" then
         server:on_ready(function()
-            local runtime_path = vim.split(package.path, ';')
-            table.insert(runtime_path, "lua/?.lua")
-            table.insert(runtime_path, "lua/?/init.lua")
-            lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", server:get_default_options(), opts))
+            opts.globals = {
+                'P', 'RELOAD'
+            }
+            local lua_opts = vim.tbl_deep_extend("force", P(server):get_default_options(), opts)
+            local nlua = require('nlua.lsp.nvim')
+            nlua.base_directory = util.path.join(server.root_dir, 'extension/server/bin')
+            nlua.bin_location = util.path.join(nlua.base_directory, 'lua-language-server')
+            nlua.setup(lspconfig, lua_opts)
+            -- local runtime_path = vim.split(package.path, ';')
+            -- table.insert(runtime_path, "lua/?.lua")
+            -- table.insert(runtime_path, "lua/?/init.lua")
+            -- lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", server:get_default_options(), opts))
             server:attach_buffers()
         end)
 
