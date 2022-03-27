@@ -37,7 +37,7 @@ local transform = function(text, info)
       info.index = info.index + 1
 
       return c(info.index, {
-        t(string.format('obserr.Annotate(%s, "%s failed")', info.err_name, info.func_name)),
+        t(string.format('obserr.Annotate(%s, "%s failed")', info.err_name, info.func_name or "something")),
         t(info.err_name),
       })
     else
@@ -106,7 +106,7 @@ local go_ret_vals = function(args)
     go_result_type {
       index = 0,
       err_name = args[1][1],
-      func_name = args[2][1],
+      func_name = args[2] and args[2][1],
     }
   )
 end
@@ -118,15 +118,51 @@ local M = {
     t { "", "}" },
   },
 
+  t = fmt(
+    "func Test{}(t *testing.T) {{\n\t{}\n{}\n}}",
+    {
+        i(1, "Something"),
+        i(2, "t.Parallel()"),
+        i(0),
+    }
+  ),
+
+  f = fmt(
+    "func {}({}) {} {{\n\t{}\n}}",
+    { i(1, "f"), i(2), i(3), i(0) }
+  ),
+
   ef = {
-    i(1, { "val" }),
+    i(3, { "val" }),
     t ", err := ",
-    i(2, { "f" }),
+    i(1, { "f" }),
     t "(",
-    i(3),
+    i(2),
     t ")",
     i(0),
   },
+
+  ie = fmt(
+    "if {} != nil {{\n\treturn {}\n}}{}",
+    {
+      i(1, "err"),
+      d(2, go_ret_vals, {1}),
+      i(0),
+    }
+  ),
+
+  ief = fmt(
+    "if {}, {} := {}({}); {} != nil {{\n\treturn {}\n}}{}",
+    {
+      i(3, { "val" }),
+      i(4, { "err" }),
+      i(1, { "f" }),
+      i(2, { "" }),
+      same(3),
+      d(5, go_ret_vals, { 4, 1 }),
+      i(0),
+    }
+  ),
 
   efi = {
     i(1, { "val" }),
@@ -144,12 +180,8 @@ local M = {
     t { "", "}" },
     i(0),
   },
-
-  -- TODO: Fix this up so that it actually uses the tree sitter thing
-  ie = { "if err != nil {", "\treturn err", i(0), "}" },
 }
 
-M.f = fmt("func {}({}) {} {{\n\t{}\n}}", { i(1, "name"), i(2), i(3), i(0) })
 
 return M
 
