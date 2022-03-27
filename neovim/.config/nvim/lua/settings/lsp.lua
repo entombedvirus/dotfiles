@@ -309,18 +309,10 @@ local setup_server = function(lang)
 
     elseif lang == "sumneko_lua" then
         server:on_ready(function()
-            local luadev = require("lua-dev").setup({
-                library = {
-                    vimruntime = true, -- runtime path
-                    types      = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-                    plugins    = true, -- installed opt or start plugins in packpath
-                    -- you can also specify the list of plugins to make available as a workspace library
-                    -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-                },
-                -- add any options here, or leave empty to use the default settings
-                lspconfig = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-            })
-            lspconfig.sumneko_lua.setup(luadev)
+            local runtime_path = vim.split(package.path, ';')
+            table.insert(runtime_path, "lua/?.lua")
+            table.insert(runtime_path, "lua/?/init.lua")
+            lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", server:get_default_options(), opts))
             server:attach_buffers()
         end)
 

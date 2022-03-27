@@ -229,9 +229,6 @@ return require('packer').startup(function(use)
   -- diagnostics
   use 'kyazdani42/nvim-web-devicons'
 
-  -- lua plugin dev
-  use 'folke/lua-dev.nvim'
-
   -- rust specific
   use 'simrat39/rust-tools.nvim'
 
