@@ -75,7 +75,7 @@ if [ -n "$zsh_path" ]; then
         echo "adding zsh to /etc/shells"
         echo $zsh_path | sudo tee -a /etc/shells >/dev/null
         echo "changing $USER shell to $zsh_path"
-        sudo chsh --shell "$zsh_path" $USER
+        sudo chsh -s "$zsh_path" $USER
     fi
 fi
 
