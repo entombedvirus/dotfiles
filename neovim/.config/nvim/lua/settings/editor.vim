@@ -176,6 +176,11 @@ inoremap <C-d> <Delete>
 inoremap <C-a> <C-o>I
 inoremap <C-e> <C-o>A
 
+" move one char left or right while in insert mode
+inoremap <C-f> <C-o>l
+" conflicts with delete char
+" inoremap <C-d> <C-o>h
+
 " Automatically strip trailing whitespace
 augroup strip_whitespace
     autocmd!
