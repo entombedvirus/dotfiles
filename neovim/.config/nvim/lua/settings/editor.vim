@@ -118,6 +118,18 @@ xnoremap H ^
 nnoremap L $
 xnoremap L $
 
+" emulate vim-surround's aliases:
+" r -> [ ]
+vmap ar :<c-u>normal va]<cr>
+omap ar :normal va]<cr>
+vmap ir :<c-u>normal vi]<cr>
+omap ir :normal vi]<cr>
+" a -> < >
+vmap aa :<c-u>normal va><cr>
+omap aa :normal va><cr>
+vmap ia :<c-u>normal vi><cr>
+omap ia :normal vi><cr>
+
 " destroy add buffers
 nnoremap <leader>bd :bufdo bd<cr>
 
