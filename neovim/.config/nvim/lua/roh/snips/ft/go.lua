@@ -127,6 +127,16 @@ local M = {
     }
   ),
 
+  tr = fmt(
+    "t.Run({}, func(t *testing.T) {{\n\t{}\n}})",
+    { i(1), i(0) }
+  ),
+
+  ft = fmt(
+    "func(t *testing.T) {{\n\t{}\n}}",
+    i(0)
+  ),
+
   f = fmt(
     "func {}({}) {} {{\n\t{}\n}}",
     { i(1, "f"), i(2), i(3), i(0) }

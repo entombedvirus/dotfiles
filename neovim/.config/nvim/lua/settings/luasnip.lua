@@ -100,4 +100,4 @@ for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/roh/snips/ft/*.lua",
   snippets[ft] = make(loadfile(ft_path)())
 end
 
-ls.snippets = snippets
+ls.add_snippets(nil, snippets)
