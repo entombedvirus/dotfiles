@@ -1,4 +1,4 @@
-local lspconfig_installed, lspconfig = pcall(require, 'lspconfig')
+local lspconfig_installed, _ = pcall(require, 'lspconfig')
 if not lspconfig_installed then
     return
 end
@@ -123,9 +123,6 @@ end
 
 local util = require 'lspconfig.util'
 
-local noop = function()
-end
-
 local flags = {
     debounce_text_changes = 250,
     -- debounce_text_changes = 3000,
@@ -171,7 +168,6 @@ local function build_custom_jsonnet_ls_server()
         default_config = {
             filetypes = s.languages,
             root_dir = function(fname)
-                local util = require 'lspconfig.util'
                 return util.root_pattern 'Makefile'(fname) or util.find_git_ancestor(fname)
             end,
             on_new_config = function(new_config, file_root_dir)
