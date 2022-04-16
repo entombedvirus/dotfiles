@@ -13,32 +13,6 @@ augroup END
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 ]]
 
-local ok, kanagawa = pcall(require, 'kanagawa')
-if not ok then
-    return
-end
-
-kanagawa.setup({
-	undercurl            = true,           -- enable undercurls
-	commentStyle         = "italic",
-	functionStyle        = "NONE",
-	keywordStyle         = "italic",
-	statementStyle       = "bold",
-	typeStyle            = "italic",
-	variablebuiltinStyle = "italic",
-	specialReturn        = true,       -- special highlight for the return keyword
-	specialException     = true,    -- special highlight for exception handling keywords
-	transparent          = false,        -- do not set background color
-	colors               = {},
-	overrides            = {},
-})
-
--- setup must be called before loading
-vim.cmd("colorscheme kanagawa")
-if not vim.g.lightline then
-    vim.g.lightline = { colorscheme = 'nightfox' }
-end
-
 -- local nightfox = require('nightfox')
 -- nightfox.setup({
 --     fox = "nightfox", -- change the colorscheme to use nordfox
@@ -53,6 +27,10 @@ end
 --         match_paren = true, -- inverse the highlighting of match_parens
 --     },
 -- })
+-- if not vim.g.lightline then
+--     vim.g.lightline = { colorscheme = 'nightfox' }
+-- end
+
 
 -- -- Load the configuration set above and apply the colorscheme
 -- nightfox.load()

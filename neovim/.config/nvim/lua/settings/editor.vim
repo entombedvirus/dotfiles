@@ -214,14 +214,3 @@ endfunction
 
 " reformat JSON
 map <leader>jt  <Esc>:%!jq<CR>
-
-" disable logipat plugin so that :E works again
-let g:loaded_logipat = 1
-
-" netrw settings
-let g:netrw_liststyle=3
-
-" disable match paren functionality that causes scrolling to be slow
-let g:loaded_matchparen = 1
-
-
