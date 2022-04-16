@@ -285,6 +285,34 @@ local setup_server = function(lang)
                 registry = 'us.gcr.io/dummy_registry',
             }
         }
+
+    elseif lang == "sumneko_lua" then
+        -- Make runtime files discoverable to the server
+        local runtime_path = vim.split(package.path, ';')
+        table.insert(runtime_path, 'lua/?.lua')
+        table.insert(runtime_path, 'lua/?/init.lua')
+        opts.settings = {
+            Lua = {
+                runtime = {
+                    -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                    version = 'LuaJIT',
+                    -- Setup your lua path
+                    path = runtime_path,
+                },
+                diagnostics = {
+                    -- Get the language server to recognize the `vim` global
+                    globals = { 'vim', 'P', 'RELOAD', 'R' },
+                },
+                workspace = {
+                    -- Make the server aware of Neovim runtime files
+                    library = vim.api.nvim_get_runtime_file('', true),
+                },
+                -- Do not send telemetry data containing a randomized but unique identifier
+                telemetry = {
+                    enable = false,
+                },
+            },
+        }
     end
 
     local ok, server = lsp_installer.get_server(lang)
@@ -305,23 +333,6 @@ local setup_server = function(lang)
                 -- with the user's own settings (opts).
                 server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
             }
-            server:attach_buffers()
-        end)
-
-    elseif lang == "sumneko_lua" then
-        server:on_ready(function()
-            opts.globals = {
-                'P', 'RELOAD'
-            }
-            local lua_opts = vim.tbl_deep_extend("force", server:get_default_options(), opts)
-            local nlua = require('nlua.lsp.nvim')
-            nlua.base_directory = util.path.join(server.root_dir, 'extension/server/bin')
-            nlua.bin_location = util.path.join(nlua.base_directory, 'lua-language-server')
-            nlua.setup(lspconfig, lua_opts)
-            -- local runtime_path = vim.split(package.path, ';')
-            -- table.insert(runtime_path, "lua/?.lua")
-            -- table.insert(runtime_path, "lua/?/init.lua")
-            -- lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", server:get_default_options(), opts))
             server:attach_buffers()
         end)
 

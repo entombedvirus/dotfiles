@@ -68,7 +68,6 @@ return require('packer').startup(function(use)
   use 'tiagovla/tokyodark.nvim'
   use 'folke/tokyonight.nvim'
   use 'yashguptaz/calvera-dark.nvim'
-  use 'glepnir/zephyr-nvim'
   use 'EdenEast/nightfox.nvim'
   use 'rebelot/kanagawa.nvim'
 
@@ -228,9 +227,6 @@ return require('packer').startup(function(use)
 
   -- diagnostics
   use 'kyazdani42/nvim-web-devicons'
-
-  -- lua plugin dev
-  use 'tjdevries/nlua.nvim'
 
   -- rust specific
   use 'simrat39/rust-tools.nvim'
