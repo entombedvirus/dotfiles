@@ -45,8 +45,8 @@ cmp.setup({
     completion = {
         autocomplete = false,
     },
-    documentation = {
-        border = {'┌', '─', '┐', '│', '┘', '─', '└', '│'},
+    window = {
+      documentation = cmp.config.window.bordered(),
     },
     snippet = {
         expand = function(args)
@@ -83,9 +83,8 @@ cmp.setup({
     },
     sources = {
         -- order matters: completions show up in priority order
-        { name = 'nvim_lua' },
-        { name = 'nvim_lsp' },
         { name = 'luasnip' },
+        { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'spell' },
     }
