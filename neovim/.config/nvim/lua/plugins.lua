@@ -3,11 +3,18 @@ local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 local packer_bootstrap
 if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  -- stale packer_compiled.lua files can interfere with testing bootstrap code
+  pcall(fn.system, {'rm', '-f', fn.stdpath('config') .. '/plugin/packer_compiled.lua'})
+  vim.cmd [[packadd packer.nvim]]
 end
 
 -- reload on save
 local packer_group = vim.api.nvim_create_augroup('PackerUserRoh', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePost', { command = 'source <afile> | PackerCompile', group = packer_group, pattern = {'init.lua', 'plugins.lua'} })
+
+if not pcall(require, 'packer') then
+    error('packer install failed')
+end
 
 require('packer').startup(function(use)
   -- Packer can manage itself
@@ -213,15 +220,22 @@ require('packer').startup(function(use)
   }
 
   use {
-    'nvim-treesitter/nvim-treesitter',
-    requires = {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        'nvim-treesitter/playground',
-    },
-    run = ':TSUpdate',
-    config = [[require('settings.treesitter')]]
+      'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdateSync',
+      config = [[require('settings.treesitter')]]
   }
-
+  use {
+      'nvim-treesitter/playground',
+      requires = {
+          'nvim-treesitter/nvim-treesitter',
+      },
+  }
+  use {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      requires = {
+          'nvim-treesitter/nvim-treesitter',
+      },
+  }
   -- diagnostics
   use 'kyazdani42/nvim-web-devicons'
 
@@ -400,11 +414,9 @@ require('packer').startup(function(use)
         })
     end,
   }
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+      require('packer').sync()
+  end
 end)
-
--- Automatically set up your configuration after cloning packer.nvim
--- Put this at the end after all plugins
-if packer_bootstrap then
-    require('packer').sync()
-    print('plugins installed. Please restart neovim')
-end

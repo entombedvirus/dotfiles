@@ -13,7 +13,12 @@ augroup END
 map <leader>bg :let &background = (&background == "dark" ? "light" : "dark")<cr>
 ]]
 
-require('kanagawa').setup({
+local ok, kanagawa = pcall(require, 'kanagawa')
+if not ok then
+    return
+end
+
+kanagawa.setup({
 	undercurl            = true,           -- enable undercurls
 	commentStyle         = "italic",
 	functionStyle        = "NONE",

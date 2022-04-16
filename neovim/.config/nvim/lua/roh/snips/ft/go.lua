@@ -1,3 +1,7 @@
+if not pcall(require, 'luasnip') or not pcall(require, 'nvim-treesitter') then
+    return
+end
+
 local ls = require "luasnip"
 
 -- local snippet = ls.s
@@ -9,7 +13,7 @@ local d = ls.dynamic_node
 local c = ls.choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 
-local shared = R "roh.snips"
+local shared = require("roh.snips")
 local same = shared.same
 
 local ts_locals = require "nvim-treesitter.locals"
@@ -17,14 +21,16 @@ local ts_utils = require "nvim-treesitter.ts_utils"
 
 local get_node_text = vim.treesitter.get_node_text
 
-vim.treesitter.set_query(
-  "go",
-  "LuaSnip_Result",
-  [[ [
+-- go parser might not be installed
+pcall(
+    vim.treesitter.set_query,
+    "go",
+    "LuaSnip_Result",
+    [[ [
     (method_declaration result: (_) @id)
     (function_declaration result: (_) @id)
     (func_literal result: (_) @id)
-  ] ]]
+    ] ]]
 )
 
 local transform = function(text, info)
@@ -91,7 +97,10 @@ local function go_result_type(info)
     end
   end
 
-  local query = vim.treesitter.get_query("go", "LuaSnip_Result")
+  local ok, query = pcall(vim.treesitter.get_query, "go", "LuaSnip_Result")
+  if not ok then
+      error("roh/snips/ft/go.lua: could not query return types using treesitter. maybe go parser is not installed?. err: " .. query)
+  end
   for _, node in query:iter_captures(function_node, 0) do
     if handlers[node:type()] then
       return handlers[node:type()](node, info)
