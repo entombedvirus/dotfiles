@@ -19,3 +19,5 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 
+-- default python plugin maps interfere with mine
+vim.g.no_python_maps = 1
