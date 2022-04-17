@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd(
 
 
 vim.api.nvim_create_autocmd(
-	'FileType yaml',
+	'FileType',
 	{
 		callback = function()
 			vim.bo.tabstop = 2
@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd(
 			vim.opt_local.indentkeys:remove({ '0#', '<:>' })
 		end,
 		group = group,
+		pattern = 'yaml',
 		desc = 'YAML indentation',
 	}
 )
