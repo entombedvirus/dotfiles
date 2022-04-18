@@ -187,7 +187,12 @@ require('packer').startup(function(use)
     use 'bazelbuild/vim-ft-bzl'
 
     -- terminal
-    use 'voldikss/vim-floaterm'
+    use {
+		'voldikss/vim-floaterm',
+		config = function()
+			vim.g.floaterm_keymap_toggle = [[<c-\>]]
+		end,
+    }
 
     -- testing
     use {
