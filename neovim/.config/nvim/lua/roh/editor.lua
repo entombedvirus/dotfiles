@@ -4,7 +4,8 @@ vim.api.nvim_create_autocmd(
 	{
 		command = 'source <afile> | redraw',
 		group = group,
-		pattern = { 'editor.lua' },
+		-- add the HOME prefix so it won't catch fugitive:/// style paths
+		pattern = { os.getenv('HOME') .. '/*/editor.lua' },
 	}
 )
 
