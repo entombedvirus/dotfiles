@@ -195,7 +195,7 @@ require('packer').startup(function(use)
 	use {
 		'voldikss/vim-floaterm',
 		config = function()
-			vim.g.floaterm_keymap_toggle = [[<c-\>]]
+			vim.g.floaterm_keymap_toggle = [[<leader>t]]
 			vim.cmd [[highlight link FloatermBorder FloatBorder]]
 		end,
 	}
