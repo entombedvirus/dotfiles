@@ -26,7 +26,6 @@ require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 
 	-- Navigation
-	use 'mileszs/ack.vim'
 	use 'justinmk/vim-dirvish'
 	use 'rbtnn/vim-jumptoline'
 
@@ -218,15 +217,6 @@ require('packer').startup(function(use)
 	}
 
 	use 'tami5/sql.nvim'
-
-	-- Snippets
-	-- use {
-	--     'hrsh7th/vim-vsnip',
-	--     requires = {
-	--         {'rafamadriz/friendly-snippets'},
-	--     },
-	--     config = [[vim.cmd("runtime lua/settings/vsnip.vim")]]
-	-- }
 
 	use {
 		'L3MON4D3/LuaSnip',
