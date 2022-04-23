@@ -53,7 +53,4 @@ augroup filetype_go
     " autocmd FileType go nnoremap <buffer> <localleader>gd :GoDecls<CR>
     autocmd FileType go nnoremap <buffer> <localleader>ge :GoIfErr<CR>
     "autocmd FileType go nnoremap <buffer> <C-i> :GoAutoTypeInfoToggle<CR>
-
-    " tagbar
-    autocmd FileType go nnoremap <silent> <localleader>tb :TagbarToggle<CR>
 augroup END
