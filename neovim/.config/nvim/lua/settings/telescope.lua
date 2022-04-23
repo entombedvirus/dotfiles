@@ -37,7 +37,7 @@ telescope.setup{
           location = {
               telescope = {
                   path_display = {
-                      "shorten",
+                      "truncate",
                   },
               },
           },
