@@ -172,6 +172,10 @@ local function xnoremap(lhs, rhs)
 	vim.keymap.set('x', lhs, rhs, { silent = true })
 end
 
+local function snoremap(lhs, rhs)
+	vim.keymap.set('s', lhs, rhs, {silent = true})
+end
+
 local function vmap(lhs, rhs)
 	vim.keymap.set('v', lhs, rhs, { silent = true, remap = true })
 end
@@ -242,6 +246,10 @@ inoremap('<C-f>', '<C-o>l')
 
 -- " reformat JSON
 nnoremap('<leader>jt', '<Esc>:%!jq<CR>')
+
+-- select mode surround with quotes
+snoremap('"', [[""<esc>i]])
+snoremap("'", [[''<esc>i]])
 
 -- " Common typos
 local command = vim.api.nvim_create_user_command
