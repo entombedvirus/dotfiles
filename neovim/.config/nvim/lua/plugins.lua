@@ -43,7 +43,9 @@ require('packer').startup(function(use)
 	-- Go
 	use {
 		'fatih/vim-go',
-		run = ':GoUpdateBinaries',
+		-- this installs it's own version of gopls; we want nvim-lsp-installer
+		-- managed one
+		-- run = ':GoUpdateBinaries',
 		config = [[vim.cmd("runtime lua/settings/vim-go.vim")]]
 	}
 
@@ -237,13 +239,15 @@ require('packer').startup(function(use)
 	}
 
 	use {
-		'neovim/nvim-lspconfig',
+		"williamboman/nvim-lsp-installer",
 		requires = {
-			'williamboman/nvim-lsp-installer',
+			'neovim/nvim-lspconfig',
 			'onsails/lspkind-nvim',
 			'gbrlsnchs/telescope-lsp-handlers.nvim',
 		},
-		config = [[require('settings.lsp')]]
+		config = function()
+			require('settings.lsp')
+		end,
 	}
 
 	use {
