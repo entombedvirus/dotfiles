@@ -244,13 +244,13 @@ packer.startup(function(use)
 	use {
 		'hrsh7th/nvim-cmp',
 		requires = {
-			'hrsh7th/cmp-nvim-lsp',
-			'hrsh7th/cmp-buffer',
-			'saadparwaiz1/cmp_luasnip',
-			'hrsh7th/cmp-nvim-lua',
 			'f3fora/cmp-spell',
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-nvim-lua',
+			'saadparwaiz1/cmp_luasnip',
 		},
-		config = [[require('settings.nvim_cmp')]]
+		config = function() require('settings.nvim_cmp') end,
 	}
 
 	use {
