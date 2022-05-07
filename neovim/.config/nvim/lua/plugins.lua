@@ -23,17 +23,17 @@ if not ok then
 end
 
 packer.init {
-    display = {
-        open_fn = function()
-            return require("packer.util").float { border = "single" }
-        end,
-        prompt_border = "single",
-    },
-    git = {
-        clone_timeout = 600,
-    },
-    auto_clean = true,
-    compile_on_sync = false,
+	display = {
+		open_fn = function()
+			return require("packer.util").float { border = "single" }
+		end,
+		prompt_border = "single",
+	},
+	git = {
+		clone_timeout = 600,
+	},
+	auto_clean = true,
+	compile_on_sync = false,
 }
 
 packer.startup(function(use)
@@ -473,6 +473,13 @@ packer.startup(function(use)
 				},
 			})
 		end,
+
+		use {
+			"karb94/neoscroll.nvim",
+			config = function()
+				require('neoscroll').setup()
+			end,
+		}
 	}
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
