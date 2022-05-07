@@ -184,6 +184,10 @@ local function omap(lhs, rhs)
 	vim.keymap.set('o', lhs, rhs, { silent = true, remap = true })
 end
 
+local function smap(lhs, rhs)
+	vim.keymap.set('s', lhs, rhs, {silent = true, remap = true})
+end
+
 -- quick save
 nnoremap('<leader>s', '<cmd>write<cr>')
 
@@ -250,6 +254,14 @@ nnoremap('<leader>jt', '<Esc>:%!jq<CR>')
 -- select mode surround with quotes
 snoremap('"', [[""<esc>i]])
 snoremap("'", [[''<esc>i]])
+snoremap("[", [[[]<esc>i]])
+snoremap("(", [[()<esc>i]])
+snoremap("{", [[{}<esc>i]])
+-- in select mode, ctrl-s:
+--	first switches to visual mode (<c-g>)
+--	deletes selection and enters insert mode (s)
+--	starts surround mode (<c-s>)
+smap("<C-s>", [[<C-g>s<C-s>]])
 
 -- " Common typos
 local command = vim.api.nvim_create_user_command
