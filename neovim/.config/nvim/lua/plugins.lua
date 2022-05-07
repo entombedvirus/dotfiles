@@ -17,11 +17,26 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 	pattern = { os.getenv('HOME') .. '/*/plugins.lua' },
 })
 
-if not pcall(require, 'packer') then
+local ok, packer = pcall(require, 'packer')
+if not ok then
 	error('packer install failed')
 end
 
-require('packer').startup(function(use)
+packer.init {
+    display = {
+        open_fn = function()
+            return require("packer.util").float { border = "single" }
+        end,
+        prompt_border = "single",
+    },
+    git = {
+        clone_timeout = 600,
+    },
+    auto_clean = true,
+    compile_on_sync = false,
+}
+
+packer.startup(function(use)
 	-- Packer can manage itself
 	use 'wbthomason/packer.nvim'
 
