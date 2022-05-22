@@ -8,7 +8,7 @@ do
 	local server = require "nvim-lsp-installer.server"
 	local root_dir = server.get_server_root_path(server_name)
 	local git = require "nvim-lsp-installer.core.managers.git"
-	local path = require "nvim-lsp-installer.path"
+	local path = require "nvim-lsp-installer.core.path"
 
 	local s = server.Server:new {
 		name = server_name,
