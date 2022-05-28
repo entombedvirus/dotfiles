@@ -116,7 +116,7 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', '<space>l', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
 
 	-- Set some keybinds conditional on server capabilities
-	if client.resolved_capabilities.document_formatting then
+	if client.server_capabilities.documentFormattingProvider then
 		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 		vim.api.nvim_exec([[
           augroup lsp_fmt_autos
@@ -125,8 +125,6 @@ local on_attach = function(client, bufnr)
             autocmd BufWritePre *.go lua Goimports(1000)
           augroup END
         ]], false)
-	elseif client.resolved_capabilities.document_range_formatting then
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 	end
 
 	-- if client.resolved_capabilities.code_lens then
@@ -140,7 +138,7 @@ local on_attach = function(client, bufnr)
 	-- end
 
 	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then
+	if client.server_capabilities.documentHighlightProvider then
 		vim.api.nvim_exec([[
           augroup lsp_document_highlight
             autocmd!
