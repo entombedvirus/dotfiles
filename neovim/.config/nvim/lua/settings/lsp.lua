@@ -85,76 +85,9 @@ end
 
 -- vim.lsp.set_log_level(vim.log.levels.TRACE)
 
--- advertise that we have a snippet plugin installed to the default lsp client
-local on_attach = function(client, bufnr)
-	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
-	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-	-- Mappings.
-	local opts = { noremap = true, silent = true }
-	buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-	buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-	buf_set_keymap('n', '<c-space>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-	buf_set_keymap('i', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-	buf_set_keymap('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-	buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-	buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-	buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-	buf_set_keymap('n', '<localleader>gd', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-
-	buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-	buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-	buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-	buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-	buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>', opts)
-	buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-	buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-	buf_set_keymap('n', '<space>l', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-
-	-- Set some keybinds conditional on server capabilities
-	if client.server_capabilities.documentFormattingProvider then
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-		vim.api.nvim_exec([[
-          augroup lsp_fmt_autos
-            autocmd!
-            autocmd BufWritePre *.py,*.rs lua vim.lsp.buf.formatting_sync(nil, 10000)
-            autocmd BufWritePre *.go lua Goimports(1000)
-          augroup END
-        ]], false)
-	end
-
-	-- if client.resolved_capabilities.code_lens then
-	--     vim.api.nvim_exec([[
-	--       augroup lsp_code_lens
-	--         autocmd!
-	--         autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-	--       augroup END
-	--     ]], false)
-	--     buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.codelens.run()<CR>', opts)
-	-- end
-
-	-- Set autocommands conditional on server_capabilities
-	if client.server_capabilities.documentHighlightProvider then
-		vim.api.nvim_exec([[
-          augroup lsp_document_highlight
-            autocmd!
-            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-          augroup END
-        ]], false)
-	end
-end
-
 --[[ Go ]] --
-function Goimports(timeout_ms)
-	local gopls_client = vim.tbl_filter(function(client)
-		return client.name == 'gopls'
-	end, vim.lsp.get_active_clients())
-
+local function goOrganizeImports()
+	local gopls_client = vim.lsp.get_active_clients({ name = 'gopls' })
 	if not gopls_client or not gopls_client[1] then
 		vim.notify('GoImports: gopls is not attached to buffer', vim.log.levels.WARN)
 		return
@@ -185,6 +118,7 @@ function Goimports(timeout_ms)
 	local params = vim.lsp.util.make_range_params()
 	params.context = context
 
+	local timeout_ms = 1000
 	local result, err = gopls_client.request_sync("textDocument/codeAction", params, timeout_ms)
 	if result then
 		for _, actions in pairs(result) do
@@ -197,8 +131,51 @@ function Goimports(timeout_ms)
 	elseif err then
 		vim.notify('GoImports: ' .. err, vim.log.levels.WARN)
 	end
+end
 
-	vim.lsp.buf.formatting_sync(nil, timeout_ms)
+-- advertise that we have a snippet plugin installed to the default lsp client
+local on_attach = function(client, bufnr)
+	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+	-- Mappings.
+	local opts = { noremap = true, silent = true, buffer = bufnr }
+	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+	vim.keymap.set('n', '<c-space>', vim.lsp.buf.signature_help, opts)
+	vim.keymap.set('i', '<c-k>', vim.lsp.buf.signature_help, opts)
+	vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, opts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.declaration, opts)
+	vim.keymap.set('n', 'gD', vim.lsp.buf.implementation, opts)
+	vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+	vim.keymap.set('n', '<localleader>gd', vim.lsp.buf.document_symbol, opts)
+
+	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+	vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+	vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+	vim.keymap.set('n', '<space>l', vim.diagnostic.setloclist, opts)
+	vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format({ timeout_ms = 10000 }) end, opts)
+
+	-- Set autocommands conditional on server_capabilities
+	if client.server_capabilities.documentHighlightProvider then
+		local lsp_highlight_autos = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+		vim.api.nvim_create_autocmd('CursorHold', {
+			group = lsp_highlight_autos,
+			buffer = bufnr,
+			callback = vim.lsp.buf.document_highlight,
+		})
+		vim.api.nvim_create_autocmd('CursorMoved', {
+			group = lsp_highlight_autos,
+			buffer = bufnr,
+			callback = vim.lsp.buf.clear_references,
+		})
+	end
 end
 
 local function get_lsp_opts(lang)
@@ -278,7 +255,7 @@ local function get_lsp_opts(lang)
 					-- delay update diagnostics
 					update_in_insert = false,
 					virtual_text     = true,
-					underline        = false,
+					underline        = true,
 				}),
 			},
 		}
@@ -340,3 +317,28 @@ for _, name in pairs(lsp_servers) do
 		lspconfig[name].setup(opts)
 	end
 end
+
+local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePre', {
+	group = lsp_fmt_autos,
+	pattern = { '*.py', '*.rs', '*.lua', '*.go' },
+	callback = function(ev)
+		local function ends_with(str, ending)
+			return ending == "" or str:sub(- #ending) == ending
+		end
+
+		local timeout_ms = 1000
+		if ends_with(ev.file, '.py') then
+			timeout_ms = 10000
+		end
+
+		vim.lsp.buf.format {
+			async = false,
+			timeout_ms = timeout_ms,
+		}
+
+		if ends_with(ev.file, '.go') then
+			goOrganizeImports()
+		end
+	end,
+})
