@@ -61,20 +61,20 @@ packer.startup(function(use)
 			require('litee.lib').setup()
 			require('litee.gh').setup({
 				-- deprecated, around for compatability for now.
-				jump_mode   = "invoking",
+				jump_mode             = "invoking",
 				-- remap the arrow keys to resize any litee.nvim windows.
-				map_resize_keys = false,
+				map_resize_keys       = false,
 				-- do not map any keys inside any gh.nvim buffers.
-				disable_keymaps = false,
+				disable_keymaps       = false,
 				-- the icon set to use.
-				icon_set = "default",
+				icon_set              = "default",
 				-- any custom icons to use.
-				icon_set_custom = nil,
+				icon_set_custom       = nil,
 				-- whether to register the @username and #issue_number omnifunc completion
 				-- in buffers which start with .git/
 				git_buffer_completion = true,
 				-- defines keymaps in gh.nvim buffers.
-				keymaps = {
+				keymaps               = {
 					-- when inside a gh.nvim panel, this key will open a node if it has
 					-- any futher functionality. for example, hitting <CR> on a commit node
 					-- will open the commit's changed files in a new gh.nvim panel.
@@ -143,27 +143,27 @@ packer.startup(function(use)
 	-- use 'tiagovla/tokyodark.nvim'
 	-- use 'folke/tokyonight.nvim'
 	-- use 'yashguptaz/calvera-dark.nvim'
-	use {
-		'EdenEast/nightfox.nvim',
-		config = function()
-			local nightfox = require('nightfox')
-			nightfox.setup({
-				options = {
-					transparent = false,
-					styles = {
-						comments  = "italic", -- change style of comments to be italic
-						keywords  = "bold,italic", -- change style of keywords to be bold
-						functions = "italic", -- styles can be a comma separated list
-						strings   = "italic", -- styles can be a comma separated list
-					},
-					inverse = {
-						match_paren = true, -- inverse the highlighting of match_parens
-					},
-				},
-			})
-			vim.cmd('colorscheme duskfox')
-		end,
-	}
+	-- use {
+	-- 	'EdenEast/nightfox.nvim',
+	-- 	config = function()
+	-- 		local nightfox = require('nightfox')
+	-- 		nightfox.setup({
+	-- 			options = {
+	-- 				transparent = false,
+	-- 				styles = {
+	-- 					comments  = "italic", -- change style of comments to be italic
+	-- 					keywords  = "bold,italic", -- change style of keywords to be bold
+	-- 					functions = "italic", -- styles can be a comma separated list
+	-- 					strings   = "italic", -- styles can be a comma separated list
+	-- 				},
+	-- 				inverse = {
+	-- 					match_paren = true, -- inverse the highlighting of match_parens
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 		vim.cmd('colorscheme duskfox')
+	-- 	end,
+	-- }
 	-- use {
 	--     'rebelot/kanagawa.nvim',
 	--     config = function()
@@ -184,10 +184,25 @@ packer.startup(function(use)
 	--         vim.cmd("colorscheme kanagawa")
 	--     end,
 	-- }
+	use {
+		'catppuccin/nvim',
+		as = 'catppuccin',
+		config = function()
+			local catppuccin = require("catppuccin")
+			catppuccin.setup({
+				transparent_background = true,
+				integrations = {
+					lsp_trouble = true,
+				},
+			})
+			vim.g.catppuccin_flavour = "latte" -- latte, frappe, macchiato, mocha
+			vim.cmd [[colorscheme catppuccin]]
+		end,
+	}
 
 	use {
 		'nvim-lualine/lualine.nvim',
-		after = 'nightfox.nvim',
+		-- after = 'nightfox.nvim',
 		requires = {
 			{ 'kyazdani42/nvim-web-devicons', opt = true },
 			{ 'arkav/lualine-lsp-progress' },
@@ -252,7 +267,23 @@ packer.startup(function(use)
 	use 'mg979/vim-visual-multi'
 
 	-- Jsonnet
-	use 'google/vim-jsonnet'
+	use {
+		'google/vim-jsonnet',
+		config = function()
+			-- autofmt messes with jsonnet-fmt
+			vim.g.jsonnet_fmt_on_save = 0
+			local group = vim.api.nvim_create_augroup('jsonnet-mods', { clear = true })
+			-- vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'},{
+			vim.api.nvim_create_autocmd('FileType', {
+				group = group,
+				pattern = { 'jsonnet' },
+				callback = function()
+					-- don't leave hard tabs on jsonnet files
+					vim.opt_local.expandtab = true
+				end,
+			})
+		end,
+	}
 
 	-- Bazel
 	use 'bazelbuild/vim-ft-bzl'
@@ -529,7 +560,9 @@ packer.startup(function(use)
 			config = function()
 				require('neoscroll').setup()
 			end,
-		}
+		},
+
+		use 'digitaltoad/vim-pug',
 	}
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
