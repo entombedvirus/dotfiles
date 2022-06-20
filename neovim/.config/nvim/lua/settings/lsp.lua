@@ -9,6 +9,7 @@ do
 	local root_dir = server.get_server_root_path(server_name)
 	local git = require "nvim-lsp-installer.core.managers.git"
 	local path = require "nvim-lsp-installer.core.path"
+	local Optional = require "nvim-lsp-installer.core.optional"
 
 	local s = server.Server:new {
 		name = server_name,
@@ -17,7 +18,10 @@ do
 		languages = { 'jsonnet', 'libsonnet' },
 		async = true,
 		installer = function(ctx)
-			git.clone({ 'https://github.com/entombedvirus/jsonnet-language-server.git' })
+			git.clone({
+				'https://github.com/entombedvirus/jsonnet-language-server.git',
+				version = Optional.new('allow-fmt-customization'),
+			})
 			ctx.spawn.go {
 				"build", ".",
 				cwd = ctx.install_dir,
@@ -186,9 +190,18 @@ local function get_lsp_opts(lang)
 
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	do
+		-- autocomplete
 		local ok, cmp = pcall(require, 'cmp_nvim_lsp')
 		if ok then
 			capabilities = cmp.update_capabilities(capabilities)
+		end
+
+		-- folds
+		if pcall(require, 'ufo') then
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true
+			}
 		end
 	end
 
@@ -269,7 +282,11 @@ local function get_lsp_opts(lang)
 				namespace = 'dummy_namespace',
 				containerProject = 'dummy_container_project',
 				registry = 'us.gcr.io/dummy_registry',
-			}
+			},
+			formatting = {
+				Indent = 4,
+				StringStyle = 'double',
+			},
 		}
 
 	elseif lang == "sumneko_lua" then
@@ -321,7 +338,7 @@ end
 local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePre', {
 	group = lsp_fmt_autos,
-	pattern = { '*.py', '*.rs', '*.lua', '*.go' },
+	pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet' },
 	callback = function(ev)
 		local function ends_with(str, ending)
 			return ending == "" or str:sub(- #ending) == ending
