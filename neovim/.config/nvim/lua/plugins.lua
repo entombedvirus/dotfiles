@@ -194,6 +194,10 @@ packer.startup(function(use)
 				integrations = {
 					lsp_trouble = true,
 				},
+				compile = {
+					enabled = true,
+					path = vim.fn.stdpath "cache" .. "/catppuccin",
+				},
 			})
 			vim.g.catppuccin_flavour = "latte" -- latte, frappe, macchiato, mocha
 			vim.cmd [[colorscheme catppuccin]]
