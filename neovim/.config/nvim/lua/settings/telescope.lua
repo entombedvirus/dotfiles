@@ -4,9 +4,15 @@ if not installed then
 end
 
 local actions = require('telescope.actions')
+local utils = require('telescope.utils')
 
 telescope.setup {
 	defaults = {
+		path_display = function(opts, path)
+			local display_path = utils.transform_path({ path_display = "smart" }, path)
+			display_path = display_path:gsub("go/src/mixpanel.com", "§")
+			return utils.transform_path({ path_display = { shorten = 3 } }, display_path)
+		end,
 		mappings = {
 			-- To disable a keymap, put [map] = false
 			-- You can perform as many actions in a row as you like
@@ -34,13 +40,11 @@ telescope.setup {
 					},
 				},
 			},
-			location = {
-				telescope = {
-					path_display = {
-						"truncate",
-					},
-				},
-			},
+			-- location = {
+			-- 	telescope = {
+			-- 		path_display = "smart",
+			-- 	},
+			-- },
 		},
 		fzf = {
 			fuzzy = false, -- false will only do exact matching
