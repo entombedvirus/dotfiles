@@ -108,7 +108,7 @@ packer.startup(function(use)
 	-- Go
 	use {
 		'fatih/vim-go',
-		-- this installs it's own version of gopls; we want nvim-lsp-installer
+		-- this installs it's own version of gopls; we want mason
 		-- managed one
 		-- run = ':GoUpdateBinaries',
 		config = [[vim.cmd("runtime lua/settings/vim-go.vim")]]
@@ -337,17 +337,20 @@ packer.startup(function(use)
 		},
 		config = function() require('settings.nvim_cmp') end,
 	}
-
 	use {
-		"williamboman/nvim-lsp-installer",
+		"williamboman/mason.nvim",
 		requires = {
+			"williamboman/mason-lspconfig.nvim",
 			'neovim/nvim-lspconfig',
-			'onsails/lspkind-nvim',
-			'gbrlsnchs/telescope-lsp-handlers.nvim',
 		},
 		config = function()
 			require('settings.lsp')
 		end,
+	}
+
+	use {
+		'onsails/lspkind-nvim',
+		'gbrlsnchs/telescope-lsp-handlers.nvim',
 	}
 
 	use {
@@ -380,6 +383,15 @@ packer.startup(function(use)
 		requires = {
 			'nvim-treesitter/nvim-treesitter',
 		},
+	}
+	use {
+		'nvim-treesitter/nvim-treesitter-context',
+		requires = {
+			'nvim-treesitter/nvim-treesitter',
+		},
+		config = function()
+			require 'treesitter-context'.setup {}
+		end,
 	}
 	-- diagnostics
 	use 'kyazdani42/nvim-web-devicons'

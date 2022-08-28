@@ -1,63 +1,5 @@
-if not pcall(require, 'nvim-lsp-installer') then
+if not pcall(require, 'mason') then
 	return
-end
-
--- installer for custom fork of jsonnet-language-server that supports extvars
-do
-	local server_name = 'my_jsonnet_ls'
-	local server = require "nvim-lsp-installer.server"
-	local root_dir = server.get_server_root_path(server_name)
-	local git = require "nvim-lsp-installer.core.managers.git"
-	local path = require "nvim-lsp-installer.core.path"
-	local Optional = require "nvim-lsp-installer.core.optional"
-
-	local s = server.Server:new {
-		name = server_name,
-		root_dir = root_dir,
-		homepage = 'https://github.com/entombedvirus/jsonnet-language-server',
-		languages = { 'jsonnet', 'libsonnet' },
-		async = true,
-		installer = function(ctx)
-			git.clone({
-				'https://github.com/entombedvirus/jsonnet-language-server.git',
-				version = Optional.new('allow-fmt-customization'),
-			})
-			ctx.spawn.go {
-				"build", ".",
-				cwd = ctx.install_dir,
-				stdio_sink = ctx.stdio_sink,
-			}
-		end,
-	}
-
-	local servers = require "nvim-lsp-installer.servers"
-	servers.register(s)
-
-	-- common jsonnet library paths
-	local function jsonnet_path(parent_dir)
-		local paths = {
-			path.concat { parent_dir, 'lib' },
-			path.concat { parent_dir, 'vendor' },
-		}
-		return table.concat(paths, ':')
-	end
-
-	local configs = require "lspconfig.configs"
-	local util = require 'lspconfig.util'
-	configs[s.name] = {
-		default_config = {
-			cmd = { path.concat { root_dir, "jsonnet-language-server" } },
-			filetypes = s.languages,
-			root_dir = function(fname)
-				return util.root_pattern 'Makefile' (fname) or util.find_git_ancestor(fname)
-			end,
-			on_new_config = function(new_config, file_root_dir)
-				new_config.cmd_env = {
-					JSONNET_PATH = jsonnet_path(file_root_dir),
-				}
-			end,
-		},
-	}
 end
 
 local lsp_servers = {
@@ -70,7 +12,7 @@ local lsp_servers = {
 	'grammarly',
 	'html',
 	'jsonls',
-	'my_jsonnet_ls',
+	'jsonnet_ls',
 	'rust_analyzer',
 	'sumneko_lua',
 	'tsserver',
@@ -78,14 +20,26 @@ local lsp_servers = {
 	'yamlls',
 }
 
-require("nvim-lsp-installer").setup({
-	ensure_installed = lsp_servers, -- ensure these servers are always installed
-	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-})
-
-if not pcall(require, 'lspconfig') then
-	return
+local function version_override(langs)
+	local ret = {}
+	for idx, lang in ipairs(langs) do
+		if lang == 'jsonnet_ls' then
+			-- v0.7.3+ is okay, it's not released yet
+			ret[idx] = 'jsonnet_ls@ecc9e385eace397bd2d7a916add1e57f9a2b210a'
+		else
+			ret[idx] = lang
+		end
+	end
+	return ret
 end
+
+-- order is important; mason -> mason-lspconfig -> lspconfig
+require("mason").setup {}
+require("mason-lspconfig").setup {
+	ensure_installed = version_override(lsp_servers), -- ensure these servers are always installed
+	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+}
+require("lspconfig")
 
 -- vim.lsp.set_log_level(vim.log.levels.TRACE)
 
@@ -273,8 +227,30 @@ local function get_lsp_opts(lang)
 			},
 		}
 
-	elseif lang == "my_jsonnet_ls" then
+	elseif lang == "jsonnet_ls" then
+		local util = require 'lspconfig.util'
+		-- common jsonnet library paths
+		local function jsonnet_path(parent_dir)
+			local paths = {
+				util.path.join { parent_dir, 'lib' },
+				util.path.join { parent_dir, 'vendor' },
+			}
+			return table.concat(paths, ':')
+		end
+
+		-- opts.cmd = { path.concat { root_dir, "jsonnet-language-server" } }
+		opts.root_dir = function(fname)
+			return util.root_pattern 'Makefile' (fname) or util.find_git_ancestor(fname)
+		end
+
+		opts.on_new_config = function(new_config, file_root_dir)
+			new_config.cmd_env = {
+				JSONNET_PATH = jsonnet_path(file_root_dir),
+			}
+		end
+
 		opts.settings = {
+			-- without these ext_vars, lsp parsing of jsonnet files will break
 			ext_vars = {
 				gcpProject = 'dummy_gcp_project',
 				arbCluster = 'dummy_arb_cluter',
