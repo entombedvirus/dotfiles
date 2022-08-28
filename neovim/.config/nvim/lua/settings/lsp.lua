@@ -44,7 +44,7 @@ require("lspconfig")
 -- vim.lsp.set_log_level(vim.log.levels.TRACE)
 
 --[[ Go ]] --
-local function goOrganizeImports()
+local function organize_go_imports()
 	local gopls_client = vim.lsp.get_active_clients({ name = 'gopls' })
 	if not gopls_client or not gopls_client[1] then
 		vim.notify('GoImports: gopls is not attached to buffer', vim.log.levels.WARN)
@@ -331,7 +331,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 		}
 
 		if ends_with(ev.file, '.go') then
-			goOrganizeImports()
+			organize_go_imports()
 		end
 	end,
 })
