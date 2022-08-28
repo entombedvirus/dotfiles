@@ -246,8 +246,31 @@ packer.startup(function(use)
 	}
 
 	-- Editing
+
 	use 'ntpeters/vim-better-whitespace'
-	use 'tpope/vim-surround'
+	use {
+		"kylechui/nvim-surround",
+		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+				keymaps = {
+					insert = "<C-s>",
+					insert_line = "<C-s><C-s>",
+					normal = "ys",
+					normal_cur = "yss",
+					normal_line = "yS",
+					normal_cur_line = "ySS",
+					visual = "S",
+					visual_line = "gS",
+					delete = "ds",
+					change = "cs",
+				},
+			})
+			-- emulate a shortcut from vim-surround
+			vim.keymap.set("i", "<C-s><C-s><C-]>", "<C-s><C-s>}", { remap = true, silent = true })
+		end
+	}
 	use 'tpope/vim-unimpaired'
 	use 'tpope/vim-abolish'
 	use 'tpope/vim-repeat'
