@@ -20,23 +20,12 @@ local lsp_servers = {
 	'yamlls',
 }
 
-local function version_override(langs)
-	local ret = {}
-	for idx, lang in ipairs(langs) do
-		if lang == 'jsonnet_ls' then
-			-- v0.7.3+ is okay, it's not released yet
-			ret[idx] = 'jsonnet_ls@ecc9e385eace397bd2d7a916add1e57f9a2b210a'
-		else
-			ret[idx] = lang
-		end
-	end
-	return ret
-end
+
 
 -- order is important; mason -> mason-lspconfig -> lspconfig
 require("mason").setup {}
 require("mason-lspconfig").setup {
-	ensure_installed = version_override(lsp_servers), -- ensure these servers are always installed
+	ensure_installed = lsp_servers, -- ensure these servers are always installed
 	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
 }
 require("lspconfig")
@@ -229,23 +218,16 @@ local function get_lsp_opts(lang)
 
 	elseif lang == "jsonnet_ls" then
 		local util = require 'lspconfig.util'
-		-- common jsonnet library paths
-		local function jsonnet_path(parent_dir)
-			local paths = {
-				util.path.join { parent_dir, 'lib' },
-				util.path.join { parent_dir, 'vendor' },
-			}
-			return table.concat(paths, ':')
-		end
 
-		-- opts.cmd = { path.concat { root_dir, "jsonnet-language-server" } }
 		opts.root_dir = function(fname)
 			return util.root_pattern 'Makefile' (fname) or util.find_git_ancestor(fname)
 		end
 
 		opts.on_new_config = function(new_config, file_root_dir)
-			new_config.cmd_env = {
-				JSONNET_PATH = jsonnet_path(file_root_dir),
+			-- common jsonnet library paths
+			new_config.settings.jpath = {
+				util.path.join { file_root_dir, 'lib' },
+				util.path.join { file_root_dir, 'vendor' },
 			}
 		end
 
@@ -263,6 +245,8 @@ local function get_lsp_opts(lang)
 				Indent = 4,
 				StringStyle = 'double',
 			},
+			enable_eval_diagnostics = true,
+			enable_lint_diagnostics =  true,
 		}
 
 	elseif lang == "sumneko_lua" then
