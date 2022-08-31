@@ -9,7 +9,7 @@ local utils = require('telescope.utils')
 telescope.setup {
 	defaults = {
 		path_display = function(opts, path)
-			local display_path = utils.transform_path({ path_display = "smart" }, path)
+			local display_path = utils.transform_path({ path_display = { "smart" } }, path)
 			display_path = display_path:gsub("go/src/mixpanel.com", "§")
 			return utils.transform_path({ path_display = { shorten = 3 } }, display_path)
 		end,
