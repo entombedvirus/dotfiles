@@ -42,11 +42,11 @@ telescope.setup {
 					},
 				},
 			},
-			-- location = {
-			-- 	telescope = {
-			-- 		path_display = "smart",
-			-- 	},
-			-- },
+			location = {
+				telescope = {
+					fname_width = 0.3,
+				},
+			},
 		},
 		fzf = {
 			fuzzy = false, -- false will only do exact matching
