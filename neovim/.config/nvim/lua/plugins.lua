@@ -209,7 +209,6 @@ packer.startup(function(use)
 		-- after = 'nightfox.nvim',
 		requires = {
 			{ 'kyazdani42/nvim-web-devicons', opt = true },
-			{ 'arkav/lualine-lsp-progress' },
 		},
 		config = function()
 			require('lualine').setup {
@@ -220,7 +219,7 @@ packer.startup(function(use)
 				sections = {
 					lualine_a = { 'mode' },
 					lualine_b = { 'branch' },
-					lualine_c = { { 'filename', path = 1 }, { 'lsp_progress' } },
+					lualine_c = { { 'filename', path = 1 }, },
 					lualine_x = { 'encoding', 'fileformat', 'filetype' },
 					lualine_y = { 'progress' },
 					lualine_z = { 'location' },
@@ -373,6 +372,14 @@ packer.startup(function(use)
 
 	use {
 		'onsails/lspkind-nvim',
+	}
+
+		-- provides lsp progress notification toasts
+	use {
+		'j-hui/fidget.nvim',
+		config = function()
+			require('fidget').setup{}
+		end,
 	}
 
 	use {
