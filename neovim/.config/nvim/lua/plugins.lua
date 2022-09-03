@@ -373,7 +373,6 @@ packer.startup(function(use)
 
 	use {
 		'onsails/lspkind-nvim',
-		'gbrlsnchs/telescope-lsp-handlers.nvim',
 	}
 
 	use {

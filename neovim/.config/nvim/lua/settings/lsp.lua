@@ -88,16 +88,42 @@ local on_attach = function(client, bufnr)
 
 	-- Mappings.
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+	local special_mappings = {
+		lsp_definitions = vim.lsp.buf.definition,
+		lsp_implementations = vim.lsp.buf.implementation,
+		lsp_type_definitions = vim.lsp.buf.type_definition,
+		lsp_references = vim.lsp.buf.references,
+		lsp_document_symbols = vim.lsp.buf.document_symbol,
+	}
+	do
+		local has_telescope, builtin = pcall(require, 'telescope.builtin')
+		if has_telescope then
+			local telescope_opts = {
+				lsp_definitions = { fname_width = 0.3 },
+				lsp_references = { fname_width = 0.3 },
+				lsp_type_definitions = { fname_width = 0.3 },
+				lsp_implementations = { fname_width = 0.3 },
+				lsp_document_symbols = require('telescope.themes').get_dropdown()
+			}
+			for k, _ in pairs(special_mappings) do
+				special_mappings[k] = function()
+					builtin[k](telescope_opts[k])
+				end
+			end
+		end
+	end
+
+	vim.keymap.set('n', '<c-]>', special_mappings.lsp_definitions, opts)
+	vim.keymap.set('n', 'gD', special_mappings.lsp_implementations, opts)
+	vim.keymap.set('n', '<space>D', special_mappings.lsp_type_definitions, opts)
+	vim.keymap.set('n', 'gr', special_mappings.lsp_references, opts)
+	vim.keymap.set('n', '<localleader>gd', special_mappings.lsp_document_symbols, opts)
+
+	vim.keymap.set('n', 'gd', vim.lsp.buf.declaration, opts)
+	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
 	vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 	vim.keymap.set('n', '<c-space>', vim.lsp.buf.signature_help, opts)
 	vim.keymap.set('i', '<c-y>', vim.lsp.buf.signature_help, opts)
-	vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, opts)
-	vim.keymap.set('n', 'gd', vim.lsp.buf.declaration, opts)
-	vim.keymap.set('n', 'gD', vim.lsp.buf.implementation, opts)
-	vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
-	vim.keymap.set('n', '<localleader>gd', vim.lsp.buf.document_symbol, opts)
 
 	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
 	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
@@ -246,7 +272,7 @@ local function get_lsp_opts(lang)
 				StringStyle = 'double',
 			},
 			enable_eval_diagnostics = true,
-			enable_lint_diagnostics =  true,
+			enable_lint_diagnostics = true,
 		}
 
 	elseif lang == "sumneko_lua" then
