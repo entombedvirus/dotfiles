@@ -105,9 +105,9 @@ local on_attach = function(client, bufnr)
 				lsp_implementations = { fname_width = 0.3 },
 				lsp_document_symbols = require('telescope.themes').get_dropdown()
 			}
-			for k, _ in pairs(special_mappings) do
-				special_mappings[k] = function()
-					builtin[k](telescope_opts[k])
+			for func_name in pairs(special_mappings) do
+				special_mappings[func_name] = function()
+					builtin[func_name](telescope_opts[func_name])
 				end
 			end
 		end

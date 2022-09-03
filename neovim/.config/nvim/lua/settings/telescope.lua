@@ -11,7 +11,8 @@ telescope.setup {
 		-- show file path above the preview window
 		dynamic_preview_title = true,
 		path_display = function(opts, path)
-			local display_path = utils.transform_path({ path_display = { "smart" } }, path)
+			-- local display_path = utils.transform_path({ path_display = { "smart" } }, path)
+			local display_path = path
 			display_path = display_path:gsub("go/src/mixpanel.com", "§")
 			return utils.transform_path({ path_display = { shorten = 3 } }, display_path)
 		end,
