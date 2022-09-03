@@ -32,23 +32,6 @@ telescope.setup {
 		},
 	},
 	extensions = {
-		lsp_handlers = {
-			code_action = {
-				telescope = require('telescope.themes').get_dropdown({}),
-			},
-			symbol = {
-				telescope = require('telescope.themes').get_dropdown {
-					path_display = {
-						"hidden",
-					},
-				},
-			},
-			location = {
-				telescope = {
-					fname_width = 0.3,
-				},
-			},
-		},
 		fzf = {
 			fuzzy = false, -- false will only do exact matching
 			override_generic_sorter = true, -- override the generic sorter
@@ -61,7 +44,6 @@ telescope.setup {
 		},
 	},
 }
-telescope.load_extension('lsp_handlers')
 telescope.load_extension('fzf')
 
 local keymap = vim.api.nvim_set_keymap
