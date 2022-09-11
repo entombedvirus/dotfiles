@@ -6,7 +6,6 @@ host=${1:-rravi-1}
 
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval `ssh-agent -s`
-    ssh-add $HOME/.ssh/id_rsa
 fi
 
 priv_key=$HOME/.ssh/id_rsa
@@ -23,6 +22,15 @@ function debug_log() {
 stderr_file=$(mktemp /tmp/devt-${host}.stderr.XXXX)
 trap "{ rm -f ${stderr_file}; }" EXIT
 
+function is_port_forward_failure() {
+	local error_strs=(\
+		'remote port forwarding failed for listen port' \
+		'Could not request local forwarding.'  \
+	)
+	local newline_separated=$(IFS=$'\n'; printf '%s' "${error_strs[*]}")
+	grep -q "${newline_separated}" "$stderr_file"
+}
+
 forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489"
 
 while true; do
@@ -31,9 +39,9 @@ while true; do
     debug_log "got exit code ${ret}"
 
     if [ "$ret" -eq 255 ]; then
-        if grep -q 'Could not request local forwarding.' ${stderr_file}; then
+        if is_port_forward_failure; then
             # force release remote forwarded ports from prev sessions so that we can use them
-            debug_log "got exit code ${ret} from ssh. killing sshd on the server to release ports"
+            debug_log "killing sshd on the server to release ports"
             ssh $host -- "tmux detach-client || (sleep 1; pkill --signal TERM --oldest sshd --uid \$USER)" > /dev/null 2>&1 || true
             continue
         fi
