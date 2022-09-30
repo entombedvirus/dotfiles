@@ -374,11 +374,11 @@ packer.startup(function(use)
 		'onsails/lspkind-nvim',
 	}
 
-		-- provides lsp progress notification toasts
+	-- provides lsp progress notification toasts
 	use {
 		'j-hui/fidget.nvim',
 		config = function()
-			require('fidget').setup{}
+			require('fidget').setup {}
 		end,
 	}
 
