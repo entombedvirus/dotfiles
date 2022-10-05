@@ -335,7 +335,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 			timeout_ms = 10000
 		end
 
-		vim.lsp.buf.format {
+		vim.lsp.buf.formatting {
 			async = false,
 			timeout_ms = timeout_ms,
 		}

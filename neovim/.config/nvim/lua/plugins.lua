@@ -644,6 +644,12 @@ packer.startup(function(use)
 
 		use {
 			"karb94/neoscroll.nvim",
+			cond = function()
+				-- only enable smooth scroll outside of Neovide. neovide
+				-- already has smooth scrolling and this plugin messes with
+				-- that.
+				return vim.g.neovide == nil
+			end,
 			config = function()
 				require('neoscroll').setup()
 			end,
