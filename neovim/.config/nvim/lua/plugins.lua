@@ -199,7 +199,7 @@ packer.startup(function(use)
 					path = vim.fn.stdpath "cache" .. "/catppuccin",
 				},
 			})
-			vim.g.catppuccin_flavour = "latte" -- latte, frappe, macchiato, mocha
+			vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 			vim.cmd [[colorscheme catppuccin]]
 		end,
 	}
@@ -563,7 +563,7 @@ packer.startup(function(use)
 			-- Rust / C / C++
 			dap.adapters.lldb = {
 				type = 'executable',
-				command = 'lldb-vscode', -- adjust as needed, must be absolute path
+				command = 'lldb', -- adjust as needed, must be absolute path
 				name = 'lldb'
 			}
 			dap.configurations.cpp = {
@@ -576,7 +576,7 @@ packer.startup(function(use)
 					end,
 					cwd = '${workspaceFolder}',
 					stopOnEntry = false,
-					args = {},
+					args = { 'testdata/2022-09-21.1717197a9589bf41.arb' },
 
 					-- ??
 					-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
