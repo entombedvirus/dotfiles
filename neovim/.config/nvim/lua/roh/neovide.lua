@@ -8,4 +8,4 @@ vim.g.neovide_floating_blur_amount_y = 2.0
 
 vim.g.neovide_input_macos_alt_is_meta = true
 
-vim.opt.guifont = { "Iosevka SS08 Medium", "h18" }
+vim.opt.guifont = { "Iosevka SS08 Light:h18" }

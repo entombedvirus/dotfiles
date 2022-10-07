@@ -189,17 +189,19 @@ packer.startup(function(use)
 		as = 'catppuccin',
 		config = function()
 			local catppuccin = require("catppuccin")
+			vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 			catppuccin.setup({
-				transparent_background = true,
+				transparent_background = false,
+				term_colors = true,
 				integrations = {
 					lsp_trouble = true,
+					vim_sneak = true,
 				},
 				compile = {
 					enabled = true,
 					path = vim.fn.stdpath "cache" .. "/catppuccin",
 				},
 			})
-			vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 			vim.cmd [[colorscheme catppuccin]]
 		end,
 	}
@@ -648,7 +650,8 @@ packer.startup(function(use)
 				-- only enable smooth scroll outside of Neovide. neovide
 				-- already has smooth scrolling and this plugin messes with
 				-- that.
-				return vim.g.neovide == nil
+				local uis = vim.api.nvim_list_uis()
+				return #uis > 0
 			end,
 			config = function()
 				require('neoscroll').setup()

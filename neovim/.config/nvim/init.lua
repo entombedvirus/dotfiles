@@ -6,10 +6,8 @@ require 'roh.disable_builtin'
 -- global editor settings
 require 'roh.editor'
 
--- neovide
-if vim.g.neovide then
-	require 'roh.neovide'
-end
+-- neovide specific settings
+require 'roh.neovide'
 
 -- load  plugins and  their configs
 local ok, msg = pcall(require, 'plugins')

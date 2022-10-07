@@ -335,10 +335,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 			timeout_ms = 10000
 		end
 
-		vim.lsp.buf.formatting {
-			async = false,
-			timeout_ms = timeout_ms,
-		}
+		vim.lsp.buf.formatting_sync({}, timeout_ms)
 
 		if ends_with(ev.file, '.go') then
 			organize_go_imports()
