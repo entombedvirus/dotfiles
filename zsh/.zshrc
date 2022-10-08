@@ -11,9 +11,6 @@ source ${HOME}/.antigen/antigen.zsh
 antigen use oh-my-zsh
 
 antigen bundles <<EOBUNDLE
-    gitfast
-    golang
-    kubectl
     history
 
     # fzf completions
