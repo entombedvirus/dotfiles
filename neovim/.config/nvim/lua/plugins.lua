@@ -191,7 +191,7 @@ packer.startup(function(use)
 			local catppuccin = require("catppuccin")
 			vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 			catppuccin.setup({
-				transparent_background = false,
+				transparent_background = true,
 				term_colors = true,
 				integrations = {
 					lsp_trouble = true,
