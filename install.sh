@@ -21,7 +21,7 @@ in
         # install linux brew deps
         sudo apt-get install build-essential file git python3-pip
         # packages that are not available via brew
-        sudo apt-get install xdg-utils
+        sudo apt-get install xdg-utils stow
 
         # linuxbrew's use of curl fails if there is both a /usr/bin/curl and a /usr/local/bin/curl
         if [ -e /usr/bin/curl -a ! -L /usr/bin/curl -a -e /usr/local/bin/curl ]; then
