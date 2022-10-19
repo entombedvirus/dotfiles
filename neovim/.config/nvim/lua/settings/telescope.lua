@@ -44,6 +44,7 @@ telescope.setup {
 		},
 	},
 }
+
 telescope.load_extension('fzf')
 
 local keymap = vim.api.nvim_set_keymap
