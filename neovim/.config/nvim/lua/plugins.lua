@@ -568,7 +568,7 @@ packer.startup(function(use)
 			-- Rust / C / C++
 			dap.adapters.lldb = {
 				type = 'executable',
-				command = 'lldb', -- adjust as needed, must be absolute path
+				command = vim.fn.executable('lldb-vscode') == 1 and 'lldb-vscode' or 'lldb', -- adjust as needed, must be absolute path
 				name = 'lldb'
 			}
 			dap.configurations.cpp = {
@@ -577,11 +577,17 @@ packer.startup(function(use)
 					type = 'lldb',
 					request = 'launch',
 					program = function()
-						return vim.fn.input('Path to executable: ', last_user_input or vim.fn.getcwd() .. '/', 'file')
+						last_user_input = vim.fn.input('Path to executable: ', last_user_input or vim.fn.getcwd() .. '/', 'file')
+						return last_user_input
 					end,
 					cwd = '${workspaceFolder}',
 					stopOnEntry = false,
 					args = { 'testdata/2022-09-21.1717197a9589bf41.arb' },
+					sourceMap = {
+						-- commit sha from rustc --version
+						{ "/rustc/a24a020e6d926dffe6b472fc647978f92269504e/",
+							"/home/rravi/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust" },
+					},
 
 					-- ??
 					-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
