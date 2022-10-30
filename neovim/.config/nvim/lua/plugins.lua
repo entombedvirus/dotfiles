@@ -660,7 +660,7 @@ packer.startup(function(use)
 				-- already has smooth scrolling and this plugin messes with
 				-- that.
 				local uis = vim.api.nvim_list_uis()
-				return #uis > 0
+				return (not vim.g.neovide) and #uis > 0
 			end,
 			config = function()
 				require('neoscroll').setup()
