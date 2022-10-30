@@ -11,7 +11,7 @@ vim.g.neovide_fullscreen = true
 
 
 -- See https://github.com/neovide/neovide/blob/main/website/docs/configuration.md#display
-vim.opt.guifont = { "Iosevka SS08 Light:h18:#e-subpixelantialias:#h-full" }
+vim.opt.guifont = { "Iosevka SS08 Light:h18:#e-subpixelantialias" }
 
 -- dynamically change scale
 local function changeScaleFactor(delta)
