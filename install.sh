@@ -83,8 +83,6 @@ fi
 for src in zsh/.terminfo/*.src; do tic -x -o zsh/.terminfo $src; done
 
 # install rust
-if ! command -v cargo >/dev/null; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-fi
+rustup-init
 
 echo "logout and log back in and run linkify"
