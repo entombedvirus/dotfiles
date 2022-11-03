@@ -571,6 +571,17 @@ packer.startup(function(use)
 				command = vim.fn.executable('lldb-vscode') == 1 and 'lldb-vscode' or 'lldb', -- adjust as needed, must be absolute path
 				name = 'lldb'
 			}
+
+			local function get_rust_source_map()
+				if vim.fn.executable("rustc") == 1 then
+					local commit_hash = vim.fn.system("rustc --version --verbose | grep commit-hash | cut -d' '  -f2"):gsub("\n", "")
+					local sysroot_output = vim.fn.system("rustc --print sysroot"):gsub("\n", "")
+					return { { ["/rustc/" .. commit_hash .. "/"] = sysroot_output .. "/lib/rustlib/src/rust" } }
+				else
+					return {}
+				end
+			end
+
 			dap.configurations.cpp = {
 				{
 					name = 'Launch',
@@ -583,11 +594,7 @@ packer.startup(function(use)
 					cwd = '${workspaceFolder}',
 					stopOnEntry = false,
 					args = { 'testdata/2022-09-21.1717197a9589bf41.arb' },
-					sourceMap = {
-						-- commit sha from rustc --version
-						{ "/rustc/a24a020e6d926dffe6b472fc647978f92269504e/",
-							"/home/rravi/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust" },
-					},
+					sourceMap = get_rust_source_map(),
 
 					-- ??
 					-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
