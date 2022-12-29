@@ -49,7 +49,7 @@ brew bundle install --file homebrew/$(uname).Brewfile
 LEMONADE_PATH=${HOME}/.bin/lemonade
 if [ ! -e "$LEMONADE_PATH" ]; then
     mkdir -p $(dirname "$LEMONADE_PATH")
-    curl --silent -L https://github.com/entombedvirus/lemonade/releases/download/v1.1.1-7-g2cc49d8/$LEMONADE_ARTIFACT | tar -xz -C $(dirname $LEMONADE_PATH)
+    curl --silent -L https://github.com/entombedvirus/lemonade/releases/download/v1.1.2-3-g89a9d6d/$LEMONADE_ARTIFACT | tar -xz -C $(dirname $LEMONADE_PATH)
     chmod 755 "$LEMONADE_PATH"
 fi
 
