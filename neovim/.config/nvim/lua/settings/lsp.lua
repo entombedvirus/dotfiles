@@ -302,6 +302,19 @@ local function get_lsp_opts(lang)
 				},
 			},
 		}
+	elseif lang == "rust_analyzer" then
+		opts.settings = {
+			["rust-analyzer"] = {
+				inlayHints = {
+					bindingModeHints = {
+						enable = true,
+					},
+					lifetimeElisionHints = {
+						enable = true,
+					},
+				}
+			}
+		}
 	end
 
 	return opts
