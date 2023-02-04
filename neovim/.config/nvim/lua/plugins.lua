@@ -565,56 +565,6 @@ packer.startup(function(use)
 				},
 			}
 
-			-- Rust / C / C++
-			dap.adapters.lldb = {
-				type = 'executable',
-				command = vim.fn.executable('lldb-vscode') == 1 and 'lldb-vscode' or 'lldb', -- adjust as needed, must be absolute path
-				name = 'lldb'
-			}
-
-			local function get_rust_source_map()
-				if vim.fn.executable("rustc") == 1 then
-					local commit_hash = vim.fn.system("rustc --version --verbose | grep commit-hash | cut -d' '  -f2"):gsub("\n", "")
-					local sysroot_output = vim.fn.system("rustc --print sysroot"):gsub("\n", "")
-					return { { ["/rustc/" .. commit_hash .. "/"] = sysroot_output .. "/lib/rustlib/src/rust" } }
-				else
-					return {}
-				end
-			end
-
-			dap.configurations.cpp = {
-				{
-					name = 'Launch',
-					type = 'lldb',
-					request = 'launch',
-					program = function()
-						last_user_input = vim.fn.input('Path to executable: ', last_user_input or vim.fn.getcwd() .. '/', 'file')
-						return last_user_input
-					end,
-					cwd = '${workspaceFolder}',
-					stopOnEntry = false,
-					args = { 'testdata/2022-09-21.1717197a9589bf41.arb' },
-					sourceMap = get_rust_source_map(),
-
-					-- ??
-					-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
-					--
-					--    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-					--
-					-- Otherwise you might get the following error:
-					--
-					--    Error on launch: Failed to attach to the target process
-					--
-					-- But you should be aware of the implications:
-					-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
-					-- runInTerminal = false,
-				},
-			}
-
-			-- If you want to use this for Rust and C, add something like this:
-			dap.configurations.c = dap.configurations.cpp
-			dap.configurations.rust = dap.configurations.cpp
-
 			local opts = { silent = true, noremap = true }
 			vim.api.nvim_set_keymap('n', '<leader>dd', "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
 			vim.api.nvim_set_keymap('n', '<leader>dB',

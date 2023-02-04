@@ -326,7 +326,15 @@ for _, name in pairs(lsp_servers) do
 		-- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
 		-- Initialize the LSP via rust-tools instead
 		require("rust-tools").setup {
-			server = opts
+			server = opts,
+			-- debugging stuff
+			dap = {
+				adapter = {
+					type = "executable",
+					command = vim.fn.executable('lldb-vscode') == 1 and 'lldb-vscode' or 'lldb', -- adjust as needed, must be absolute path
+					name = "rt_lldb",
+				},
+			},
 		}
 	else
 		lspconfig[name].setup(opts)

@@ -75,6 +75,9 @@
         "/home/rravi/.local/share/nvim/site/pack/packer/start/vim-javascript/after",
         "/home/rravi/.local/share/nvim/site/pack/packer/start/vim-jsx/after",
         "${3rd}/luassert/library",
-        "${3rd}/luv/library"
-    ]
+        "${3rd}/luv/library",
+        "${3rd}/luassert/library",
+        "${3rd}/luassert/library"
+    ],
+    "workspace.checkThirdParty": false
 }
