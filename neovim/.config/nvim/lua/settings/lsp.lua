@@ -178,13 +178,24 @@ local function get_lsp_opts(lang)
 		on_attach    = on_attach,
 		capabilities = capabilities,
 		flags        = flags,
+		handlers     = {
+			-- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
+			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = "rounded",
+			}),
+
+			["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+				-- delay update diagnostics
+				update_in_insert = false,
+				virtual_text     = true,
+				underline        = true,
+			}),
+		},
 	}
 
+	local overrides = {}
 	if lang == "efm" then
-		opts = {
-			on_attach    = on_attach,
-			capabilities = capabilities,
-			flags        = flags,
+		overrides = {
 			init_options = {
 				documentFormatting = true,
 			},
@@ -207,12 +218,9 @@ local function get_lsp_opts(lang)
 		}
 
 	elseif lang == "gopls" then
-		opts = {
-			cmd          = { 'gopls', '-remote=auto' },
-			on_attach    = on_attach,
-			flags        = flags,
-			capabilities = capabilities,
-			settings     = {
+		overrides = {
+			cmd      = { 'gopls', '-remote=auto' },
+			settings = {
 				gopls = {
 					usePlaceholders    = true,
 					completeUnimported = true,
@@ -231,25 +239,16 @@ local function get_lsp_opts(lang)
 					--},
 				},
 			},
-			handlers     = {
-				-- ["textDocument/publishDiagnostics"] = noop,
-				["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-					-- delay update diagnostics
-					update_in_insert = false,
-					virtual_text     = true,
-					underline        = true,
-				}),
-			},
 		}
 
 	elseif lang == "jsonnet_ls" then
 		local util = require 'lspconfig.util'
 
-		opts.root_dir = function(fname)
+		overrides.root_dir = function(fname)
 			return util.root_pattern 'Makefile' (fname) or util.find_git_ancestor(fname)
 		end
 
-		opts.on_new_config = function(new_config, file_root_dir)
+		overrides.on_new_config = function(new_config, file_root_dir)
 			-- common jsonnet library paths
 			new_config.settings.jpath = {
 				util.path.join { file_root_dir, 'lib' },
@@ -257,7 +256,7 @@ local function get_lsp_opts(lang)
 			}
 		end
 
-		opts.settings = {
+		overrides.settings = {
 			-- without these ext_vars, lsp parsing of jsonnet files will break
 			ext_vars = {
 				gcpProject = 'dummy_gcp_project',
@@ -280,7 +279,7 @@ local function get_lsp_opts(lang)
 		local runtime_path = vim.split(package.path, ';')
 		table.insert(runtime_path, 'lua/?.lua')
 		table.insert(runtime_path, 'lua/?/init.lua')
-		opts.settings = {
+		overrides.settings = {
 			Lua = {
 				runtime = {
 					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
@@ -303,7 +302,7 @@ local function get_lsp_opts(lang)
 			},
 		}
 	elseif lang == "rust_analyzer" then
-		opts.settings = {
+		overrides.settings = {
 			["rust-analyzer"] = {
 				inlayHints = {
 					bindingModeHints = {
@@ -317,7 +316,7 @@ local function get_lsp_opts(lang)
 		}
 	end
 
-	return opts
+	return vim.tbl_deep_extend("force", opts, overrides)
 end
 
 local lspconfig = require('lspconfig')
