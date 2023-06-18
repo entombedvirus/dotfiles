@@ -14,7 +14,7 @@ local lsp_servers = {
 	'jsonls',
 	'jsonnet_ls',
 	'rust_analyzer',
-	'sumneko_lua',
+	'lua_ls',
 	'tsserver',
 	'vimls',
 	'yamlls',
@@ -32,7 +32,8 @@ require("lspconfig")
 
 -- vim.lsp.set_log_level(vim.log.levels.TRACE)
 
---[[ Go ]] --
+--[[ Go ]]
+--
 local function organize_go_imports()
 	local gopls_client = vim.lsp.get_active_clients({ name = 'gopls' })
 	if not gopls_client or not gopls_client[1] then
@@ -216,7 +217,6 @@ local function get_lsp_opts(lang)
 				}
 			}
 		}
-
 	elseif lang == "gopls" then
 		overrides = {
 			cmd      = { 'gopls', '-remote=auto' },
@@ -240,7 +240,6 @@ local function get_lsp_opts(lang)
 				},
 			},
 		}
-
 	elseif lang == "jsonnet_ls" then
 		local util = require 'lspconfig.util'
 
@@ -273,8 +272,7 @@ local function get_lsp_opts(lang)
 			enable_eval_diagnostics = true,
 			enable_lint_diagnostics = true,
 		}
-
-	elseif lang == "sumneko_lua" then
+	elseif lang == "lua_ls" then
 		-- Make runtime files discoverable to the server
 		local runtime_path = vim.split(package.path, ';')
 		table.insert(runtime_path, 'lua/?.lua')
@@ -347,7 +345,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 	pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet' },
 	callback = function(ev)
 		local function ends_with(str, ending)
-			return ending == "" or str:sub(- #ending) == ending
+			return ending == "" or str:sub( -#ending) == ending
 		end
 
 		local timeout_ms = 1000

@@ -22,8 +22,8 @@
 [http]
 	cookiefile = /home/rravi/.gitcookies
 [credential "https://github.com"]
-	helper =
-	helper = !/usr/bin/env gh auth git-credential
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper =
-	helper = !/usr/bin/env gh auth git-credential
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
