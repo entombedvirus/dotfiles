@@ -83,6 +83,7 @@ cmp.setup({
 	},
 	sources = {
 		-- order matters: completions show up in priority order
+		{ name = 'copilot' },
 		{ name = 'nvim_lsp' },
 		{ name = 'nvim_lua' },
 		{ name = 'buffer' },

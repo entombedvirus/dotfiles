@@ -377,6 +377,15 @@ packer.startup(function(use)
 
 	use {
 		'onsails/lspkind-nvim',
+		config = function()
+			local lspkind = require("lspkind")
+			lspkind.init({
+				symbol_map = {
+					Copilot = "",
+				},
+			})
+			vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+		end
 	}
 
 	-- provides lsp progress notification toasts
@@ -399,6 +408,23 @@ packer.startup(function(use)
 				'<cmd>TroubleToggle document_diagnostics<cr>',
 				{ noremap = true }
 			)
+		end
+	}
+
+	use {
+		"zbirenbaum/copilot.lua",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
+		end,
+	}
+	use {
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
 		end
 	}
 
