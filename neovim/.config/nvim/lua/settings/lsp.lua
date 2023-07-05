@@ -283,7 +283,7 @@ local function get_lsp_opts(lang)
 					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 					version = 'LuaJIT',
 					-- Setup your lua path
-					path = runtime_path,
+					-- path = runtime_path,
 				},
 				diagnostics = {
 					-- Get the language server to recognize the `vim` global
@@ -291,7 +291,7 @@ local function get_lsp_opts(lang)
 				},
 				workspace = {
 					-- Make the server aware of Neovim runtime files
-					library = vim.api.nvim_get_runtime_file('', true),
+					-- library = vim.api.nvim_get_runtime_file('', true),
 				},
 				-- Do not send telemetry data containing a randomized but unique identifier
 				telemetry = {
@@ -345,7 +345,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 	pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet' },
 	callback = function(ev)
 		local function ends_with(str, ending)
-			return ending == "" or str:sub( -#ending) == ending
+			return ending == "" or str:sub(- #ending) == ending
 		end
 
 		local timeout_ms = 1000

@@ -65,6 +65,7 @@ vim.api.nvim_create_autocmd(
 		desc = 'YAML indentation',
 	}
 )
+vim.g.mapleader = [[\]]
 
 -- disable the built-in showing of mode in the command bar since airline will
 -- take care of that
@@ -113,7 +114,7 @@ vim.o.mouse = 'a'
 
 -- persistent undo file
 vim.o.undofile = true
--- the "//" at the end of each directory means that file names will be built
+-- the ]//" at the end of each directory means that file names will be built
 -- from the complete path to the file with all path separators substituted to
 -- percent "%" sign. This will ensure file name uniqueness in the preserve
 -- directory.
@@ -155,7 +156,8 @@ vim.o.showtabline = 2
 
 -- use ripgrep, if available
 if vim.fn.executable('rg') == 1 then
-	vim.o.grepprg = [[rg --type-not=html --type-not=js --type-not=css --type-not=clojure --glob="!vendor/*" --vimgrep $*]]
+	vim.o.grepprg =
+	[[rg --type-not=html --type-not=js --type-not=css --type-not=clojure --glob="!vendor/*" --vimgrep $*]]
 	vim.o.grepformat = "%f:%l:%c:%m"
 end
 
@@ -173,7 +175,7 @@ local function xnoremap(lhs, rhs)
 end
 
 local function snoremap(lhs, rhs)
-	vim.keymap.set('s', lhs, rhs, {silent = true})
+	vim.keymap.set('s', lhs, rhs, { silent = true })
 end
 
 local function vmap(lhs, rhs)
@@ -185,7 +187,7 @@ local function omap(lhs, rhs)
 end
 
 local function smap(lhs, rhs)
-	vim.keymap.set('s', lhs, rhs, {silent = true, remap = true})
+	vim.keymap.set('s', lhs, rhs, { silent = true, remap = true })
 end
 
 -- quick save
