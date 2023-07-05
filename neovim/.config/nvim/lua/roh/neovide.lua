@@ -7,7 +7,8 @@ vim.g.neovide_floating_blur_amount_x = 2.0
 vim.g.neovide_floating_blur_amount_y = 2.0
 
 vim.g.neovide_input_macos_alt_is_meta = true
-vim.g.neovide_fullscreen = true
+-- no transparency if fullscreen is activated this way
+-- vim.g.neovide_fullscreen = true
 
 
 -- See https://github.com/neovide/neovide/blob/main/website/docs/configuration.md#display
