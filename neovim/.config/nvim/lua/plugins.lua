@@ -261,7 +261,7 @@ local plugins = {
 	'wellle/targets.vim',
 	{
 		'justinmk/vim-sneak',
-		config = function() vim.cmd("runtime lua/settings/vim-sneak.vim") end,
+		init = function() vim.cmd("runtime lua/settings/vim-sneak.vim") end,
 	},
 	{
 		'FooSoft/vim-argwrap',
