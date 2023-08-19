@@ -80,7 +80,7 @@ if [ -n "$zsh_path" ]; then
 fi
 
 # custom TERMs
-for src in zsh/.terminfo/*.src; do tic -x -o zsh/.terminfo $src; done
+for src in zsh/.terminfo/*.{terminfo,src}; do tic -x -o zsh/.terminfo $src; done
 
 # install rust
 rustup-init
