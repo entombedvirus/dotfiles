@@ -274,9 +274,6 @@ local function get_lsp_opts(lang)
 		}
 	elseif lang == "lua_ls" then
 		-- Make runtime files discoverable to the server
-		local runtime_path = vim.split(package.path, ';')
-		table.insert(runtime_path, 'lua/?.lua')
-		table.insert(runtime_path, 'lua/?/init.lua')
 		overrides.settings = {
 			Lua = {
 				runtime = {
@@ -291,7 +288,8 @@ local function get_lsp_opts(lang)
 				},
 				workspace = {
 					-- Make the server aware of Neovim runtime files
-					library = vim.api.nvim_get_runtime_file('', true),
+					-- library = vim.api.nvim_get_runtime_file('', true),
+					library = { vim.env.VIMRUNTIME },
 					checkThirdParty = false,
 				},
 				-- Do not send telemetry data containing a randomized but unique identifier
