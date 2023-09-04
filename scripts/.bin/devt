@@ -4,17 +4,6 @@ set -o errexit -o pipefail -o nounset # -o xtrace
 
 host=${1:-rravi-1}
 
-# if [ -z "$SSH_AUTH_SOCK" ]; then
-#     eval `ssh-agent -s`
-# fi
-
-# priv_key=$HOME/.ssh/id_rsa
-# if [ -f "$priv_key" ]; then
-#     if ! ssh-add -L >/dev/null 2>&1; then
-#         ssh-add "$priv_key"
-#     fi
-# fi
-
 function debug_log() {
     echo >&2 "$(date +'%h %d %H:%M:%S')> $@"
 }
