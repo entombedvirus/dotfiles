@@ -329,15 +329,25 @@ for _, name in pairs(lsp_servers) do
 	if name == "rust_analyzer" then
 		-- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
 		-- Initialize the LSP via rust-tools instead
+		-- local extension_path = vim.env.HOME .. '/codelldb-x86_64-darwin/extension/'
+		local extension_path = vim.fn.stdpath('data') .. '/mason/packages/codelldb/extension/'
+		local codelldb_path = extension_path .. 'adapter/codelldb'
+		local liblldb_path = extension_path .. 'lldb/lib/liblldb'
+		local this_os = vim.loop.os_uname().sysname;
+
+		-- The path in windows is different
+		if this_os:find "Windows" then
+			codelldb_path = extension_path .. "adapter\\codelldb.exe"
+			liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+		else
+			-- The liblldb extension is .so for linux and .dylib for macOS
+			liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+		end
 		require("rust-tools").setup {
 			server = opts,
 			-- debugging stuff
 			dap = {
-				adapter = {
-					type = "executable",
-					command = vim.fn.executable('lldb-vscode') == 1 and 'lldb-vscode' or 'lldb', -- adjust as needed, must be absolute path
-					name = "rt_lldb",
-				},
+				adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
 			},
 		}
 	else
