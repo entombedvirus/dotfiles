@@ -7,6 +7,7 @@ ts.setup {
 	highlight = {
 		enable = true,    -- false will disable the whole extension
 		disable = { 'python' }, -- list of language that will be disabled
+		additional_vim_regex_highlighting = false,
 		--disable = { 'go' },               -- list of language that will be disabled
 	},
 	incremental_selection = {

@@ -169,19 +169,27 @@ local plugins = {
 		name = 'catppuccin',
 		config = function()
 			local catppuccin = require("catppuccin")
-			vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
+			vim.g.catppuccin_flavour = "macchiato" -- latte, frappe, macchiato, mocha
 			catppuccin.setup({
-				transparent_background = true,
+				-- Neovide requires transparent_background set to false for color to work correctly
+				transparent_background = not vim.g.neovide,
 				term_colors = true,
 				integrations = {
 					lsp_trouble = true,
 					vim_sneak = true,
+					mason = true,
+					treesitter_context = true,
 				},
 				compile = {
 					enabled = true,
 					path = vim.fn.stdpath "cache" .. "/catppuccin",
 				},
 			})
+
+			local sign = vim.fn.sign_define
+			sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+			sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "" })
+			sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
 			vim.cmd [[colorscheme catppuccin]]
 		end,
 	},
@@ -234,6 +242,15 @@ local plugins = {
 		config = function()
 			require("nvim-surround").setup({
 				-- Configuration here, or leave empty to  defaults
+				surrounds = {
+					-- disable inserting control chars when pressing things like backspace while in surround mode
+					invalid_key_behavior = {
+						add = { "", "" },
+					},
+					["|"] = {
+						add = { "|", "|" },
+					}
+				},
 				keymaps = {
 					insert = "<C-s>",
 					insert_line = "<C-s><C-s>",
