@@ -327,28 +327,21 @@ local lspconfig = require('lspconfig')
 for _, name in pairs(lsp_servers) do
 	local opts = get_lsp_opts(name)
 	if name == "rust_analyzer" then
-		-- See: https://github.com/simrat39/rust-tools.nvim#initial-setup
-		-- Initialize the LSP via rust-tools instead
-		-- local extension_path = vim.env.HOME .. '/codelldb-x86_64-darwin/extension/'
-		local extension_path = vim.fn.stdpath('data') .. '/mason/packages/codelldb/extension/'
-		local codelldb_path = extension_path .. 'adapter/codelldb'
-		local liblldb_path = extension_path .. 'lldb/lib/liblldb'
-		local this_os = vim.loop.os_uname().sysname;
-
-		-- The path in windows is different
-		if this_os:find "Windows" then
-			codelldb_path = extension_path .. "adapter\\codelldb.exe"
-			liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
-		else
-			-- The liblldb extension is .so for linux and .dylib for macOS
-			liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
-		end
-		require("rust-tools").setup {
-			server = opts,
-			-- debugging stuff
-			dap = {
-				adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+		-- this configuration is automatically picked up by rustacean plugin when
+		-- rust files are loaded and we must not call any setup method
+		vim.g.rustaceanvim = {
+			-- Plugin configuration
+			inlay_hints = {
+				highlight = "NonText",
 			},
+			tools = {
+				hover_actions = {
+					auto_focus = true,
+				},
+			},
+			-- LSP configuration
+			server = opts,
+			-- DAP auto config seems to work well
 		}
 	else
 		lspconfig[name].setup(opts)
