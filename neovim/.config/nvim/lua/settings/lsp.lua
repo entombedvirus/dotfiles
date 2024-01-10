@@ -331,9 +331,9 @@ for _, name in pairs(lsp_servers) do
 		-- rust files are loaded and we must not call any setup method
 		vim.g.rustaceanvim = {
 			-- Plugin configuration
-			inlay_hints = {
-				highlight = "NonText",
-			},
+			-- inlay_hints = {
+			-- 	highlight = "NonText",
+			-- },
 			tools = {
 				hover_actions = {
 					auto_focus = true,
