@@ -1,0 +1,70 @@
+[font]
+size = 20
+
+# hinting:
+# full (default)
+# normal
+# slight
+# none
+hinting = "none"
+# edging:
+# antialias (default)
+# subpixelantialias
+# alias
+
+# https://github.com/neovide/neovide/blob/main/website/docs/config-file.md#runtime-settings
+# [[font.normal]]
+# family = "VictorMono Nerd Font"
+# style = "Regular"
+
+# [[font.bold]]
+# family = "VictorMono Nerd Font"
+# style = "Medium"
+
+# [[font.italic]]
+# family = "VictorMono Nerd Font"
+# style = "Italic"
+
+# [[font.bold_italic]]
+# family = "VictorMono Nerd Font"
+# style = "Medium Italic"
+
+[[font.normal]]
+family = "Iosevka Nerd Font Mono"
+style = "Regular"
+
+[[font.bold]]
+family = "Iosevka Nerd Font Mono"
+style = "Medium"
+
+[[font.italic]]
+family = "MonaspiceRn Nerd Font"
+style = "Italic"
+
+[[font.bold_italic]]
+family = "MonaspiceRn Nerd Font"
+style = "Medium Italic"
+
+# [[font.normal]]
+# family = "MonaspiceXe Nerd Font Propo"
+# style = "Regular"
+
+# [[font.bold]]
+# family = "MonaspiceXe Nerd Font Propo"
+# style = "Medium"
+
+# [[font.italic]]
+# family = "MonaspiceRn Nerd Font Propo"
+# style = "Italic"
+
+# [[font.bold_italic]]
+# family = "MonaspiceRn Nerd Font Propo"
+# style = "Medium Italic"
+
+[font.features]
+# https://typeof.net/Iosevka/customizer
+"Iosevka Nerd Font Mono" = ["+ss04", "+ss08"]
+
+# https://monaspace.githubnext.com
+"MonaspiceNe Nerd Font" = ["+ss01", "+ss02", "+ss03", "+ss06", "+calt", "+dlig"]
+"MonaspiceRn Nerd Font" = ["+ss01", "+ss02", "+ss03", "+ss06","+calt", "+dlig"]

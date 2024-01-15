@@ -8,13 +8,15 @@ vim.g.neovide_floating_shadow = true
 vim.g.neovide_floating_blur_amount_x = 2.0
 vim.g.neovide_floating_blur_amount_y = 2.0
 
-vim.g.neovide_scroll_animation_length = 0.200
+vim.g.neovide_scroll_animation_length = 0.100
+vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_input_macos_alt_is_meta = true
 -- no transparency if fullscreen is activated this way
 -- vim.g.neovide_fullscreen = true
 
 -- See https://github.com/neovide/neovide/blob/main/website/docs/configuration.md#display
-vim.opt.guifont = { "Victor Mono,Iosevka SS08 Light:h16:#e-subpixelantialias" }
+-- Font settings are configured in .config/neovide/config.toml
+-- vim.opt.guifont = { "Victor Mono,Iosevka SS08 Light:h16:#e-subpixelantialias" }
 vim.opt.linespace = 16;
 
 -- dynamically change scale
@@ -25,6 +27,7 @@ end
 vim.g.neovide_scale_factor = 1.0
 vim.keymap.set('n', '<D-=>', function() changeScaleFactor(1.10) end)
 vim.keymap.set('n', '<D-->', function() changeScaleFactor(1 / 1.10) end)
+vim.keymap.set('n', '<D-0>', function() vim.g.neovide_scale_factor = 1.0 end)
 
 -- Allow clipboard copy paste in neovim
 vim.g.neovide_input_use_logo = 1
