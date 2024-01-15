@@ -300,7 +300,7 @@ return {
 		-- provides lsp progress notification toasts
 		{
 			'j-hui/fidget.nvim',
-			tag = 'legacy',
+			tag = 'v1.2.0',
 			config = function()
 				require('fidget').setup({})
 			end,
