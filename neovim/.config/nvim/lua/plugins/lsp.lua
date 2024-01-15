@@ -283,6 +283,10 @@ local function get_lsp_opts(lang)
 				}
 			}
 		}
+	elseif lang == "clangd" then
+		-- suppress "warning: multiple different client offset_encodings detected for buffer, this is not supported yet" warning
+		-- See: https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997234900
+		overrides.capabilities = { offsetEncoding = { "utf-16" } }
 	end
 
 	return vim.tbl_deep_extend("force", opts, overrides)
@@ -360,7 +364,7 @@ return {
 		local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
 		vim.api.nvim_create_autocmd('BufWritePre', {
 			group = lsp_fmt_autos,
-			pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet', '*.tf', '*.tfvars' },
+			pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet', '*.tf', '*.tfvars', '*.c', '*.h' },
 			callback = function(ev)
 				local function ends_with(str, ending)
 					return ending == "" or str:sub(- #ending) == ending
