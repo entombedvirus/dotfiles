@@ -1,40 +1,4 @@
-if not pcall(require, 'mason') then
-	return
-end
-
-local lsp_servers = {
-	'bashls',
-	'clangd',
-	'cssls',
-	'dockerls',
-	'efm',
-	'gopls',
-	'grammarly',
-	'html',
-	'jsonls',
-	'jsonnet_ls',
-	'rust_analyzer',
-	'lua_ls',
-	'tsserver',
-	'terraformls',
-	'vimls',
-	'yamlls',
-}
-
-
-
--- order is important; mason -> mason-lspconfig -> lspconfig
-require("mason").setup {}
-require("mason-lspconfig").setup {
-	ensure_installed = lsp_servers, -- ensure these servers are always installed
-	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-}
-require("lspconfig")
-
--- vim.lsp.set_log_level(vim.log.levels.TRACE)
-
 --[[ Go ]]
---
 local function organize_go_imports()
 	local gopls_client = vim.lsp.get_active_clients({ name = 'gopls' })
 	if not gopls_client or not gopls_client[1] then
@@ -129,7 +93,8 @@ local on_attach = function(client, bufnr)
 
 	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
 	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-	vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+	vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+		opts)
 	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
 	vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
@@ -323,49 +288,96 @@ local function get_lsp_opts(lang)
 	return vim.tbl_deep_extend("force", opts, overrides)
 end
 
-local lspconfig = require('lspconfig')
-for _, name in pairs(lsp_servers) do
-	local opts = get_lsp_opts(name)
-	if name == "rust_analyzer" then
-		-- this configuration is automatically picked up by rustacean plugin when
-		-- rust files are loaded and we must not call any setup method
-		vim.g.rustaceanvim = {
-			-- Plugin configuration
-			-- inlay_hints = {
-			-- 	highlight = "NonText",
-			-- },
-			tools = {
-				hover_actions = {
-					auto_focus = true,
-				},
-			},
-			-- LSP configuration
-			server = opts,
-			-- DAP auto config seems to work well
+return {
+	"williamboman/mason.nvim",
+	dependencies = {
+		"williamboman/mason-lspconfig.nvim",
+		'neovim/nvim-lspconfig',
+		-- provides lsp progress notification toasts
+		{
+			'j-hui/fidget.nvim',
+			tag = 'legacy',
+			config = function()
+				require('fidget').setup({})
+			end,
+		},
+	},
+	config = function()
+		local lsp_servers = {
+			'bashls',
+			'clangd',
+			'cssls',
+			'dockerls',
+			'efm',
+			'gopls',
+			'grammarly',
+			'html',
+			'jsonls',
+			'jsonnet_ls',
+			'rust_analyzer',
+			'lua_ls',
+			'tsserver',
+			'terraformls',
+			'vimls',
+			'yamlls',
 		}
-	else
-		lspconfig[name].setup(opts)
-	end
-end
 
-local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePre', {
-	group = lsp_fmt_autos,
-	pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet', '*.tf', '*.tfvars' },
-	callback = function(ev)
-		local function ends_with(str, ending)
-			return ending == "" or str:sub(- #ending) == ending
+		-- order is important; mason -> mason-lspconfig -> lspconfig
+		require("mason").setup {}
+		require("mason-lspconfig").setup {
+			ensure_installed = lsp_servers, -- ensure these servers are always installed
+			automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+		}
+		require("lspconfig")
+
+		-- vim.lsp.set_log_level(vim.log.levels.TRACE)
+
+		local lspconfig = require('lspconfig')
+		for _, name in pairs(lsp_servers) do
+			local opts = get_lsp_opts(name)
+			if name == "rust_analyzer" then
+				-- this configuration is automatically picked up by rustacean plugin when
+				-- rust files are loaded and we must not call any setup method
+				vim.g.rustaceanvim = {
+					-- Plugin configuration
+					-- inlay_hints = {
+					-- 	highlight = "NonText",
+					-- },
+					tools = {
+						hover_actions = {
+							auto_focus = true,
+						},
+					},
+					-- LSP configuration
+					server = opts,
+					-- DAP auto config seems to work well
+				}
+			else
+				lspconfig[name].setup(opts)
+			end
 		end
 
-		local timeout_ms = 1000
-		if ends_with(ev.file, '.py') then
-			timeout_ms = 10000
-		end
+		local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
+		vim.api.nvim_create_autocmd('BufWritePre', {
+			group = lsp_fmt_autos,
+			pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet', '*.tf', '*.tfvars' },
+			callback = function(ev)
+				local function ends_with(str, ending)
+					return ending == "" or str:sub(- #ending) == ending
+				end
 
-		vim.lsp.buf.format({ timeout_ms = timeout_ms })
+				local timeout_ms = 1000
+				if ends_with(ev.file, '.py') then
+					timeout_ms = 10000
+				end
 
-		if ends_with(ev.file, '.go') then
-			organize_go_imports()
-		end
+				vim.lsp.buf.format({ timeout_ms = timeout_ms })
+
+				if ends_with(ev.file, '.go') then
+					organize_go_imports()
+				end
+			end,
+		})
 	end,
-})
+
+}

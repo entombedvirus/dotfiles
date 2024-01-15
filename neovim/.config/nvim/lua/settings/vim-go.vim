@@ -11,7 +11,7 @@ if executable('gopls')
     let g:go_referrers_mode = 'gopls'
 endif
 
-let g:go_snippet_engine = 'ultisnips'
+let g:go_snippet_engine = 'luasnip'
 let g:go_decls_mode = 'fzf'
 let g:go_highlight_types = 0
 let g:go_highlight_fields = 0
