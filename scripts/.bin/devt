@@ -20,7 +20,7 @@ function is_port_forward_failure() {
 	grep -q "${newline_separated}" "$stderr_file"
 }
 
-forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489"
+forward_args="-o ExitOnForwardFailure=yes -D 50001 -R 2489:localhost:2489 -L /tmp/neovim.sock:/tmp/neovim.sock"
 
 while true; do
     ret=0
