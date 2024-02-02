@@ -65,22 +65,11 @@ return {
 		keymap("n", "<leader>fm", "<cmd>lua require('telescope.builtin').marks()<cr>", opts)
 		keymap("n", "<leader>fq", "<cmd>lua require('telescope.builtin').quickfix()<cr>", opts)
 
-		keymap("n", "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
+		keymap({ "n", "v" }, "<M-g>", "<cmd>lua require('telescope.builtin').grep_string()<cr>", opts)
 
 		-- ctrl-p style MRU
 		keymap("n", "<leader>fp", "<cmd>FilesMru --tiebreak=end<cr>", opts)
 		keymap("n", "<c-p>", "<cmd>lua require('custom_mru').find()<cr>", opts)
-
-		local function grep_selection()
-			local _, srow, scol, _ = unpack(vim.fn.getpos("'<"))
-			local _, erow, ecol, _ = unpack(vim.fn.getpos("'>"))
-			if srow ~= erow then
-				print("cannot search multi line strings")
-				return
-			end
-			local selection = vim.fn.getline("."):sub(scol, ecol)
-			require('telescope.builtin').grep_string({ search = selection })
-		end
 
 		local function find_vim_config()
 			local config_dir = "~/cl/neovim"
@@ -99,7 +88,6 @@ return {
 			}
 		end
 		keymap("n", "<leader>ev", find_vim_config, opts)
-		keymap("v", "<M-g>", grep_selection, opts)
 	end,
 
 }
