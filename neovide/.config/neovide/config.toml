@@ -1,5 +1,7 @@
+frame = "buttonless"
+
 [font]
-size = 20
+size = 22
 
 # hinting:
 # full (default)
@@ -11,6 +13,7 @@ hinting = "none"
 # antialias (default)
 # subpixelantialias
 # alias
+edging = "subpixelantialias"
 
 # https://github.com/neovide/neovide/blob/main/website/docs/config-file.md#runtime-settings
 # [[font.normal]]

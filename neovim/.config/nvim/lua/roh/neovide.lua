@@ -1,16 +1,11 @@
--- g:neovide_transparency should be 0 if you want to unify transparency of content and title bar.
--- vim.g.neovide_transparency = 0.0
--- vim.g.transparency = 0.95
--- vim.g.neovide_background_color = '#1E1F2F' .. vim.fn.printf('%x', vim.fn.float2nr(255 * vim.g.transparency))
-
 vim.g.neovide_transparency = 0.95
-vim.g.neovide_floating_shadow = true
+vim.g.neovide_floating_shadow = false
 vim.g.neovide_floating_blur_amount_x = 2.0
 vim.g.neovide_floating_blur_amount_y = 2.0
 
 vim.g.neovide_scroll_animation_length = 0.100
 vim.g.neovide_scroll_animation_far_lines = 0
-vim.g.neovide_cursor_animation_length = 0.04
+vim.g.neovide_cursor_animation_length = 0.02
 vim.g.neovide_input_macos_alt_is_meta = true
 -- no transparency if fullscreen is activated this way
 -- vim.g.neovide_fullscreen = true
@@ -37,3 +32,4 @@ vim.keymap.set({ 'v', 'n' }, '<D-v>', '"+p', { silent = true })
 vim.keymap.set('i', '<D-v>', '<esc>"+pa', { silent = true })
 vim.keymap.set('c', '<D-v>', '<c-r>+', { silent = true })
 vim.keymap.set('t', '<D-v>', '<c-\\><c-n>"+pa', { silent = true })
+vim.keymap.set('n', '<D-f>', function() vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen end, { silent = true })
