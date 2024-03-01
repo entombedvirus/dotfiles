@@ -97,12 +97,12 @@ return {
 			},
 			sources = {
 				-- order matters: completions show up in priority order
-				{ name = 'copilot' },
 				{ name = 'nvim_lsp' },
+				{ name = 'copilot' },
 				{ name = 'nvim_lua' },
-				{ name = 'buffer' },
-				{ name = 'spell' },
-				{ name = 'luasnip' },
+				-- { name = 'buffer' },
+				-- { name = 'spell' },
+				-- { name = 'luasnip' },
 			}
 		})
 	end,
