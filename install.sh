@@ -82,7 +82,4 @@ fi
 # custom TERMs
 for src in zsh/.terminfo/*.{terminfo,src}; do tic -x -o zsh/.terminfo $src; done
 
-# install rust
-rustup-init
-
 echo "logout and log back in and run linkify"
