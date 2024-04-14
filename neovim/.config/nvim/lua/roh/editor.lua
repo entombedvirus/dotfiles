@@ -12,11 +12,11 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
 	'TextYankPost',
 	{
+		desc = 'Highlight when yanking (copying) text',
 		callback = function()
-			vim.highlight.on_yank { higroup = "IncSearch", timeout = 150, on_visual = false }
+			vim.highlight.on_yank()
 		end,
 		group = group,
-		pattern = '*',
 	}
 )
 
@@ -143,6 +143,17 @@ vim.opt.wildignore:append({ '*.pyc', '*.o', '*.a', '*.clj' })
 -- sync to system clipboard
 vim.o.clipboard = 'unnamedplus'
 
+-- spell check
+vim.opt.spell = false -- used on-demand
+vim.opt.spelllang = 'en_us'
+vim.opt.spelloptions = "camel"
+
+-- prefer vertical splits
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+-- SomethingAround
+
 -- For conceal markers.
 if vim.fn.has('conceal') == 1 then
 	-- hide concealed chars, except in insert, visual and command modes
@@ -176,6 +187,10 @@ end
 
 local function snoremap(lhs, rhs)
 	vim.keymap.set('s', lhs, rhs, { silent = true })
+end
+
+local function imap(lhs, rhs)
+	vim.keymap.set('n', lhs, rhs, { silent = true, remap = true })
 end
 
 local function vmap(lhs, rhs)
@@ -249,6 +264,10 @@ inoremap('<C-e>', '<C-o>A')
 inoremap('<C-f>', '<C-o>l')
 -- " conflicts with delete char
 -- " inoremap <C-d> <C-o>h
+
+-- " duplicate current line
+nnoremap('<D-d>', 'mz"zY"zP`z')
+inoremap('<D-d>', '<Esc>mz"zY"zP`za')
 
 -- " reformat JSON
 nnoremap('<leader>jt', '<Esc>:%!jq<CR>')

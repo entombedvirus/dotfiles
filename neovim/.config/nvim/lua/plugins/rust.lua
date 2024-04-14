@@ -1,8 +1,7 @@
 return {
 	"mrcjkb/rustaceanvim",
 	ft = { "rust" },
-	event = "BufReadPost",
-	version = "^3", -- Recommended
+	version = "^4", -- Recommended
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"mfussenegger/nvim-dap",

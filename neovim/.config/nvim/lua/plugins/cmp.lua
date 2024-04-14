@@ -7,18 +7,7 @@ return {
 		'hrsh7th/cmp-nvim-lua',
 		'L3MON4D3/LuaSnip',
 		'saadparwaiz1/cmp_luasnip',
-		{
-			'onsails/lspkind-nvim',
-			config = function()
-				local lspkind = require("lspkind")
-				lspkind.init({
-					symbol_map = {
-						Copilot = "",
-					},
-				})
-				vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-			end
-		},
+		'onsails/lspkind-nvim',
 	},
 	config = function()
 		local cmp = require('cmp')
@@ -72,14 +61,20 @@ return {
 			},
 			formatting = {
 				format = lspkind.cmp_format({
-					with_text = true,
+					mode = 'symbol',
 					maxwidth = 50,
+					ellipsis_char = '...',
+					show_labelDetails = true,
 					menu = {
 						nvim_lua = "[lua]",
 						nvim_lsp = "[lsp]",
 						luasnip  = "[snip]",
 						buffer   = "[buf]",
 						spell    = "[spell]",
+					},
+					symbol_map = {
+						Codeium = "",
+						Copilot = "",
 					},
 				}),
 			},
@@ -98,7 +93,7 @@ return {
 			sources = {
 				-- order matters: completions show up in priority order
 				{ name = 'nvim_lsp' },
-				{ name = 'copilot' },
+				{ name = "codeium" },
 				{ name = 'nvim_lua' },
 				-- { name = 'buffer' },
 				-- { name = 'spell' },

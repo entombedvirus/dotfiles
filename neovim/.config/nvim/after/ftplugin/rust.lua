@@ -10,9 +10,18 @@ vim.keymap.set(
 
 vim.keymap.set(
 	"n",
-	"<leader>rdl",
+	"<F5>",
 	function()
-		vim.cmd.RustLsp({ 'debuggables', 'last' })
+		vim.cmd.RustLsp({ 'run', bang = true })
+	end,
+	{ silent = true, buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
+	"<F4>",
+	function()
+		vim.cmd.RustLsp({ 'debug', bang = true })
 	end,
 	{ silent = true, buffer = bufnr }
 )
@@ -22,6 +31,15 @@ vim.keymap.set(
 	"<space>ha",
 	function()
 		vim.cmd.RustLsp({ 'hover', 'actions' })
+	end,
+	{ silent = true, buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
+	"<space>ca",
+	function()
+		vim.cmd.RustLsp({ 'codeAction' })
 	end,
 	{ silent = true, buffer = bufnr }
 )

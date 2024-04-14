@@ -354,7 +354,10 @@ return {
 					},
 					-- LSP configuration
 					server = opts,
-					-- DAP auto config seems to work well
+					-- on_attach = on_attach,
+					dap = {
+						autoload_configurations = true,
+					}
 				}
 			else
 				lspconfig[name].setup(opts)
