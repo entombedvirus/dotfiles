@@ -351,6 +351,7 @@ return {
 						hover_actions = {
 							auto_focus = true,
 						},
+						test_executor = require('custom_rust_test_executor'),
 					},
 					-- LSP configuration
 					server = opts,

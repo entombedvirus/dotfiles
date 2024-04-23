@@ -10,11 +10,47 @@ vim.keymap.set(
 
 vim.keymap.set(
 	"n",
+	"<leader><F5>",
+	function()
+		vim.cmd.RustLsp({ 'runnables' })
+	end,
+	{ desc = 'list runnables targets', buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
+	"<space><F5>",
+	function()
+		vim.cmd.RustLsp({ 'run' })
+	end,
+	{ desc = 'run target at cursor', buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
 	"<F5>",
 	function()
 		vim.cmd.RustLsp({ 'run', bang = true })
 	end,
-	{ silent = true, buffer = bufnr }
+	{ desc = 'run last target', buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader><F4>",
+	function()
+		vim.cmd.RustLsp({ 'debuggables' })
+	end,
+	{ desc = 'list debuggable targets', buffer = bufnr }
+)
+
+vim.keymap.set(
+	"n",
+	"<space><F4>",
+	function()
+		vim.cmd.RustLsp({ 'debug' })
+	end,
+	{ desc = 'debug target at cursor', buffer = bufnr }
 )
 
 vim.keymap.set(
