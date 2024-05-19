@@ -48,6 +48,10 @@ end
 
 -- advertise that we have a snippet plugin installed to the default lsp client
 local on_attach = function(client, bufnr)
+	if client.name == 'rust-analyzer' then
+		client.server_capabilities.semanticTokensProvider = nil
+	end
+
 	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
 	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')

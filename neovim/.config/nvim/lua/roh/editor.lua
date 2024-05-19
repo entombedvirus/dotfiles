@@ -268,6 +268,7 @@ inoremap('<C-f>', '<C-o>l')
 -- " duplicate current line
 nnoremap('<D-d>', 'mz"zY"zP`z')
 inoremap('<D-d>', '<Esc>mz"zY"zP`za')
+xnoremap('<D-d>', 'mz"zy`>"zp`zgv')
 
 -- " reformat JSON
 nnoremap('<leader>jt', '<Esc>:%!jq<CR>')
