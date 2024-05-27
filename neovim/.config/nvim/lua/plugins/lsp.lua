@@ -120,6 +120,26 @@ local on_attach = function(client, bufnr)
 			callback = vim.lsp.buf.clear_references,
 		})
 	end
+
+	-- start with inlay hints enabled, but turn then off while in insert mode to prevent random cursor jumps
+	if client.server_capabilities.inlayHintProvider then
+		vim.lsp.inlay_hint.enable(true)
+		local grp = vim.api.nvim_create_augroup('lsp_inlay_hints_group', { clear = true })
+		vim.api.nvim_create_autocmd('InsertEnter', {
+			group = grp,
+			buffer = bufnr,
+			callback = function()
+				vim.lsp.inlay_hint.enable(false)
+			end,
+		})
+		vim.api.nvim_create_autocmd('InsertLeave', {
+			group = grp,
+			buffer = bufnr,
+			callback = function()
+				vim.lsp.inlay_hint.enable(true)
+			end,
+		})
+	end
 end
 
 local function get_lsp_opts(lang)
