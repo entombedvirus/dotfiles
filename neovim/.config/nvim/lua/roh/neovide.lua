@@ -6,7 +6,8 @@ vim.g.neovide_floating_blur_amount_y = 2.0
 vim.g.neovide_scroll_animation_length = 0.100
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_cursor_animation_length = 0.02
-vim.g.neovide_input_macos_alt_is_meta = true
+vim.g.neovide_input_macos_option_key_is_meta = 'only_left'
+
 -- no transparency if fullscreen is activated this way
 -- vim.g.neovide_fullscreen = true
 
