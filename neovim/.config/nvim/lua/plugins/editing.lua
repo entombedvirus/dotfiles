@@ -3,7 +3,6 @@ return {
 	'tpope/vim-unimpaired',
 	'tpope/vim-abolish',
 	'tpope/vim-repeat',
-	'tpope/vim-commentary',
 	'michaeljsmith/vim-indent-object',
 	'coderifous/textobj-word-column.vim',
 	'AndrewRadev/splitjoin.vim',
