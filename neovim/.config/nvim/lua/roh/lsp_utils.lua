@@ -319,4 +319,5 @@ end
 
 return {
 	get_lsp_opts = get_lsp_opts,
+	organize_go_imports = organize_go_imports,
 }
