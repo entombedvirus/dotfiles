@@ -1,6 +1,6 @@
 [user]
 	name = Rohith Ravi
-	email = rohith.ravi@mixpanel.com
+	email = entombedvirus@gmail.com
 [alias]
 	co = checkout
 	ci = commit
@@ -20,12 +20,16 @@
 [init]
 #	templatedir = ~/.git_template
 [http]
-	cookiefile = /home/rravi/.gitcookies
+	cookiefile = ~/.gitcookies
 [credential "https://github.com"]
 	helper =
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/local/bin/gh auth git-credential
 [merge]
 	conflictStyle = zdiff3
+
+# For work repositories.
+[includeIf "gitdir:~/work/cbh/"]
+	path = ~/work/cbh/.gitconfig-cbh
