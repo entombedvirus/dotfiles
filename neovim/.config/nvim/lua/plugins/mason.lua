@@ -8,7 +8,6 @@ local lsp_servers = {
 	'grammarly',
 	'html',
 	'jsonls',
-	'jsonnet_ls',
 	'rust_analyzer',
 	'lua_ls',
 	'tsserver',

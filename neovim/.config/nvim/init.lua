@@ -9,13 +9,6 @@ require 'roh.editor'
 -- neovide specific settings
 require 'roh.neovide'
 
--- load  plugins and  their configs
--- local ok, msg = pcall(require, 'plugins')
--- if not ok then
--- 	vim.notify('plugins: ' .. msg)
--- 	return
--- end
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
