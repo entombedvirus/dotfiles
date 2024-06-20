@@ -48,23 +48,6 @@ vim.api.nvim_create_autocmd(
 )
 
 
-vim.api.nvim_create_autocmd(
-	'FileType',
-	{
-		callback = function()
-			vim.bo.tabstop = 2
-			vim.bo.softtabstop = 2
-			vim.bo.shiftwidth = 2
-			vim.bo.expandtab = true
-			vim.wo.foldmethod = 'indent'
-			-- don't automatically ident on # and :
-			vim.opt_local.indentkeys:remove({ '0#', '<:>' })
-		end,
-		group = group,
-		pattern = 'yaml',
-		desc = 'YAML indentation',
-	}
-)
 vim.g.mapleader = [[\]]
 
 -- disable the built-in showing of mode in the command bar since airline will
