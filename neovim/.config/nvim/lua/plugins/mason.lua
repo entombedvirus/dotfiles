@@ -1,21 +1,3 @@
-local lsp_servers = {
-	'bashls',
-	'clangd',
-	'cssls',
-	'dockerls',
-	'efm',
-	'gopls',
-	'grammarly',
-	'html',
-	'jsonls',
-	'rust_analyzer',
-	'lua_ls',
-	'tsserver',
-	'terraformls',
-	'vimls',
-	'yamlls',
-}
-
 return {
 	{
 		"williamboman/mason.nvim",
