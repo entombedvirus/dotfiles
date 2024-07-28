@@ -86,10 +86,8 @@ vim.o.scrolloff = 7
 -- Number of lines to jump when scrolling. Improves rendering speed
 vim.o.scrolljump = 5
 
-vim.o.expandtab = false
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
+-- expandtab, tabstop, softtabstop, shiftwidth settings are managed by
+-- tpope/sleuth.vim
 vim.o.shiftround = true
 
 -- turn mouse on

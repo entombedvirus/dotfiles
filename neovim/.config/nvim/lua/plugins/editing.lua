@@ -3,6 +3,8 @@ return {
 	'tpope/vim-unimpaired',
 	'tpope/vim-abolish',
 	'tpope/vim-repeat',
+	-- auto-detect shiftwidth, expandtab etc from buffer or other files
+	'tpope/sleuth.vim',
 	'michaeljsmith/vim-indent-object',
 	'coderifous/textobj-word-column.vim',
 	'AndrewRadev/splitjoin.vim',
