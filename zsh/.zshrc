@@ -27,6 +27,9 @@ antigen apply
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# for pure prompt
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
+
 # can't use antigen theme for these
 autoload -U promptinit; promptinit
 prompt pure
