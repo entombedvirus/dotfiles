@@ -1,7 +1,7 @@
 [user]
 	name = Rohith Ravi
-	email = rohith.ravi@clipboardhealth.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKv08zGelsRCObzHP8fWaVkmhPhRY0PQW/KYRwH9ptnD
+	email = rohith@sierra.ai
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBTunHgO/rwv7dTH/W9NE1KjP4cXdgUKTR3TbUMYLnQU
 [gpg]
 	format = ssh
 [gpg "ssh"]
