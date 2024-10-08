@@ -32,5 +32,5 @@
 	conflictStyle = zdiff3
 
 # For work repositories.
-[includeIf "gitdir:~/work/sierra/"]
-	path = ~/work/cbh/.gitconfig-sierra
+[includeIf "gitdir:~/work/"]
+	path = ~/work/.gitconfig-sierra
