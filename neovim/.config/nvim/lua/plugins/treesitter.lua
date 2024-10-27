@@ -40,14 +40,15 @@ return {
 					'cpp',
 					'css',
 					'go',
+					'graphql',
 					'html',
 					'javascript',
 					'json',
 					'lua',
 					'python',
 					'rust',
-					'typescript',
 					'terraform',
+					'typescript',
 					'yaml',
 				},           -- one of 'all', 'language', or a list of languages
 				highlight = {

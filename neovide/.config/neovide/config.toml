@@ -1,4 +1,7 @@
+fork = true
 frame = "buttonless"
+maximized = true
+title-hidden = true
 
 [font]
 size = 14

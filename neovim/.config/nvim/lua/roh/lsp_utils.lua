@@ -193,16 +193,18 @@ local function get_lsp_opts(lang)
 			},
 			filetypes    = { "python" },
 			settings     = {
-				rootMarkers = { ".git/" },
+				rootMarkers = { "pyproject.toml", ".git/" },
 				languages = {
 					python = {
 						{
-							formatCommand      = './tools/black --quiet -',
-							formatStdin        = true,
-							lintCommand        = './tools/flake8 --stdin-display-name ${INPUT} -',
-							lintStdin          = true,
-							lintFormats        = { '%f:%l:%c: %m' },
-							lintIgnoreExitCode = true,
+							-- formatCommand      = 'ruff format --line-length 100 --stdin-filename ${INPUT} -',
+							-- formatStdin        = true,
+							lintCommand        = 'mypy --show-column-numbers',
+							lintFormats        = {
+								'%f:%l:%c: %trror: %m',
+								'%f:%l:%c: %tarning: %m',
+								'%f:%l:%c: %tote: %m',
+							}
 						},
 					},
 				}
@@ -312,6 +314,9 @@ local function get_lsp_opts(lang)
 		-- suppress "warning: multiple different client offset_encodings detected for buffer, this is not supported yet" warning
 		-- See: https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997234900
 		overrides.capabilities = { offsetEncoding = { "utf-16" } }
+	elseif lang == "graphql" then
+		local lspconfig = require("lspconfig")
+		overrides.root_dir = lspconfig.util.root_pattern(".graphqlconfig", ".graphqlrc", "package.json", "sudomodel/")
 	end
 
 	return vim.tbl_deep_extend("force", opts, overrides)

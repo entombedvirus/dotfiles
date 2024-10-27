@@ -8,10 +8,13 @@ return {
 		'L3MON4D3/LuaSnip',
 		'saadparwaiz1/cmp_luasnip',
 		'onsails/lspkind-nvim',
+		{
+			"zbirenbaum/copilot-cmp",
+			opts = {},
+		},
 	},
 	config = function()
 		local cmp = require('cmp')
-
 		vim.api.nvim_set_option("completeopt", "menu,menuone,noselect")
 		-- Disabling this for now since enabling spell leads to underlines everywhere and
 		-- it is super distracting. Actual LSP diagnostic errors gets buried.
@@ -21,6 +24,7 @@ return {
 
 		-- gives pretty icons in the autocomplete popup
 		local lspkind = require('lspkind')
+		vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#6CC644"})
 		local luasnip = require('luasnip')
 
 		local function next_func(fallback)
@@ -90,10 +94,28 @@ return {
 				['<C-j>'] = cmp.mapping(next_func, { 'i', 's' }),
 				['<C-k>'] = cmp.mapping(prev_func, { 'i', 's' }),
 			},
+			sorting = {
+				priority_weight = 2,
+				comparators = {
+					require("copilot_cmp.comparators").prioritize,
+
+					-- Below is the default comparitor list and order for nvim-cmp
+					cmp.config.compare.offset,
+					-- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+					cmp.config.compare.exact,
+					cmp.config.compare.score,
+					cmp.config.compare.recently_used,
+					cmp.config.compare.locality,
+					cmp.config.compare.kind,
+					cmp.config.compare.sort_text,
+					cmp.config.compare.length,
+					cmp.config.compare.order,
+				},
+			},
 			sources = {
 				-- order matters: completions show up in priority order
+				{ name = "copilot" },
 				{ name = 'nvim_lsp' },
-				{ name = "codeium" },
 				{ name = 'nvim_lua' },
 				-- { name = 'buffer' },
 				-- { name = 'spell' },

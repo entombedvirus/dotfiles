@@ -88,7 +88,7 @@ end
 
 function MruPicker:find_command()
 	local mru_cmd = 'cat ' .. self:cache_file()
-	local rg_options = '--files'
+	local rg_options = '--files --hidden -g !.git'
 	if self.rg_options ~= nil then
 		rg_options = self.rg_options
 	end

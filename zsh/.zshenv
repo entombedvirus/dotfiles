@@ -11,6 +11,7 @@ export PATH=/usr/local/sbin:$PATH
 
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
+export PATH=~/go/bin:$PATH
 
 function source_if_exists {
     file=$1

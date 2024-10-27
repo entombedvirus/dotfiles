@@ -133,7 +133,11 @@ vim.opt.spelloptions = "camel"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
--- SomethingAround
+-- tab stuff
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.expandtab = false
 
 -- For conceal markers.
 if vim.fn.has('conceal') == 1 then
@@ -196,6 +200,10 @@ xnoremap('H', '^')
 -- " jump to end of line
 nnoremap('L', '$')
 xnoremap('L', '$')
+
+-- " when in wrap mode, move wrapped lines
+nnoremap('j', 'gj')
+nnoremap('k', 'gk')
 
 -- " emulate vim-surround's aliases:
 -- " r -> [ ]

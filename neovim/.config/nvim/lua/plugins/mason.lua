@@ -29,21 +29,27 @@ return {
 
 			local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
 			vim.api.nvim_create_autocmd('BufWritePre', {
+				desc = 'auto format files on save',
 				group = lsp_fmt_autos,
-				pattern = { '*.py', '*.rs', '*.lua', '*.go', '*.jsonnet', '*.libsonnet', '*.tf', '*.tfvars', '*.c', '*.h' },
-				callback = function(ev)
-					local function ends_with(str, ending)
-						return ending == "" or str:sub(- #ending) == ending
+				callback = function(opts)
+					local file_types = {
+						python = true,
+						rust = true,
+						lua = true,
+						go = true,
+						jsonnet = true,
+						terraform = true,
+						c = true
+					}
+					local current_buf = vim.bo[opts.buf].filetype
+					if file_types[current_buf] == nil then
+						return
 					end
 
 					local timeout_ms = 1000
-					if ends_with(ev.file, '.py') then
-						timeout_ms = 10000
-					end
-
 					vim.lsp.buf.format({ timeout_ms = timeout_ms })
 
-					if ends_with(ev.file, '.go') then
+					if current_buf == 'go' then
 						require('roh/lsp_utils').organize_go_imports()
 					end
 				end,

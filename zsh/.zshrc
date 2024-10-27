@@ -15,11 +15,11 @@ antigen bundles <<EOBUNDLE
     junegunn/fzf shell/
     mollifier/anyframe
 
-	# custom stuff
-	$HOME/.zsh/custom
+    # custom stuff
+    $HOME/.zsh/custom
 
-	# Syntax highlighting bundle. should be last
-	zsh-users/zsh-syntax-highlighting
+    # Syntax highlighting bundle. should be last
+    zsh-users/zsh-syntax-highlighting
 EOBUNDLE
 
 # Tell antigen that you're done.
