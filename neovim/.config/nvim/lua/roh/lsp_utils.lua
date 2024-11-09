@@ -199,8 +199,8 @@ local function get_lsp_opts(lang)
 						{
 							-- formatCommand      = 'ruff format --line-length 100 --stdin-filename ${INPUT} -',
 							-- formatStdin        = true,
-							lintCommand        = 'mypy --show-column-numbers',
-							lintFormats        = {
+							lintCommand = 'mypy --show-column-numbers',
+							lintFormats = {
 								'%f:%l:%c: %trror: %m',
 								'%f:%l:%c: %tarning: %m',
 								'%f:%l:%c: %tote: %m',
@@ -276,25 +276,26 @@ local function get_lsp_opts(lang)
 		overrides.settings = {
 			Lua = {
 				runtime = {
-					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-					version = 'LuaJIT',
-					-- Setup your lua path
-					-- path = runtime_path,
+					-- Tell the language server which version of Lua you're using
+					-- (most likely LuaJIT in the case of Neovim)
+					version = 'LuaJIT'
 				},
 				diagnostics = {
 					-- Get the language server to recognize the `vim` global
 					globals = { 'vim', 'P', 'RELOAD', 'R' },
 				},
+				-- Make the server aware of Neovim runtime files
 				workspace = {
-					-- Make the server aware of Neovim runtime files
-					-- library = vim.api.nvim_get_runtime_file('', true),
-					library = { vim.env.VIMRUNTIME },
 					checkThirdParty = false,
-				},
-				-- Do not send telemetry data containing a randomized but unique identifier
-				telemetry = {
-					enable = false,
-				},
+					library = {
+						vim.env.VIMRUNTIME
+						-- Depending on the usage, you might want to add additional paths here.
+						-- "${3rd}/luv/library"
+						-- "${3rd}/busted/library",
+					}
+					-- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+					-- library = vim.api.nvim_get_runtime_file("", true)
+				}
 			},
 		}
 	elseif lang == "rust_analyzer" then

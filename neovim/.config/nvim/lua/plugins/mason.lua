@@ -18,7 +18,7 @@ return {
 				end,
 				-- disable setting up of rust lsp since that is handled by rustacean.nvim
 				['rust_analyzer'] = function() end,
-				['tsserver'] = function() end,
+				['ts_ls'] = function() end,
 			}
 		end,
 	},

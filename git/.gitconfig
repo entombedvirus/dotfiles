@@ -5,7 +5,7 @@
 	co = checkout
 	ci = commit
 	mt = mergetool
-	ctags = !.git/hooks/ctags
+	wip = commit -m wip --no-verify
 [apply]
 	whitespace = nowarn
 [color]
@@ -24,10 +24,10 @@
 	cookiefile = ~/.gitcookies
 [credential "https://github.com"]
 	helper =
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential
 [merge]
 	conflictStyle = zdiff3
 
