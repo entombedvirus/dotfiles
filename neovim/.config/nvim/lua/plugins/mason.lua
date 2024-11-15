@@ -39,7 +39,9 @@ return {
 						go = true,
 						jsonnet = true,
 						terraform = true,
-						c = true
+						c = true,
+						typescriptreact = false,
+						typescript = true,
 					}
 					local current_buf = vim.bo[opts.buf].filetype
 					if file_types[current_buf] == nil then

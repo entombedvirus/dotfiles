@@ -187,18 +187,23 @@ local function get_lsp_opts(lang)
 
 	local overrides = {}
 	if lang == "efm" then
+		local prettier = {
+			formatCommand = 'web/node_modules/.bin/prettier --stdin-filepath ${INPUT}',
+			formatStdin   = true,
+		}
 		overrides = {
 			init_options = {
 				documentFormatting = true,
+				documentRangeFormatting = true,
 			},
-			filetypes    = { "python" },
+			filetypes    = { "python", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" },
 			settings     = {
 				rootMarkers = { "pyproject.toml", ".git/" },
 				languages = {
 					python = {
 						{
-							-- formatCommand      = 'ruff format --line-length 100 --stdin-filename ${INPUT} -',
-							-- formatStdin        = true,
+							formatCommand = 'black --line-length 100 --quiet -',
+							formatStdin = true,
 							lintCommand = 'mypy --show-column-numbers',
 							lintFormats = {
 								'%f:%l:%c: %trror: %m',
@@ -206,6 +211,12 @@ local function get_lsp_opts(lang)
 								'%f:%l:%c: %tote: %m',
 							}
 						},
+					},
+					typescript = {
+						prettier,
+					},
+					typescriptreact = {
+						prettier,
 					},
 				}
 			}
