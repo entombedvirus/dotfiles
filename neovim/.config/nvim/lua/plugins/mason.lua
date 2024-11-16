@@ -26,6 +26,8 @@ return {
 		'neovim/nvim-lspconfig',
 		config = function()
 			-- vim.lsp.set_log_level(vim.log.levels.TRACE)
+			-- ~/.local/state/nvim/lsp.log
+			-- P(vim.lsp.get_log_path())
 
 			local lsp_fmt_autos = vim.api.nvim_create_augroup('lsp_fmt_autos', { clear = true })
 			vim.api.nvim_create_autocmd('BufWritePre', {

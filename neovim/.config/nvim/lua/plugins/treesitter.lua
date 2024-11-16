@@ -50,10 +50,10 @@ return {
 					'terraform',
 					'typescript',
 					'yaml',
-				},           -- one of 'all', 'language', or a list of languages
+				},          -- one of 'all', 'language', or a list of languages
 				highlight = {
 					enable = true, -- false will disable the whole extension
-					disable = { 'python' }, -- list of language that will be disabled
+					-- disable = { 'python' }, -- list of language that will be disabled
 					additional_vim_regex_highlighting = false,
 					--disable = { 'go' },               -- list of language that will be disabled
 				},
@@ -66,9 +66,9 @@ return {
 						'vim',
 					},
 					--disable = { 'cpp', 'lua' },
-					keymaps = {         -- mappings for incremental selection (visual mappings)
-						init_selection = "<cr>", -- maps in normal mode to init the node/scope selection
-						node_incremental = "<cr>", -- increment to the upper named parent
+					keymaps = {                   -- mappings for incremental selection (visual mappings)
+						init_selection = "<cr>",    -- maps in normal mode to init the node/scope selection
+						node_incremental = "<cr>",  -- increment to the upper named parent
 						scope_incremental = "<c-<cr>>", -- increment to the upper scope (as defined in locals.scm)
 						node_decremental = "<space><cr>", -- decrement to the previous node
 					}

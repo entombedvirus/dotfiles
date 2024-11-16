@@ -192,11 +192,12 @@ local function get_lsp_opts(lang)
 			formatStdin   = true,
 		}
 		overrides = {
+			cmd          = { "efm-langserver", "-logfile=/tmp/efm.log", "-loglevel=5" },
 			init_options = {
 				documentFormatting = true,
 				documentRangeFormatting = true,
 			},
-			filetypes    = { "python", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" },
+			filetypes    = { "go", "python", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" },
 			settings     = {
 				rootMarkers = { "pyproject.toml", ".git/" },
 				languages = {
@@ -218,7 +219,16 @@ local function get_lsp_opts(lang)
 					typescriptreact = {
 						prettier,
 					},
-				}
+					go = {
+						{
+							lintCommand =
+							"bin/golangci-lint-sierra run --new-from-rev=HEAD --out-format=line-number --print-issued-lines=false | tee -a /tmp/gls.log",
+							lintIgnoreExitCode = true,
+							lintStdin = true, -- this disables efm from passing the file name as arg
+							lintFormats = { '%f:%l:%c: %m' },
+						},
+					},
+				},
 			}
 		}
 	elseif lang == "gopls" then
