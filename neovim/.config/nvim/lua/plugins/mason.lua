@@ -6,20 +6,28 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
+			local function default_lsp_init_handler(server_name)
+				local opts = require("roh/lsp_utils").get_lsp_opts(server_name)
+				require("lspconfig")[server_name].setup(opts)
+			end
 			-- order is important; mason -> mason-lspconfig -> lspconfig
 			require('mason').setup({})
 			require('mason-lspconfig').setup_handlers {
 				-- The first entry (without a key) will be the default handler
 				-- and will be called for each installed server that doesn't have
 				-- a dedicated handler.
-				function(server_name) -- default handler (optional)
-					local opts = require("roh/lsp_utils").get_lsp_opts(server_name)
-					require("lspconfig")[server_name].setup(opts)
-				end,
+				default_lsp_init_handler,
+
 				-- disable setting up of rust lsp since that is handled by rustacean.nvim
 				['rust_analyzer'] = function() end,
 				['ts_ls'] = function() end,
 			}
+
+			-- these are not installed by Mason, so we have to call setup
+			local server_names = { "relay_lsp" }
+			for _, server_name in ipairs(server_names) do
+				default_lsp_init_handler(server_name)
+			end
 		end,
 	},
 	{
