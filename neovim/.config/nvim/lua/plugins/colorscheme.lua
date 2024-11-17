@@ -4,44 +4,44 @@ return {
 	--  'justinmk/molokai'
 	--  'nanotech/jellybeans.vim'
 	--  'morhetz/gruvbox'
-	--  'romainl/flattened'
+	-- 'romainl/flattened'
 	--  'whatyouhide/vim-gotham'
 	--  'NLKNguyen/papercolor-theme'
-	--  'rakr/vim-one'
+	-- 'rakr/vim-one'
 	--  'rakr/vim-two-firewatch'
 	--  'mhartington/oceanic-next'
-	--  'joshdick/onedark.vim'
-	--  'KeitaNakamura/neodark.vim'
+	-- 'joshdick/onedark.vim'
+	-- 'KeitaNakamura/neodark.vim'
 	--  'neutaaaaan/iosvkem'
 	--  'chriskempson/base16-vim'
 	--  'ayu-theme/ayu-vim'
 	--  'drewtempelmeyer/palenight.vim'
 	--  'NieTiger/halcyon-neovim'
 	--  { 'embark-theme/vim', as = 'embark' },
-	--  'tiagovla/tokyodark.nvim'
+	{ 'tiagovla/tokyodark.nvim', config = function() vim.cmd("colorscheme tokyodark") end },
 	--  'folke/tokyonight.nvim'
 	--  'yashguptaz/calvera-dark.nvim'
-	{
-		'EdenEast/nightfox.nvim',
-		config = function()
-			local nightfox = require('nightfox')
-			nightfox.setup({
-				options = {
-					transparent = not vim.g.neovide,
-					styles = {
-						comments  = "italic", -- change style of comments to be italic
-						keywords  = "bold,italic", -- change style of keywords to be bold
-						functions = "italic", -- styles can be a comma separated list
-						strings   = "italic", -- styles can be a comma separated list
-					},
-					inverse = {
-						match_paren = true, -- inverse the highlighting of match_parens
-					},
-				},
-			})
-			vim.cmd('colorscheme duskfox')
-		end,
-	},
+	-- {
+	-- 	'EdenEast/nightfox.nvim',
+	-- 	config = function()
+	-- 		local nightfox = require('nightfox')
+	-- 		nightfox.setup({
+	-- 			options = {
+	-- 				transparent = not vim.g.neovide,
+	-- 				styles = {
+	-- 					comments  = "italic", -- change style of comments to be italic
+	-- 					keywords  = "bold,italic", -- change style of keywords to be bold
+	-- 					functions = "italic", -- styles can be a comma separated list
+	-- 					strings   = "italic", -- styles can be a comma separated list
+	-- 				},
+	-- 				inverse = {
+	-- 					match_paren = true, -- inverse the highlighting of match_parens
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 		vim.cmd('colorscheme duskfox')
+	-- 	end,
+	-- },
 	-- {
 	-- 	'rebelot/kanagawa.nvim',
 	-- 	config = function()

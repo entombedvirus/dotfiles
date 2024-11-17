@@ -44,11 +44,11 @@ family = "Iosevka Nerd Font Mono"
 style = "Medium"
 
 [[font.italic]]
-family = "MonaspiceRn Nerd Font"
+family = "Iosevka Nerd Font Mono"
 style = "Italic"
 
 [[font.bold_italic]]
-family = "MonaspiceRn Nerd Font"
+family = "Iosevka Nerd Font Mono"
 style = "Medium Italic"
 
 # [[font.normal]]
