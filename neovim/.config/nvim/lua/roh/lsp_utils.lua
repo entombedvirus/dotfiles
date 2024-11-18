@@ -341,7 +341,6 @@ local function get_lsp_opts(lang)
 		overrides.root_dir = lspconfig.util.root_pattern(".graphqlconfig", ".graphqlrc", "package.json", "sudomodel/")
 	elseif lang == "relay_lsp" then
 		overrides.cmd = { "npx", "relay-compiler", "lsp" }
-		overrides.auto_start_compiler = true
 	end
 
 	return vim.tbl_deep_extend("force", opts, overrides)
