@@ -8,6 +8,7 @@ return {
 		'L3MON4D3/LuaSnip',
 		'saadparwaiz1/cmp_luasnip',
 		'onsails/lspkind-nvim',
+		"tailwind-tools",
 		{
 			"zbirenbaum/copilot-cmp",
 			opts = {},
@@ -24,7 +25,7 @@ return {
 
 		-- gives pretty icons in the autocomplete popup
 		local lspkind = require('lspkind')
-		vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#6CC644"})
+		vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 		local luasnip = require('luasnip')
 
 		local function next_func(fallback)
@@ -65,6 +66,7 @@ return {
 			},
 			formatting = {
 				format = lspkind.cmp_format({
+					before = require("tailwind-tools.cmp").lspkind_format,
 					mode = 'symbol',
 					maxwidth = 50,
 					ellipsis_char = '...',

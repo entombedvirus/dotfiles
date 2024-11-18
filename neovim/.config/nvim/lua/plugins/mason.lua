@@ -21,6 +21,8 @@ return {
 				-- disable setting up of rust lsp since that is handled by rustacean.nvim
 				['rust_analyzer'] = function() end,
 				['ts_ls'] = function() end,
+				-- setup by tailwind-tools
+				['tailwindcss'] = function() end,
 			}
 
 			-- these are not installed by Mason, so we have to call setup
