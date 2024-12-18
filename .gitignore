@@ -6,3 +6,4 @@ ssh/.ssh/id_*
 .DS_Store
 vim/.vim/plugins/
 tmux/.tmux/plugins/
+/vim/.vim/.netrwhist
