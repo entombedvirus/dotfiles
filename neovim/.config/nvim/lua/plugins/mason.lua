@@ -26,7 +26,9 @@ return {
 			}
 
 			-- these are not installed by Mason, so we have to call setup
-			local server_names = { "relay_lsp" }
+			local server_names = {
+				-- "relay_lsp",
+			}
 			for _, server_name in ipairs(server_names) do
 				default_lsp_init_handler(server_name)
 			end
@@ -52,16 +54,24 @@ return {
 						jsonnet = true,
 						terraform = true,
 						c = true,
-						typescriptreact = false,
-						typescript = true,
+						typescriptreact = "efm",
+						typescript = "efm",
 					}
 					local current_buf = vim.bo[opts.buf].filetype
-					if file_types[current_buf] == nil then
+					if not file_types[current_buf] then
 						return
 					end
 
-					local timeout_ms = 1000
-					vim.lsp.buf.format({ timeout_ms = timeout_ms })
+					local format_opts = {
+						timeout_ms = 1000,
+					}
+					if type(file_types[current_buf]) == "string" then
+						format_opts.filter = function(client)
+							return client.name == file_types[current_buf]
+						end
+					end
+
+					vim.lsp.buf.format(format_opts)
 
 					if current_buf == 'go' then
 						require('roh/lsp_utils').organize_go_imports()

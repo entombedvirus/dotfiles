@@ -141,6 +141,12 @@ local on_attach = function(client, bufnr)
 			end,
 		})
 	end
+
+	-- fix `gq` breakages.
+	-- See: https://github.com/nvimtools/none-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts#avoid-breaking-formatexpr-ie-gq
+	if client.server_capabilities.documentFormattingProvider then
+		vim.bo[bufnr].formatexpr = nil
+	end
 end
 
 local function get_lsp_opts(lang)
@@ -188,7 +194,7 @@ local function get_lsp_opts(lang)
 	local overrides = {}
 	if lang == "efm" then
 		local prettier = {
-			formatCommand = 'web/node_modules/.bin/prettier --stdin-filepath ${INPUT}',
+			formatCommand = '~/work/sierra/web/node_modules/.bin/prettier --stdin-filepath ${INPUT}',
 			formatStdin   = true,
 		}
 		overrides = {
@@ -197,9 +203,21 @@ local function get_lsp_opts(lang)
 				documentFormatting = true,
 				documentRangeFormatting = true,
 			},
-			filetypes    = { "go", "python", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" },
+			filetypes    = {
+				"go",
+				"python",
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+				"vue",
+				"svelte",
+				"astro",
+			},
 			settings     = {
-				rootMarkers = { "pyproject.toml", ".git/" },
+				rootMarkers = { "package.json", "pyproject.toml", ".git/" },
 				languages = {
 					python = {
 						{

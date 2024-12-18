@@ -274,6 +274,12 @@ snoremap("{", [[{}<esc>i]])
 --	starts surround mode (<c-s>)
 smap("<C-s>", [[<C-g>s<C-s>]])
 
+-- double tap escape to escape terminal mode
+vim.keymap.set('t', "<esc><esc>", "<C-\\><C-n>")
+vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
+vim.keymap.set("n", "<space>x", ":.lua<CR>")
+vim.keymap.set("v", "<space>x", ":lua<CR>")
+
 -- " Common typos
 local command = vim.api.nvim_create_user_command
 command('Q', 'quit', { desc = 'fat finger aliases' })

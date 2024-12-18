@@ -3,3 +3,4 @@ export GOTOOLCHAIN=auto
 export TF_DEFAULT_ROLE="engineer"
 export AWS_PROFILE="devtools-engineer"
 export PATH=~/work/sierra/bin:$PATH
+source ~/work/sierra/python/.venv/bin/activate
