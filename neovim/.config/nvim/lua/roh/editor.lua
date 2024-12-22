@@ -274,8 +274,8 @@ snoremap("{", [[{}<esc>i]])
 --	starts surround mode (<c-s>)
 smap("<C-s>", [[<C-g>s<C-s>]])
 
--- double tap escape to escape terminal mode
-vim.keymap.set('t', "<esc><esc>", "<C-\\><C-n>")
+-- keybinds to quickly source current file, line or selection
+-- thnx, @tj.
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
 vim.keymap.set("v", "<space>x", ":lua<CR>")
