@@ -18,8 +18,8 @@ return {
 	--  'drewtempelmeyer/palenight.vim'
 	--  'NieTiger/halcyon-neovim'
 	--  { 'embark-theme/vim', as = 'embark' },
-	{ 'tiagovla/tokyodark.nvim', config = function() vim.cmd("colorscheme tokyodark") end },
-	--  'folke/tokyonight.nvim'
+	-- { 'tiagovla/tokyodark.nvim', config = function() vim.cmd("colorscheme tokyodark") end },
+	{ 'folke/tokyonight.nvim', config = function() vim.cmd("colorscheme tokyonight") end },
 	--  'yashguptaz/calvera-dark.nvim'
 	-- {
 	-- 	'EdenEast/nightfox.nvim',
