@@ -1,7 +1,7 @@
 return {
 	"mrcjkb/rustaceanvim",
 	ft = { "rust" },
-	version = "^4", -- Recommended
+	version = "^5", -- Recommended
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"mfussenegger/nvim-dap",
