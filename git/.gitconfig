@@ -34,3 +34,6 @@
 # For work repositories.
 [includeIf "gitdir:~/work/"]
 	path = ~/work/.gitconfig-sierra
+[rebase]
+	# See: https://andrewlock.net/working-with-stacked-branches-in-git-is-easier-with-update-refs/
+	updateRefs = true
