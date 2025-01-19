@@ -8,7 +8,5 @@
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
-[core]
-	sshCommand = "ssh -i ~/.ssh/work.id_ed25519.pub"
 [blame]
 	ignoreRevsFile = .git-blame-ignore-revs
