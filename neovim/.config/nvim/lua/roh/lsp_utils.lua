@@ -337,8 +337,8 @@ local function get_lsp_opts(lang)
 				}
 			},
 		}
-	elseif lang == "rust_analyzer" then
-		overrides.settings = {
+	elseif lang == "rust-analyzer" then
+		overrides.default_settings = {
 			["rust-analyzer"] = {
 				inlayHints = {
 					bindingModeHints = {
