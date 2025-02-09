@@ -32,6 +32,8 @@ return {
 		'nvim-treesitter/nvim-treesitter',
 		build = ":TSUpdate",
 		config = function()
+			-- this is required for treesitter to get enabled on tsx files
+			vim.treesitter.language.register('typescript', 'typescriptreact')
 			local configs = require("nvim-treesitter.configs")
 			configs.setup({
 				ensure_installed = {
