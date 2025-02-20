@@ -37,10 +37,10 @@ return {
 			},
 			extensions = {
 				fzf = {
-					fuzzy = false,   -- false will only do exact matching
+					fuzzy = false,             -- false will only do exact matching
 					override_generic_sorter = true, -- override the generic sorter
 					override_file_sorter = true, -- override the file sorter
-					case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+					case_mode = "smart_case",  -- or "ignore_case" or "respect_case"
 					-- the default case_mode is "smart_case"
 				},
 				["ui-select"] = {
@@ -57,7 +57,9 @@ return {
 		keymap("n", "<leader>ff",
 			"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 			, opts)
-		keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep({ hidden = true })<cr>", opts)
+		keymap("n", "<leader>fg", function()
+			require('telescope.builtin').live_grep({ hidden = true, additional_args = { "--ignore-case" } })
+		end, opts)
 		keymap("n", "<leader>fb",
 			"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
 			opts)
