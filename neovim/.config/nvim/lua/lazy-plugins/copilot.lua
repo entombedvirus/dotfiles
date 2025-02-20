@@ -47,7 +47,7 @@ return {
 		opts = {
 			provider = "claude",
 			openai = {
-				model = "gpt-4o-mini"
+				model = "gpt-4o"
 			},
 			mappings = {
 				---@class AvanteConflictMappings
