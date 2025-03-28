@@ -3,6 +3,10 @@ frame = "buttonless"
 maximized = true
 title-hidden = true
 
+[box-drawing]
+# mode = "font-glyph"
+mode = "native"
+
 [font]
 size = 14
 

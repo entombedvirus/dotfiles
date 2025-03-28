@@ -7,3 +7,4 @@ ssh/.ssh/id_*
 vim/.vim/plugins/
 tmux/.tmux/plugins/
 /vim/.vim/.netrwhist
+osx/Library/Application Support/lazygit/state.yml
