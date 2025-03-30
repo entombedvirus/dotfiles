@@ -4,3 +4,5 @@ export TF_DEFAULT_ROLE="engineer"
 export AWS_PROFILE="devtools-engineer"
 export PATH=~/work/sierra/bin:$PATH
 source ~/work/sierra/python/.venv/bin/activate
+
+alias dsql='docker exec -it dynamodb sqlite3 /home/dynamodblocal/data/shared-local-instance.db 2>/dev/null'
