@@ -32,8 +32,6 @@ return {
 		'nvim-treesitter/nvim-treesitter',
 		build = ":TSUpdate",
 		config = function()
-			-- this is required for treesitter to get enabled on tsx files
-			vim.treesitter.language.register('typescript', 'typescriptreact')
 			local configs = require("nvim-treesitter.configs")
 			configs.setup({
 				ensure_installed = {
@@ -51,6 +49,7 @@ return {
 					'rust',
 					'terraform',
 					'typescript',
+					'tsx',
 					'yaml',
 				},          -- one of 'all', 'language', or a list of languages
 				highlight = {
