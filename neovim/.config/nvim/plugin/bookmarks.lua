@@ -20,7 +20,7 @@ M.setup = function()
 	end
 
 	-- Delete mark from current buffer
-	vim.keymap.set("n", "<leader>bd", function()
+	vim.keymap.set("n", "<leader>md", function()
 		for i = 1, 9 do
 			local mark_char = string.char(64 + i)
 			local mark_pos = vim.api.nvim_get_mark(mark_char, {})
