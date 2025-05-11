@@ -1,7 +1,8 @@
 return {
 	"mrcjkb/rustaceanvim",
 	ft = { "rust" },
-	version = "^5", -- Recommended
+	version = "^6", -- Recommended
+	lazy = false,  -- This plugin is already lazy
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"mfussenegger/nvim-dap",
@@ -18,9 +19,8 @@ return {
 				},
 				test_executor = require('custom_rust_test_executor'),
 			},
-			-- LSP configuration
-			server = require("roh/lsp_utils").get_lsp_opts("rust-analyzer"),
-			-- on_attach = on_attach,
+			-- LSP configuration is controlled by vim.lsp.config["rust_analyzer"], which
+			-- in turn is in <rtp>/lsp/rust_analyzer.lua
 			dap = {
 				autoload_configurations = true,
 			}
