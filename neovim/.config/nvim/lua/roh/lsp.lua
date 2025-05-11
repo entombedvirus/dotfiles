@@ -82,8 +82,8 @@ local function on_attach(client, bufnr)
 		opts)
 	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
 	vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+	vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end, opts)
+	vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end, opts)
 	vim.keymap.set('n', '<space>l', vim.diagnostic.setloclist, opts)
 	vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format({ timeout_ms = 10000 }) end, opts)
 
@@ -140,27 +140,22 @@ do
 	end
 end
 
--- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = "rounded",
-})
-
--- delay update diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.diagnostic.config({
+	-- delay update diagnostics
 	update_in_insert = false,
-	virtual_text     = true,
 	underline        = true,
+	virtual_text     = false,
+	virtual_lines    = true,
 })
 
-local flags = {
-	debounce_text_changes = 250,
-	-- debounce_text_changes = 3000,
-}
+-- local flags = {
+-- 	debounce_text_changes = 250,
+-- }
 
 vim.lsp.config('*', {
 	on_attach    = on_attach,
 	capabilities = capabilities,
-	flags        = flags,
+	-- flags        = flags,
 })
 
 vim.lsp.enable {
