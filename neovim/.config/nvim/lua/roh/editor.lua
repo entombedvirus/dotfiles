@@ -150,9 +150,6 @@ end
 vim.o.cmdheight = 2
 vim.o.showtabline = 2
 
--- default border style for floating windows to make it stand out from the bg
-vim.o.winborder = 'rounded'
-
 -- use ripgrep, if available
 if vim.fn.executable('rg') == 1 then
 	vim.o.grepprg =

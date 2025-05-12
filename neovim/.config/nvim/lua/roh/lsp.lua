@@ -164,6 +164,11 @@ vim.lsp.enable {
 	"gopls",
 	"clangd",
 
+	"ruff",
+	"terraformls",
+	"tflint",
+	"pyright",
+
 	-- enable these after the config refactor is done
 	-- "graphql",
 	-- "relay_lsp",

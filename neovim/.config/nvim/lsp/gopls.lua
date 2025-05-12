@@ -6,7 +6,7 @@ return {
 			global_on_attach(client, bufnr)
 		end
 
-		local group = vim.api.nvim_create_augroup('my.lsp', {})
+		local group = vim.api.nvim_create_augroup('my.lsp', { clear = false })
 
 		if client:supports_method('textDocument/codeAction') then
 			vim.api.nvim_create_autocmd('BufWritePre', {
@@ -16,7 +16,7 @@ return {
 					vim.lsp.buf.code_action {
 						context = {
 							diagnostics = {},
-							only = {vim.lsp.protocol.CodeActionKind.SourceOrganizeImports}
+							only = { vim.lsp.protocol.CodeActionKind.SourceOrganizeImports }
 						},
 						apply = true,
 					}
