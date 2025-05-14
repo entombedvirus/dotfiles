@@ -157,6 +157,9 @@ if vim.fn.executable('rg') == 1 then
 	vim.o.grepformat = "%f:%l:%c:%m"
 end
 
+-- case insensitive search, unless caps are used
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 local function inoremap(lhs, rhs)
 	vim.keymap.set('i', lhs, rhs, { silent = true })
