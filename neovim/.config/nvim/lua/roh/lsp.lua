@@ -158,6 +158,245 @@ vim.lsp.config('*', {
 	-- flags        = flags,
 })
 
+vim.lsp.config('clangd', {
+	capabilities = {
+		-- suppress "warning: multiple different client offset_encodings detected for buffer, this is not supported yet" warning
+		-- See: https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997234900
+		offsetEncoding = { "utf-16" }
+	},
+})
+
+local prettier = {
+	formatCommand = '~/work/sierra/web/node_modules/.bin/prettier --stdin-filepath ${INPUT}',
+	formatStdin   = true,
+}
+vim.lsp.config('efm', {
+	cmd          = { "efm-langserver", "-logfile=/tmp/efm.log", "-loglevel=5" },
+	init_options = {
+		documentFormatting = true,
+		documentRangeFormatting = true,
+	},
+	filetypes    = {
+		"go",
+		"python",
+		"javascript",
+		"javascriptreact",
+		"javascript.jsx",
+		"typescript",
+		"typescriptreact",
+		"typescript.tsx",
+		"vue",
+		"svelte",
+		"astro",
+	},
+	settings     = {
+		rootMarkers = { "package.json", "pyproject.toml", ".git/" },
+		languages = {
+			python = {
+				{
+					formatCommand = 'black --line-length 100 --quiet -',
+					formatStdin = true,
+					lintCommand = 'mypy --show-column-numbers',
+					lintFormats = {
+						'%f:%l:%c: %trror: %m',
+						'%f:%l:%c: %tarning: %m',
+						'%f:%l:%c: %tote: %m',
+					}
+				},
+			},
+			typescript = {
+				prettier,
+			},
+			typescriptreact = {
+				prettier,
+			},
+			go = {
+				{
+					lintCommand =
+					"bin/golangci-lint-sierra run --new-from-rev=HEAD --out-format=line-number --print-issued-lines=false | tee -a /tmp/gls.log",
+					lintIgnoreExitCode = true,
+					lintStdin = true, -- this disables efm from passing the file name as arg
+					lintFormats = { '%f:%l:%c: %m' },
+				},
+			},
+		},
+	}
+})
+
+vim.lsp.config('eslint', {
+	settings = {
+		workingDirectory = {
+			mode = "auto"
+		}
+	}
+})
+
+local mod_cache = nil
+
+---@param fname string
+---@return string?
+local function get_root(fname)
+	if mod_cache and fname:sub(1, #mod_cache) == mod_cache then
+		local clients = vim.lsp.get_clients { name = 'gopls' }
+		if #clients > 0 then
+			return clients[#clients].config.root_dir
+		end
+	end
+	return vim.fs.root(fname, { 'go.work', 'go.mod', '.git' })
+end
+vim.lsp.config('gopls', {
+	cmd       = { 'gopls', '-remote=auto' },
+	filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+	root_dir  = function(bufnr, on_dir)
+		local fname = vim.api.nvim_buf_get_name(bufnr)
+		-- see: https://github.com/neovim/nvim-lspconfig/issues/804
+		if mod_cache then
+			on_dir(get_root(fname))
+			return
+		end
+		local cmd = { 'go', 'env', 'GOMODCACHE' }
+		vim.system(cmd, { text = true }, function(output)
+			if output.code == 0 then
+				if output.stdout then
+					mod_cache = vim.trim(output.stdout)
+				end
+				on_dir(get_root(fname))
+			else
+				vim.notify(('[gopls] cmd failed with code %d: %s\n%s'):format(output.code, cmd, output.stderr))
+			end
+		end)
+	end,
+	on_attach = function(client, bufnr)
+		local global_on_attach = vim.lsp.config['*'].on_attach
+		if (global_on_attach) then
+			global_on_attach(client, bufnr)
+		end
+
+		local group = vim.api.nvim_create_augroup('my.lsp', { clear = false })
+
+		if client:supports_method('textDocument/codeAction') then
+			vim.api.nvim_create_autocmd('BufWritePre', {
+				group = group,
+				buffer = bufnr,
+				callback = function()
+					vim.lsp.buf.code_action {
+						context = {
+							diagnostics = {},
+							only = { vim.lsp.protocol.CodeActionKind.SourceOrganizeImports }
+						},
+						apply = true,
+					}
+				end,
+			})
+		end
+	end,
+	settings  = {
+		gopls = {
+			usePlaceholders    = true,
+			completeUnimported = true,
+			-- experimentalDiagnosticsDelay = "0ms",
+			codelenses         = {
+				generate           = false,
+				gc_details         = false,
+				test               = false,
+				tidy               = false,
+				vendor             = false,
+				upgrade_dependency = false,
+			},
+			hints              = {
+				assignVariableTypes    = true,
+				functionTypeParameters = true,
+				parameterNames         = true,
+				rangeVariableTypes     = true,
+			},
+			--buildFlags = {
+			--		-- enable completion is avo files
+			--		"-tags=avo",
+			--},
+		},
+	},
+})
+
+vim.lsp.config('graphql', {
+	root_pattern = { ".graphqlconfig", ".graphqlrc", "package.json", "sudomodel/" }
+})
+
+vim.lsp.config('lua_ls', {
+	on_init = function(client)
+		if client.workspace_folders then
+			local path = client.workspace_folders[1].name
+			if
+					path ~= vim.fn.stdpath('config')
+					and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+			then
+				return
+			end
+		end
+	end,
+	settings = {
+		Lua = {
+			runtime = {
+				-- Tell the language server which version of Lua you're using (most
+				-- likely LuaJIT in the case of Neovim)
+				version = 'LuaJIT',
+				-- Tell the language server how to find Lua modules same way as Neovim
+				-- (see `:h lua-module-load`)
+				path = {
+					'lua/?.lua',
+					'lua/?/init.lua',
+				},
+			},
+			diagnostics = {
+				-- Get the language server to recognize the `vim` global
+				globals = { 'vim', 'P', 'RELOAD', 'R' },
+			},
+			-- Make the server aware of Neovim runtime files
+			workspace = {
+				checkThirdParty = false,
+				library = {
+					vim.env.VIMRUNTIME
+					-- Depending on the usage, you might want to add additional paths
+					-- here.
+					-- '${3rd}/luv/library'
+					-- '${3rd}/busted/library'
+				}
+				-- Or pull in all of 'runtimepath'.
+				-- NOTE: this is a lot slower and will cause issues when working on
+				-- your own configuration.
+				-- See https://github.com/neovim/nvim-lspconfig/issues/3189
+				-- library = {
+				--   vim.api.nvim_get_runtime_file('', true),
+				-- }
+			}
+		}
+	}
+})
+
+vim.lsp.config('relay_lsp', {
+	cmd = { "npx", "relay-compiler", "lsp" }
+})
+
+vim.lsp.config('ruff', {
+	init_options = {
+		position_encodings = { 'utf-16' }
+	}
+})
+
+vim.lsp.config('rust-analyzer', {
+	settings = {
+		["rust-analyzer"] = {
+			inlayHints = {
+				bindingModeHints = {
+					enable = true,
+				},
+				lifetimeElisionHints = {
+					enable = true,
+				},
+			}
+		},
+	},
+})
+
 vim.lsp.enable {
 	"lua_ls",
 	"efm",
@@ -169,6 +408,7 @@ vim.lsp.enable {
 	"tflint",
 	"pyright",
 
+	"eslint",
 	-- enable these after the config refactor is done
 	-- "graphql",
 	-- "relay_lsp",
