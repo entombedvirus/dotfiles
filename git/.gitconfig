@@ -29,6 +29,12 @@
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [merge]
 	conflictStyle = zdiff3
+  tool = nvimdiff
+[mergetool]
+  prompt = false
+  keepBackup = false
+[mergetool "nvimdiff"]
+  layout = "LOCAL,BASE,REMOTE / MERGED"
 
 # For work repositories.
 [includeIf "gitdir:~/work/"]
