@@ -5,4 +5,7 @@ export AWS_PROFILE="devtools-engineer"
 export PATH=~/work/sierra/bin:$PATH
 source ~/work/sierra/python/.venv/bin/activate
 
+export SIERRA_ROOT="$HOME/work/sierra"
+source $SIERRA_ROOT/.shell/shellenv
+
 alias dsql='docker exec -it dynamodb sqlite3 /home/dynamodblocal/data/shared-local-instance.db 2>/dev/null'
