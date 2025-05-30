@@ -401,7 +401,7 @@ vim.lsp.enable {
 	"lua_ls",
 	"efm",
 	"gopls",
-	"clangd",
+	-- "clangd", interferes on .proto files
 
 	"ruff",
 	"terraformls",
