@@ -46,8 +46,10 @@ return {
 		version = false, -- set this if you want to always pull the latest change
 		opts = {
 			provider = "claude",
-			openai = {
-				model = "gpt-4o"
+			providers = {
+				openai = {
+					model = "gpt-4o"
+				},
 			},
 			mappings = {
 				---@class AvanteConflictMappings
