@@ -161,6 +161,24 @@ end
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- enabled border for floating window globally
+vim.opt.winborder = 'rounded'
+
+-- but telescope needs a hack prevent it from rendering two sets of borders
+-- remove once https://github.com/nvim-lua/plenary.nvim/pull/649 is merged
+vim.api.nvim_create_autocmd("User", {
+	pattern = "TelescopeFindPre",
+	callback = function()
+		vim.opt_local.winborder = "none"
+		vim.api.nvim_create_autocmd("WinLeave", {
+			once = true,
+			callback = function()
+				vim.opt_local.winborder = "rounded"
+			end,
+		})
+	end,
+})
+
 local function inoremap(lhs, rhs)
 	vim.keymap.set('i', lhs, rhs, { silent = true })
 end
@@ -305,3 +323,8 @@ local function close_hidden_bufs(cmd)
 end
 
 command('CloseHiddenBuffers', close_hidden_bufs, { bang = true })
+
+-- copy the relative path of the current file to clipboard
+vim.keymap.set("n", "<leader>cp", function()
+	vim.fn.setreg("+", vim.fn.expand("%"))
+end, { desc = "Copy (relative) path to current file" })
