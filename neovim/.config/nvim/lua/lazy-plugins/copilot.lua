@@ -51,6 +51,11 @@ return {
 					model = "gpt-4o"
 				},
 			},
+			behaviour = {
+				-- this makes typing noticeably slower
+				-- See: https://github.com/yetone/avante.nvim/issues/711
+				enable_token_counting = false,
+			},
 			mappings = {
 				---@class AvanteConflictMappings
 				diff = {
