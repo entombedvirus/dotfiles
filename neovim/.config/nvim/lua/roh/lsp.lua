@@ -224,6 +224,12 @@ vim.lsp.config('efm', {
 })
 
 vim.lsp.config('eslint', {
+	flags = {
+		-- debugging slow typing speed after editing a buffer for a while
+		-- See: https://github.com/neovim/nvim-lspconfig/issues/3211#issuecomment-2236533775
+		allow_incremental_sync = false,
+		debounce_text_changes = 1000,
+	},
 	settings = {
 		workingDirectory = {
 			mode = "auto"
