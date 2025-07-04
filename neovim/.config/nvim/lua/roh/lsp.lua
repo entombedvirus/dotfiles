@@ -145,7 +145,9 @@ vim.diagnostic.config({
 	update_in_insert = false,
 	underline        = true,
 	virtual_text     = false,
-	virtual_lines    = true,
+	virtual_lines    = {
+		current_line = true,
+	},
 })
 
 -- local flags = {
@@ -234,7 +236,25 @@ vim.lsp.config('eslint', {
 		workingDirectory = {
 			mode = "auto"
 		}
-	}
+	},
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
+		vim.api.nvim_buf_create_user_command(bufnr, 'LspEslintFixAll', function()
+			client:request_sync('workspace/executeCommand', {
+				command = 'eslint.applyAllFixes',
+				arguments = {
+					{
+						uri = vim.uri_from_bufnr(bufnr),
+						version = vim.lsp.util.buf_versions[bufnr],
+					},
+				},
+			}, nil, bufnr)
+		end, {})
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			buffer = bufnr,
+			command = "LspEslintFixAll",
+		})
+	end
 })
 
 local mod_cache = nil
