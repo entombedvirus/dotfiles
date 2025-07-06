@@ -45,11 +45,22 @@ return {
 		lazy = true,
 		version = false, -- set this if you want to always pull the latest change
 		opts = {
-			provider = "claude",
+			provider = "claude_opus_4",
 			providers = {
 				openai = {
 					model = "gpt-4o"
 				},
+				claude_opus_4 = {
+					__inherited_from = "claude",
+					model = "claude-opus-4-20250514",
+					extra_request_body = {
+						temperature = 0.75,
+						max_tokens = 32000,
+					},
+				},
+			},
+			rules = {
+				project_dir = ".cursor/rules",
 			},
 			behaviour = {
 				-- this makes typing noticeably slower
