@@ -14,6 +14,10 @@ local function on_attach(client, bufnr)
 			group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
 			buffer = bufnr,
 			callback = function()
+				-- disable autoformatting for typescript-tools since it interferes with efm
+				if client.name == 'typescript-tools' then
+					return
+				end
 				-- local file_types = {
 				-- 	python = true,
 				-- 	rust = true,
@@ -229,8 +233,8 @@ vim.lsp.config('eslint', {
 	flags = {
 		-- debugging slow typing speed after editing a buffer for a while
 		-- See: https://github.com/neovim/nvim-lspconfig/issues/3211#issuecomment-2236533775
-		allow_incremental_sync = false,
-		debounce_text_changes = 1000,
+		allow_incremental_sync = true,
+		debounce_text_changes = 200,
 	},
 	settings = {
 		workingDirectory = {
@@ -250,10 +254,10 @@ vim.lsp.config('eslint', {
 				},
 			}, nil, bufnr)
 		end, {})
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = bufnr,
-			command = "LspEslintFixAll",
-		})
+		-- vim.api.nvim_create_autocmd("BufWritePre", {
+		-- 	buffer = bufnr,
+		-- 	command = "LspEslintFixAll",
+		-- })
 	end
 })
 
