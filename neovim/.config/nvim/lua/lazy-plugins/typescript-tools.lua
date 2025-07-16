@@ -21,6 +21,28 @@ return {
 					ns_id = ns_id,
 					bufnr = bufnr,
 				})
+
+				-- remove unused imports on save
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					callback = function()
+						local buf_diags = vim.diagnostic.get(bufnr)
+						if not vim.tbl_isempty(buf_diags) then
+							vim.cmd["LspEslintFixAll"]()
+						end
+
+						local has_unused_imports = false
+						for _, diag in ipairs(buf_diags) do
+							if diag.code == "@typescript-eslint/no-unused-vars" then
+								has_unused_imports = true
+								break
+							end
+						end
+						if has_unused_imports then
+							vim.cmd["TSToolsRemoveUnusedImports"]()
+						end
+					end
+				})
 			end
 		}))
 	end,
