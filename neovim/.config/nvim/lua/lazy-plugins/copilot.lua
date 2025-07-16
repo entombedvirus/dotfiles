@@ -18,6 +18,7 @@ return {
 	--	},
 	{
 		"zbirenbaum/copilot.lua",
+		enabled = false,
 		config = function()
 			local opts = {
 				panel = { enabled = true },
