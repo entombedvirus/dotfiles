@@ -2,7 +2,7 @@ return {
 	{
 		'milanglacier/minuet-ai.nvim',
 		opts = {
-			provider = "claude",
+			provider = "copilot",
 			virtualtext = {
 				auto_trigger_ft = {},
 				keymap = {
