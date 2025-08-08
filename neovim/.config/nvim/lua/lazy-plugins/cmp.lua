@@ -97,7 +97,7 @@ return {
 				['<C-u>'] = cmp.mapping.confirm({ select = true }),
 				['<C-j>'] = cmp.mapping(next_func, { 'i', 's' }),
 				['<C-k>'] = cmp.mapping(prev_func, { 'i', 's' }),
-				['<A-y>'] = require('minuet').make_cmp_map(),
+				-- ['<A-y>'] = require('minuet').make_cmp_map(),
 			},
 			sorting = {
 				priority_weight = 2,
@@ -119,8 +119,8 @@ return {
 			},
 			sources = {
 				-- order matters: completions show up in priority order
-				-- { name = "copilot" },
-				{ name = 'minuet' },
+				{ name = "copilot" },
+				-- { name = 'minuet' },
 				{ name = 'nvim_lsp' },
 				{ name = 'nvim_lua' },
 				-- { name = 'buffer' },
