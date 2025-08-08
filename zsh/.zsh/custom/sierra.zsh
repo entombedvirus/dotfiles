@@ -9,3 +9,6 @@ export SIERRA_ROOT="$HOME/work/sierra"
 source $SIERRA_ROOT/.shell/shellenv
 
 alias dsql='docker exec -it dynamodb sqlite3 /home/dynamodblocal/data/shared-local-instance.db 2>/dev/null'
+
+alias claude-bedrock='$SIERRA_ROOT/bin/claude-bedrock'
+alias claude='claude-bedrock'
