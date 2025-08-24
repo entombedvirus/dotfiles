@@ -3,7 +3,7 @@ return {
 	dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 	config = function()
 		-- ensure that the lsp settings is loaded so that we can re-use it
-		require("roh/lsp")
+		local roh_lsp_utils = require("roh/lsp")
 		local opts = vim.lsp.config["*"]
 		assert(not vim.tbl_isempty(opts), "LSP settings not found for typescript-tools.nvim")
 
@@ -25,7 +25,17 @@ return {
 				-- remove unused imports on save
 				vim.api.nvim_create_autocmd("BufWritePre", {
 					buffer = bufnr,
+					group = roh_lsp_utils.augroup_for_lsp_client(client, "TypescriptEslintAutoFixes"),
 					callback = function()
+						-- typescript files need a specfic order of auto-formatting:
+						-- - prettier (via efm)
+						-- - Eslint
+						-- - TSTools
+						--
+						-- Because of this need for ordering, the auto formatting is turned
+						-- off in "roh/lsp" for typescript and done sequentially here
+						vim.lsp.buf.format({ name = "efm", async = false })
+
 						local buf_diags = vim.diagnostic.get(bufnr)
 						if not vim.tbl_isempty(buf_diags) then
 							vim.cmd["LspEslintFixAll"]()
@@ -39,7 +49,7 @@ return {
 							end
 						end
 						if has_unused_imports then
-							vim.cmd["TSToolsRemoveUnusedImports"]()
+							vim.cmd["TSToolsRemoveUnusedImports"]("sync")
 						end
 					end
 				})

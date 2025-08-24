@@ -1,47 +1,62 @@
--- @param client vim.lsp.Client
--- @param bufnr integer
-local function on_attach(client, bufnr)
-	-- TODO: move to rust.vim
-	if client.name == 'rust-analyzer' then
-		client.server_capabilities.semanticTokensProvider = nil
+--- @alias lspClientId integer
+--- @type table<lspClientId, {group_id: integer, group_name: string}[]>
+local registered_augroups = setmetatable({}, {
+	__index = function(t, client_id)
+		t[client_id] = {}
+		return t[client_id]
 	end
+})
 
-	-- Auto-format ("lint") on save.
-	-- Usually not needed if server supports "textDocument/willSaveWaitUntil".
-	if not client:supports_method('textDocument/willSaveWaitUntil')
-			and client:supports_method('textDocument/formatting') then
-		vim.api.nvim_create_autocmd('BufWritePre', {
-			group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
-			buffer = bufnr,
-			callback = function()
-				-- disable autoformatting for typescript-tools since it interferes with efm
-				if client.name == 'typescript-tools' then
-					return
+--- @param client vim.lsp.Client
+--- @param prefix string
+--- @returns integer
+local function augroup_for_lsp_client(client, prefix)
+	local group_name = prefix .. '_for_lsp_' .. client.name
+	-- clean up previous autocmds to prevent callback stacking
+	local new_group = vim.api.nvim_create_augroup(group_name, { clear = true })
+	table.insert(registered_augroups[client.id], { group_id = new_group, group_name = group_name })
+	return new_group
+end
+
+-- clean up autocmds so that we can safely stop lsp servers without previously
+-- registered autocmds causing errors.
+vim.api.nvim_create_autocmd('LspDetach', {
+	callback =
+	--- @param args {data: {client_id: lspClientId}}
+			function(args)
+				local client_id = args.data.client_id
+				local groups = registered_augroups[client_id]
+				for _, info in ipairs(groups) do
+					vim.notify("clearing autocmds from group " .. info.group_name)
+					-- clear autocmds from all buffers belonging to this lsp client
+					vim.api.nvim_clear_autocmds({ group = info.group_id })
 				end
-				-- local file_types = {
-				-- 	python = true,
-				-- 	rust = true,
-				-- 	lua = true,
-				-- 	go = true,
-				-- 	jsonnet = true,
-				-- 	terraform = true,
-				-- 	c = true,
-				-- 	typescriptreact = "efm",
-				-- 	typescript = "efm",
-				-- }
-				-- local current_buf = vim.bo[opts.buf].filetype
-				-- if not file_types[current_buf] then
-				-- 	return
-				-- end
-				-- if type(file_types[current_buf]) == "string" and client.name ~= file_types[current_buf] then
-				-- 	return
-				-- end
-				vim.lsp.buf.format({ bufnr = bufnr, id = client.id, timeout_ms = 1000 })
-			end,
-		})
+				registered_augroups[client_id] = nil
+			end
+})
+
+-- Auto-format ("lint") on save.
+--- @param client vim.lsp.Client
+--- @param bufnr integer
+local function auto_fmt_on_save(client, bufnr)
+	-- Usually not needed if server supports "textDocument/willSaveWaitUntil".
+	if client:supports_method('textDocument/willSaveWaitUntil')
+			or not client:supports_method('textDocument/formatting') then
+		return
 	end
 
-	-- Mappings.
+	vim.api.nvim_create_autocmd('BufWritePre', {
+		group = augroup_for_lsp_client(client, 'LspAutoFormatting'),
+		buffer = bufnr,
+		callback = function()
+			vim.lsp.buf.format({ bufnr = bufnr, id = client.id, timeout_ms = 1000, async = false })
+		end,
+	})
+end
+
+
+--- @param bufnr integer
+local function lsp_keybinds(bufnr)
 	local opts = { noremap = true, silent = true, buffer = bufnr }
 	local special_mappings = {
 		lsp_definitions = vim.lsp.buf.definition,
@@ -90,35 +105,45 @@ local function on_attach(client, bufnr)
 	vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end, opts)
 	vim.keymap.set('n', '<space>l', vim.diagnostic.setloclist, opts)
 	vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format({ timeout_ms = 10000 }) end, opts)
+end
 
+
+--- @param client vim.lsp.Client
+--- @param bufnr integer
+local function highlight_current_ident(client, bufnr)
 	-- Set autocommands conditional on server_capabilities
 	if client.server_capabilities.documentHighlightProvider then
-		local lsp_highlight_autos = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+		local highlight_group = augroup_for_lsp_client(client, 'LspAutoHighlighing')
 		vim.api.nvim_create_autocmd('CursorHold', {
-			group = lsp_highlight_autos,
+			group = highlight_group,
 			buffer = bufnr,
 			callback = vim.lsp.buf.document_highlight,
 		})
 		vim.api.nvim_create_autocmd('CursorMoved', {
-			group = lsp_highlight_autos,
+			group = highlight_group,
 			buffer = bufnr,
 			callback = vim.lsp.buf.clear_references,
 		})
 	end
+end
 
+
+--- @param client vim.lsp.Client
+--- @param bufnr integer
+local function inlay_hints(client, bufnr)
 	-- start with inlay hints enabled, but turn then off while in insert mode to prevent random cursor jumps
 	if client.server_capabilities.inlayHintProvider then
 		vim.lsp.inlay_hint.enable(true)
-		local grp = vim.api.nvim_create_augroup('lsp_inlay_hints_group', { clear = true })
+		local inlay_hints_group = augroup_for_lsp_client(client, 'LspInlayHints')
 		vim.api.nvim_create_autocmd('InsertEnter', {
-			group = grp,
+			group = inlay_hints_group,
 			buffer = bufnr,
 			callback = function()
 				vim.lsp.inlay_hint.enable(false)
 			end,
 		})
 		vim.api.nvim_create_autocmd('InsertLeave', {
-			group = grp,
+			group = inlay_hints_group,
 			buffer = bufnr,
 			callback = function()
 				vim.lsp.inlay_hint.enable(true)
@@ -127,9 +152,27 @@ local function on_attach(client, bufnr)
 	end
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-do
-	-- autocomplete
+--- @param client vim.lsp.Client
+--- @param bufnr integer
+local function on_attach(client, bufnr)
+	-- TODO: move to rust.vim
+	if client.name == 'rust-analyzer' then
+		client.server_capabilities.semanticTokensProvider = nil
+	end
+
+	-- disable autoformatting for typescript-tools since it requires a specific order
+	-- See typescript-tools.lua for more details
+	if client.name ~= 'typescript-tools' and client.name ~= 'efm' then
+		auto_fmt_on_save(client, bufnr)
+	end
+	lsp_keybinds(bufnr)
+	highlight_current_ident(client, bufnr)
+	inlay_hints(client, bufnr)
+end
+
+--- @return lsp.ClientCapabilities
+local function make_capabilities()
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	local ok, cmp = pcall(require, 'cmp_nvim_lsp')
 	if ok then
 		capabilities = vim.tbl_deep_extend("force", capabilities, cmp.default_capabilities())
@@ -142,7 +185,9 @@ do
 			lineFoldingOnly = true
 		}
 	end
+	return capabilities
 end
+
 
 vim.diagnostic.config({
 	-- delay update diagnostics
@@ -154,14 +199,9 @@ vim.diagnostic.config({
 	},
 })
 
--- local flags = {
--- 	debounce_text_changes = 250,
--- }
-
 vim.lsp.config('*', {
 	on_attach    = on_attach,
-	capabilities = capabilities,
-	-- flags        = flags,
+	capabilities = make_capabilities(),
 })
 
 vim.lsp.config('clangd', {
@@ -173,7 +213,7 @@ vim.lsp.config('clangd', {
 })
 
 local prettier = {
-	formatCommand = '~/work/sierra/web/node_modules/.bin/prettier --stdin-filepath ${INPUT}',
+	formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
 	formatStdin   = true,
 }
 vim.lsp.config('efm', {
@@ -254,10 +294,6 @@ vim.lsp.config('eslint', {
 				},
 			}, nil, bufnr)
 		end, {})
-		-- vim.api.nvim_create_autocmd("BufWritePre", {
-		-- 	buffer = bufnr,
-		-- 	command = "LspEslintFixAll",
-		-- })
 	end
 })
 
@@ -302,11 +338,10 @@ vim.lsp.config('gopls', {
 			global_on_attach(client, bufnr)
 		end
 
-		local group = vim.api.nvim_create_augroup('my.lsp', { clear = false })
 
 		if client:supports_method('textDocument/codeAction') then
 			vim.api.nvim_create_autocmd('BufWritePre', {
-				group = group,
+				group = augroup_for_lsp_client(client, 'LspOrganizeImports'),
 				buffer = bufnr,
 				callback = function()
 					vim.lsp.buf.code_action {
@@ -447,4 +482,8 @@ vim.lsp.enable {
 	-- 'rust-analyzer',
 	-- 'ts_ls',
 	-- 'tailwindcss'
+}
+
+return {
+	augroup_for_lsp_client = augroup_for_lsp_client
 }

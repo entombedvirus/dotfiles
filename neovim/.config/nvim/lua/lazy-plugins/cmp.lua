@@ -16,7 +16,7 @@ return {
 	},
 	config = function()
 		local cmp = require('cmp')
-		vim.api.nvim_set_option("completeopt", "menu,menuone,noselect")
+		vim.api.nvim_set_option_value("completeopt", "menu,menuone,noselect", { scope = "global" })
 		-- Disabling this for now since enabling spell leads to underlines everywhere and
 		-- it is super distracting. Actual LSP diagnostic errors gets buried.
 		-- Setting spell (and spelllang) is mandatory to use spellsuggest.
