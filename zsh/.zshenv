@@ -8,7 +8,7 @@ export LANG=en_US
 export PATH=/opt/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
-
+export PATH=~/.local/bin:$PATH
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
 export PATH=~/go/bin:$PATH
