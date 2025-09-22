@@ -27,7 +27,6 @@ vim.api.nvim_create_autocmd('LspDetach', {
 				local client_id = args.data.client_id
 				local groups = registered_augroups[client_id]
 				for _, info in ipairs(groups) do
-					vim.notify("clearing autocmds from group " .. info.group_name)
 					-- clear autocmds from all buffers belonging to this lsp client
 					vim.api.nvim_clear_autocmds({ group = info.group_id })
 				end
