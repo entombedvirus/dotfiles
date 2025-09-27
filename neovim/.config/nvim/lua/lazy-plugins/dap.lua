@@ -81,9 +81,9 @@ return {
 
 		local last_test_at_cursor_state
 		dap.adapters.go_test_at_cursor = function(callback, config)
-			local test_name, err = require('settings/treesitter').get_cursor_test_name()
-			if err and not last_test_at_cursor_state then
-				print('get_cursor_test_name failed: ' .. err)
+			local test_name = require('roh/util/go_test_name').current_go_test_name()
+			if not (last_test_at_cursor_state or test_name) then
+				vim.notify('get_cursor_test_name failed', vim.log.levels.WARN)
 				return
 			end
 
@@ -93,8 +93,9 @@ return {
 				cwd = last_test_at_cursor_state.cwd
 			end
 
-			config.args = { '-test.run=' .. test_name .. '$' }
-			local resolved_adapter = spawn_dlv({ cwd = cwd })
+			-- add the $ to match only the specific test and not tests with that prefix
+			config.args = { '-test.run', test_name .. '$' }
+			local resolved_adapter = { cwd = cwd }
 			-- Wait for delve to start
 			vim.defer_fn(function() callback(resolved_adapter) end, 100)
 			last_test_at_cursor_state = {
