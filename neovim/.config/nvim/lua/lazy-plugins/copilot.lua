@@ -42,6 +42,7 @@ return {
 	{
 		"yetone/avante.nvim",
 		-- dir = "~/code/avante.nvim",
+		enabled = false,
 		event = "VeryLazy",
 		lazy = true,
 		version = false, -- set this if you want to always pull the latest change
