@@ -7,15 +7,25 @@ return {
 				backend = "zellij",
 				enabled = false,
 			},
+			tools = {
+				claude_bedrock = {
+					cmd = { "claude-bedrock" },
+					url = "https://github.com/example/my-tool",
+					-- Optional: custom keymaps for this tool
+					-- keys = {
+					-- 	submit = { "<c-s>", function(t) t:send("\n") end },
+					-- },
+				},
+			},
 		},
 	},
 	keys = {
 		{
-			"<c-u>",
+			"<tab>",
 			function()
 				-- if there is a next edit, jump to it, otherwise apply it if any
 				if not require("sidekick").nes_jump_or_apply() then
-					return "<c-u>" -- fallback to normal behavior
+					return "<tab>" -- fallback to normal behavior
 				end
 			end,
 			expr = true,
@@ -50,7 +60,7 @@ return {
 		{
 			"<leader>ac",
 			function()
-				require("sidekick.cli").toggle({ name = "claude", focus = true })
+				require("sidekick.cli").toggle({ name = "claude_bedrock", focus = true })
 			end,
 			desc = "Sidekick Claude Toggle",
 			mode = { "n", "v" },

@@ -18,11 +18,15 @@ return {
 	--	},
 	{
 		"zbirenbaum/copilot.lua",
+		dependencies = {
+			"copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
+		},
 		enabled = true,
 		config = function()
 			local opts = {
 				panel = { enabled = true },
 				suggestion = { enabled = true },
+				copilot_node_command = "/opt/homebrew/Cellar/node/24.9.0_1/bin/node",
 			}
 			require('copilot').setup(opts)
 

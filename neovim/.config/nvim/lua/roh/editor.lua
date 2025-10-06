@@ -260,7 +260,7 @@ nnoremap('<leader>]c', ':tabclose<cr>')
 nnoremap('<leader>S', ':mksession! /tmp/sess.vim<CR>:qa<CR>')
 
 -- " cycle between buffers faster
-nnoremap('<Tab><Tab>', '<C-W>w')
+-- nnoremap('<Tab><Tab>', '<C-W>w')
 
 -- " Some emacs keybindings thats used all over OS X
 -- " delete one char in front
