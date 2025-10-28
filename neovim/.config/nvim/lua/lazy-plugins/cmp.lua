@@ -8,7 +8,6 @@ return {
 		'L3MON4D3/LuaSnip',
 		'saadparwaiz1/cmp_luasnip',
 		'onsails/lspkind-nvim',
-		"tailwind-tools",
 		{
 			"zbirenbaum/copilot-cmp",
 			opts = {},
@@ -66,7 +65,6 @@ return {
 			},
 			formatting = {
 				format = lspkind.cmp_format({
-					before = require("tailwind-tools.cmp").lspkind_format,
 					mode = 'symbol',
 					maxwidth = 50,
 					ellipsis_char = '...',
