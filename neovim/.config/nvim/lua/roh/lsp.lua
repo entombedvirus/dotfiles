@@ -473,6 +473,8 @@ vim.lsp.enable {
 	"pyright",
 
 	"eslint",
+
+	"tailwindcss",
 	-- enable these after the config refactor is done
 	-- "graphql",
 	-- "relay_lsp",
@@ -480,7 +482,6 @@ vim.lsp.enable {
 	-- these are not enabled because they are started by other plugins
 	-- 'rust-analyzer',
 	-- 'ts_ls',
-	-- 'tailwindcss'
 }
 
 return {
