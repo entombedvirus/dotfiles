@@ -358,6 +358,7 @@ vim.lsp.config('gopls', {
 		gopls = {
 			usePlaceholders    = true,
 			completeUnimported = true,
+			gofumpt            = true,
 			-- experimentalDiagnosticsDelay = "0ms",
 			codelenses         = {
 				generate           = false,
