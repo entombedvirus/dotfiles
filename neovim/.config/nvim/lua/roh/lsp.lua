@@ -474,6 +474,7 @@ vim.lsp.enable {
 	"pyright",
 
 	"eslint",
+	"oxlint",
 
 	"tailwindcss",
 	-- enable these after the config refactor is done
