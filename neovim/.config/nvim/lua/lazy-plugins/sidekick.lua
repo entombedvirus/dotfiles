@@ -2,20 +2,14 @@ return {
 	"folke/sidekick.nvim",
 	opts = {
 		-- add any options here
+		nes = {
+			-- edit quality is pretty poor with copilot. Maybe re-enable with cursor's model if that is possible
+			enabled = false,
+		},
 		cli = {
 			mux = {
 				backend = "zellij",
 				enabled = false,
-			},
-			tools = {
-				claude_bedrock = {
-					cmd = { "claude-bedrock" },
-					url = "https://github.com/example/my-tool",
-					-- Optional: custom keymaps for this tool
-					-- keys = {
-					-- 	submit = { "<c-s>", function(t) t:send("\n") end },
-					-- },
-				},
 			},
 		},
 	},
@@ -34,7 +28,7 @@ return {
 		{
 			"<c-.>",
 			function()
-				require("sidekick.cli").focus()
+				require("sidekick.cli").toggle()
 			end,
 			mode = { "n", "x", "i", "t" },
 			desc = "Sidekick Switch Focus",
@@ -55,14 +49,6 @@ return {
 				-- require("sidekick.cli").select({ filter = { installed = true } })
 			end,
 			desc = "Sidekick Select CLI",
-			mode = { "n", "v" },
-		},
-		{
-			"<leader>ac",
-			function()
-				require("sidekick.cli").toggle({ name = "claude_bedrock", focus = true })
-			end,
-			desc = "Sidekick Claude Toggle",
 			mode = { "n", "v" },
 		},
 		{
