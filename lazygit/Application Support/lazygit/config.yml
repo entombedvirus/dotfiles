@@ -1,0 +1,7 @@
+customCommands:
+  - key: "C"
+    context: "files"
+    description: "Generate commit message with AI"
+    command: "git diff --staged | ~/work/sierra/bin/claude-bedrock -p 'Generate a concise git commit message for these staged changes. Output ONLY the raw commit message.' > /tmp/commit_msg && GIT_EDITOR=nvim git commit -n -e -F /tmp/commit_msg"
+    # Ensure you replace '/PATH/TO/ai-tool' and possibly 'vim' with your preferred editor
+    output: terminal
