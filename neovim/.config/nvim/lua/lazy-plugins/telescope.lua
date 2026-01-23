@@ -58,7 +58,7 @@ return {
 			"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 			, opts)
 		keymap("n", "<leader>fg", function()
-			require('telescope.builtin').live_grep({ hidden = true, additional_args = { "--ignore-case" } })
+			require('telescope.builtin').live_grep({ additional_args = { "--ignore-case", "--hidden" } })
 		end, opts)
 		keymap("n", "<leader>fb",
 			"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
