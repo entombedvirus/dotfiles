@@ -103,8 +103,18 @@ return {
 				cwd = cwd,
 			}
 		end
+		dap.adapters.delve = {
+			type = "pipe",
+			pipe = vim.fn.getcwd() .. "/tmp/dlv.sock",
+		}
 
 		dap.configurations.go = {
+			{
+				type = "delve",
+				name = "Delve attach to dev server",
+				request = "attach",
+				mode = "remote",
+			},
 			{
 				type = "go_test_at_cursor",
 				name = "Debug cursor test",
