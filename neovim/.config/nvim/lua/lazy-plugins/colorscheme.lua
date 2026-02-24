@@ -69,6 +69,7 @@ return {
 		config = function()
 			require("catppuccin").setup({
 				flavour = "macchiato",
+				term_colors = true,
 				-- Neovide requires transparent_background set to false for color to work correctly
 				-- transparent_background = not vim.g.neovide,
 				-- term_colors = true,
