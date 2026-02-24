@@ -26,7 +26,6 @@ return {
 			local opts = {
 				panel = { enabled = true },
 				suggestion = { enabled = true },
-				copilot_node_command = "/opt/homebrew/Cellar/node/24.9.0_1/bin/node",
 			}
 			require('copilot').setup(opts)
 
