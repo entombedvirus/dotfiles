@@ -1,3 +1,15 @@
 services:
   personalgit: github:github.com
   workgit: github:github.com
+customCommands:
+  - key: "C"
+    context: "files"
+    description: "Generate commit message with AI"
+    command: "git diff --staged | claude -p 'Generate a concise git commit message for these staged changes. Output ONLY the raw commit message.' > /tmp/commit_msg && GIT_EDITOR=nvim git commit -n -e -F /tmp/commit_msg"
+    output: terminal
+  - key: 'F'
+    context: commits # The context doesn't strictly matter for a global push, but 'files' or 'commits' is fine
+    command: git push --force --no-verify
+    description: "Force push without verification (bypassing pre-push hooks)"
+    # Optional: use 'subprocess: true' if you want the command to run in a separate shell process.
+    # subprocess: true
