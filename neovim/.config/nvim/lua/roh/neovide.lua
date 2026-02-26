@@ -35,3 +35,14 @@ vim.keymap.set('i', '<D-v>', '<esc>"+pa', { silent = true })
 vim.keymap.set('c', '<D-v>', '<c-r>+', { silent = true })
 vim.keymap.set('t', '<D-v>', '<c-\\><c-n>"+pa', { silent = true })
 vim.keymap.set('n', '<D-f>', function() vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen end, { silent = true })
+
+-- disable scrolling animation in terminal buffers since it causes jerking when
+-- terminal applications redraw text
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "term://*",
+	callback = function() vim.g.neovide_scroll_animation_length = 0 end,
+})
+vim.api.nvim_create_autocmd("BufLeave", {
+	pattern = "term://*",
+	callback = function() vim.g.neovide_scroll_animation_length = 0.15 end,
+})
