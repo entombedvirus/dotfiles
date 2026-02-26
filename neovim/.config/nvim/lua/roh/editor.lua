@@ -164,6 +164,9 @@ vim.opt.smartcase = true
 -- enabled border for floating window globally
 vim.opt.winborder = 'rounded'
 
+-- allow per-project config
+vim.o.exrc = true
+
 -- but telescope needs a hack prevent it from rendering two sets of borders
 -- remove once https://github.com/nvim-lua/plenary.nvim/pull/649 is merged
 vim.api.nvim_create_autocmd("User", {
