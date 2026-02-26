@@ -1,7 +1,7 @@
 return {
 	"mrcjkb/rustaceanvim",
 	ft = { "rust" },
-	version = "^6", -- Recommended
+	version = "^8", -- Recommended
 	lazy = false,  -- This plugin is already lazy
 	dependencies = {
 		"nvim-lua/plenary.nvim",
