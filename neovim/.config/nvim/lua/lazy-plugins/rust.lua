@@ -19,6 +19,17 @@ return {
 				},
 				test_executor = require('custom_rust_test_executor'),
 			},
+			server = {
+				auto_attach = function(bufnr)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					-- Attach to dependency files if rust-analyzer is already running
+					if fname:match('%.cargo/registry/src/') or fname:match('%.rustup/toolchains/') then
+						return #vim.lsp.get_clients({ name = 'rust-analyzer' }) > 0
+					end
+					-- Default: attach if there's a Cargo.toml ancestor
+					return vim.fs.root(bufnr, { 'Cargo.toml' }) ~= nil
+				end,
+			},
 			-- LSP configuration is controlled by vim.lsp.config["rust_analyzer"], which
 			-- in turn is in <rtp>/lsp/rust_analyzer.lua
 			dap = {
