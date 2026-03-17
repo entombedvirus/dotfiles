@@ -300,12 +300,37 @@ local mod_cache = nil
 
 ---@param fname string
 ---@return string?
+local function get_mod_cache_root(fname)
+	if not mod_cache or fname:sub(1, #mod_cache) ~= mod_cache then
+		return nil
+	end
+
+	local module_root = vim.fs.root(fname, { 'go.work', 'go.mod', '.git' })
+	if module_root then
+		return module_root
+	end
+
+	local relative = fname:sub(#mod_cache + 2)
+	local parts = {}
+	for part in relative:gmatch('[^/]+') do
+		table.insert(parts, part)
+		if part:find('@', 1, true) then
+			return vim.fs.joinpath(mod_cache, unpack(parts))
+		end
+	end
+
+	return nil
+end
+
+---@param fname string
+---@return string?
 local function get_root(fname)
 	if mod_cache and fname:sub(1, #mod_cache) == mod_cache then
 		local clients = vim.lsp.get_clients { name = 'gopls' }
 		if #clients > 0 then
 			return clients[#clients].config.root_dir
 		end
+		return get_mod_cache_root(fname)
 	end
 	return vim.fs.root(fname, { 'go.work', 'go.mod', '.git' })
 end
