@@ -6,6 +6,7 @@ unalias kpods 2>/dev/null
 unalias klogs 2>/dev/null
 unalias kexec 2>/dev/null
 unalias kport 2>/dev/null
+unalias kdpod 2>/dev/null
 
 function __kube_require_tools {
     local tool
@@ -168,6 +169,16 @@ function kexec {
     pod=$(__kube_select_pod "$query") || return 1
     container=$(__kube_select_container "$pod" "$query") || return 1
     kubectl exec -it "$pod" -c "$container" -- /bin/bash
+}
+
+function kdpod {
+    __kube_require_tools || return 1
+
+    local query=$1
+    local pod
+
+    pod=$(__kube_select_pod "$query") || return 1
+    kubectl describe pod "$pod"
 }
 
 function kport {
