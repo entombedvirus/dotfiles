@@ -75,7 +75,7 @@ function __kube_select_pod_port_row {
 
     namespace=$(__kube_current_namespace)
     selection=$(kubectl get pods --no-headers \
-        -o custom-columns=NAME:.metadata.name,PORTS:.spec.containers[*].ports[*].containerPort \
+        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.containers[*].ports[*].containerPort' \
         | awk '$2 != "<none>" { print }' \
         | __kube_fzf \
             --query "$query" \
