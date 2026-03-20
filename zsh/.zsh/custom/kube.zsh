@@ -7,6 +7,7 @@ unalias klogs 2>/dev/null
 unalias kexec 2>/dev/null
 unalias kport 2>/dev/null
 unalias kdpod 2>/dev/null
+unalias kevents 2>/dev/null
 
 function __kube_require_tools {
     local tool
@@ -150,13 +151,25 @@ function kpods {
 function klogs {
     __kube_require_tools || return 1
 
-    local query=$1
+    local -a flags=()
+    local query=
+
+    while (( $# )); do
+        case $1 in
+            -*) flags+=("$1"); shift ;;
+            *)  query=$1; shift ;;
+        esac
+    done
+
+    # Default to -f if no flags given
+    (( ${#flags[@]} )) || flags=(-f)
+
     local pod
     local container
 
     pod=$(__kube_select_pod "$query") || return 1
     container=$(__kube_select_container "$pod" "$query") || return 1
-    kubectl logs -f "$pod" -c "$container"
+    kubectl logs "${flags[@]}" "$pod" -c "$container"
 }
 
 function kexec {
@@ -179,6 +192,14 @@ function kdpod {
 
     pod=$(__kube_select_pod "$query") || return 1
     kubectl describe pod "$pod"
+}
+
+function kevents {
+    __kube_require_tools || return 1
+
+    local query=$1
+
+    kubectl get events --sort-by=.lastTimestamp "$@"
 }
 
 function kport {
