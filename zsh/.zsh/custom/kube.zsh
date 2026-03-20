@@ -8,6 +8,7 @@ unalias kexec 2>/dev/null
 unalias kport 2>/dev/null
 unalias kdpod 2>/dev/null
 unalias kevents 2>/dev/null
+unalias kimgs 2>/dev/null
 
 function __kube_require_tools {
     local tool
@@ -226,4 +227,31 @@ function kport {
 
     remote_port=$(__kube_select_port "$pod" "$ports_csv" "$query") || return 1
     kubectl port-forward "pod/$pod" "${local_port:-$remote_port}:$remote_port"
+}
+
+function kimgs {
+    __kube_require_tools || return 1
+
+    local query=$1
+    local namespace
+    local -a pods
+
+    namespace=$(__kube_current_namespace)
+    pods=("${(@f)$(kubectl get pods --no-headers \
+        | __kube_fzf \
+            --multi \
+            --query "$query" \
+            --header "Select pods from namespace: $namespace (TAB to multi-select)" \
+            --preview 'kubectl get pod {1} -o wide' \
+            --preview-window=down:70% \
+        | awk '{print $1}')}")
+
+    (( ${#pods[@]} > 0 )) || return 1
+
+    local pod
+    for pod in "${pods[@]}"; do
+        [[ -n "$pod" ]] || continue
+        kubectl get pod "$pod" \
+            -o jsonpath="{range .spec.containers[*]}${pod}\t{.name}\t{.image}{\"\n\"}{end}"
+    done | column -t -s $'\t'
 }
