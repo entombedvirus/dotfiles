@@ -182,7 +182,7 @@ function kexec {
 
     pod=$(__kube_select_pod "$query") || return 1
     container=$(__kube_select_container "$pod" "$query") || return 1
-    kubectl exec -it "$pod" -c "$container" -- /bin/bash
+    kubectl exec -it "$pod" -c "$container" -- /bin/sh
 }
 
 function kdpod {
