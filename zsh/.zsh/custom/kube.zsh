@@ -6,6 +6,7 @@ unalias kpods 2>/dev/null
 unalias klogs 2>/dev/null
 unalias kexec 2>/dev/null
 unalias kport 2>/dev/null
+unalias kportsvc 2>/dev/null
 unalias kdpod 2>/dev/null
 unalias kevents 2>/dev/null
 unalias kimgs 2>/dev/null
@@ -82,6 +83,25 @@ function __kube_select_pod_port_row {
         | __kube_fzf \
             --query "$query" \
             --header "Select a pod/port from namespace: $namespace") || return 1
+
+    [[ -n "$selection" ]] || return 1
+    print -r -- "$selection"
+}
+
+function __kube_select_service_port_row {
+    local query=$1
+    local namespace
+    local selection
+
+    namespace=$(__kube_current_namespace)
+    selection=$(kubectl get services --no-headers \
+        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.ports[*].port' \
+        | awk '$2 != "<none>" { print }' \
+        | __kube_fzf \
+            --query "$query" \
+            --header "Select a service/port from namespace: $namespace" \
+            --preview 'kubectl get service {1} -o yaml' \
+            --preview-window=down:70%) || return 1
 
     [[ -n "$selection" ]] || return 1
     print -r -- "$selection"
@@ -227,6 +247,32 @@ function kport {
 
     remote_port=$(__kube_select_port "$pod" "$ports_csv" "$query") || return 1
     kubectl port-forward "pod/$pod" "${local_port:-$remote_port}:$remote_port"
+}
+
+function kportsvc {
+    __kube_require_tools || return 1
+
+    local query=
+    local local_port=
+    local selection
+    local service
+    local ports_csv
+    local remote_port
+
+    if [[ $1 == <-> && -z $2 ]]; then
+        local_port=$1
+    else
+        query=$1
+        local_port=$2
+    fi
+
+    selection=$(__kube_select_service_port_row "$query") || return 1
+    service=$(awk '{print $1}' <<< "$selection")
+    ports_csv=$(awk '{print $2}' <<< "$selection")
+    [[ -n "$service" && -n "$ports_csv" ]] || return 1
+
+    remote_port=$(__kube_select_port "$service" "$ports_csv" "$query") || return 1
+    kubectl port-forward "service/$service" "${local_port:-$remote_port}:$remote_port"
 }
 
 function kimgs {
