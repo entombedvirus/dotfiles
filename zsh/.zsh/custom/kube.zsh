@@ -1,5 +1,6 @@
 # Interactive kubectl helpers powered by fzf.
 
+unalias k 2>/dev/null
 unalias kctx 2>/dev/null
 unalias kns 2>/dev/null
 unalias kpods 2>/dev/null
@@ -10,6 +11,8 @@ unalias kportsvc 2>/dev/null
 unalias kdpod 2>/dev/null
 unalias kevents 2>/dev/null
 unalias kimgs 2>/dev/null
+
+alias k=kubectl
 
 function __kube_require_tools {
     local tool
