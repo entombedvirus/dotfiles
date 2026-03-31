@@ -1,3 +1,5 @@
+os:
+  editPreset: 'nvim'
 services:
   personalgit: github:github.com
   workgit: github:github.com
