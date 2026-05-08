@@ -29,6 +29,12 @@ function __kube_fzf {
     fzf --select-1 --exit-0 "$@"
 }
 
+# If the query looks like a kubectl label selector (contains `=`), treat it as
+# server-side label filter; otherwise it's an fzf fuzzy query.
+function __kube_is_label_selector {
+    [[ $1 == *=* ]]
+}
+
 function __kube_current_namespace {
     local namespace
 
@@ -40,14 +46,38 @@ function __kube_select_pod {
     local query=$1
     local namespace
     local selection
+    local -a list_args=(get pods --sort-by=.metadata.creationTimestamp --no-headers)
+    local fzf_query=$query
 
     namespace=$(__kube_current_namespace)
-    selection=$(kubectl get pods --sort-by=.metadata.creationTimestamp --no-headers \
+
+    if __kube_is_label_selector "$query"; then
+        list_args+=(-l "$query")
+        fzf_query=
+    fi
+
+    local listing
+    listing=$(kubectl "${list_args[@]}") || return 1
+
+    if [[ -z "$listing" ]]; then
+        print -u2 -- "no pods in namespace '$namespace'${query:+ matching '$query'}"
+        return 1
+    fi
+
+    local fzf_status
+    selection=$(print -r -- "$listing" \
         | __kube_fzf \
-            --query "$query" \
+            --query "$fzf_query" \
             --header "Select a pod from namespace: $namespace" \
             --preview 'kubectl get pod {1} -o wide' \
-            --preview-window=down:70%) || return 1
+            --preview-window=down:70%)
+    fzf_status=$?
+
+    if (( fzf_status == 1 )); then
+        print -u2 -- "no pods matched '$fzf_query' in namespace '$namespace'"
+        return 1
+    fi
+    (( fzf_status == 0 )) || return $fzf_status
 
     [[ -n "$selection" ]] || return 1
     awk '{print $1}' <<< "$selection"
@@ -78,14 +108,37 @@ function __kube_select_pod_port_row {
     local query=$1
     local namespace
     local selection
+    local -a list_args=(get pods --no-headers
+        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.containers[*].ports[*].containerPort')
+    local fzf_query=$query
 
     namespace=$(__kube_current_namespace)
-    selection=$(kubectl get pods --no-headers \
-        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.containers[*].ports[*].containerPort' \
-        | awk '$2 != "<none>" { print }' \
+
+    if __kube_is_label_selector "$query"; then
+        list_args+=(-l "$query")
+        fzf_query=
+    fi
+
+    local listing
+    listing=$(kubectl "${list_args[@]}" | awk '$2 != "<none>" { print }') || return 1
+
+    if [[ -z "$listing" ]]; then
+        print -u2 -- "no pods with declared ports in namespace '$namespace'${query:+ matching '$query'}"
+        return 1
+    fi
+
+    local fzf_status
+    selection=$(print -r -- "$listing" \
         | __kube_fzf \
-            --query "$query" \
-            --header "Select a pod/port from namespace: $namespace") || return 1
+            --query "$fzf_query" \
+            --header "Select a pod/port from namespace: $namespace")
+    fzf_status=$?
+
+    if (( fzf_status == 1 )); then
+        print -u2 -- "no pods matched '$fzf_query' in namespace '$namespace'"
+        return 1
+    fi
+    (( fzf_status == 0 )) || return $fzf_status
 
     [[ -n "$selection" ]] || return 1
     print -r -- "$selection"
@@ -95,16 +148,39 @@ function __kube_select_service_port_row {
     local query=$1
     local namespace
     local selection
+    local -a list_args=(get services --no-headers
+        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.ports[*].port')
+    local fzf_query=$query
 
     namespace=$(__kube_current_namespace)
-    selection=$(kubectl get services --no-headers \
-        -o 'custom-columns=NAME:.metadata.name,PORTS:.spec.ports[*].port' \
-        | awk '$2 != "<none>" { print }' \
+
+    if __kube_is_label_selector "$query"; then
+        list_args+=(-l "$query")
+        fzf_query=
+    fi
+
+    local listing
+    listing=$(kubectl "${list_args[@]}" | awk '$2 != "<none>" { print }') || return 1
+
+    if [[ -z "$listing" ]]; then
+        print -u2 -- "no services with declared ports in namespace '$namespace'${query:+ matching '$query'}"
+        return 1
+    fi
+
+    local fzf_status
+    selection=$(print -r -- "$listing" \
         | __kube_fzf \
-            --query "$query" \
+            --query "$fzf_query" \
             --header "Select a service/port from namespace: $namespace" \
             --preview 'kubectl get service {1} -o yaml' \
-            --preview-window=down:70%) || return 1
+            --preview-window=down:70%)
+    fzf_status=$?
+
+    if (( fzf_status == 1 )); then
+        print -u2 -- "no services matched '$fzf_query' in namespace '$namespace'"
+        return 1
+    fi
+    (( fzf_status == 0 )) || return $fzf_status
 
     [[ -n "$selection" ]] || return 1
     print -r -- "$selection"
@@ -153,8 +229,16 @@ function kns {
     local selection
     local namespace
 
+    local fzf_status
     selection=$(kubectl get namespaces --no-headers \
-        | __kube_fzf --query "$query" --header 'Select a namespace') || return 1
+        | __kube_fzf --query "$query" --header 'Select a namespace')
+    fzf_status=$?
+
+    if (( fzf_status == 1 )); then
+        print -u2 -- "no namespaces matched '$query'"
+        return 1
+    fi
+    (( fzf_status == 0 )) || return $fzf_status
 
     [[ -n "$selection" ]] || return 1
     namespace=$(awk '{print $1}' <<< "$selection")
@@ -284,16 +368,41 @@ function kimgs {
     local query=$1
     local namespace
     local -a pods
+    local -a list_args=(get pods --no-headers)
+    local fzf_query=$query
 
     namespace=$(__kube_current_namespace)
-    pods=("${(@f)$(kubectl get pods --no-headers \
+
+    if __kube_is_label_selector "$query"; then
+        list_args+=(-l "$query")
+        fzf_query=
+    fi
+
+    local listing
+    listing=$(kubectl "${list_args[@]}") || return 1
+
+    if [[ -z "$listing" ]]; then
+        print -u2 -- "no pods in namespace '$namespace'${query:+ matching '$query'}"
+        return 1
+    fi
+
+    local fzf_output fzf_status
+    fzf_output=$(print -r -- "$listing" \
         | __kube_fzf \
             --multi \
-            --query "$query" \
+            --query "$fzf_query" \
             --header "Select pods from namespace: $namespace (TAB to multi-select)" \
             --preview 'kubectl get pod {1} -o wide' \
-            --preview-window=down:70% \
-        | awk '{print $1}')}")
+            --preview-window=down:70%)
+    fzf_status=$?
+
+    if (( fzf_status == 1 )); then
+        print -u2 -- "no pods matched '$fzf_query' in namespace '$namespace'"
+        return 1
+    fi
+    (( fzf_status == 0 )) || return $fzf_status
+
+    pods=("${(@f)$(print -r -- "$fzf_output" | awk '{print $1}')}")
 
     (( ${#pods[@]} > 0 )) || return 1
 
